@@ -12,7 +12,6 @@ class SpotifyUser:
     related information from Spotify.
     """
     
-    #include scope in this function or no?
     def __init__(self, spotipy_client_id, spotipy_client_secret, spotipy_redirect_uri, username):
         self.username = username
         scope = 'user-library-read user-follow-read user-top-read user-read-recently-played'

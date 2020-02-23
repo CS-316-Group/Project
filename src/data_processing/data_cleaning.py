@@ -59,6 +59,8 @@ def clean_top_tracks_artist_info(new_user:SpotifyUser,
     del top_track_created_by['artist_name']
     top_track_artists_to_add['artist_name'] = top_track_artists_to_add['artist_name'].str.replace(",", "")
     # TODO: GET THE REST OF ARTIST INFORMATION
+    top_track_artists_to_add_json = new_user.artists(top_track_artists_to_add['artist_id'])
+    print(top_track_artists_to_add_json)
     return top_track_created_by, top_track_artists_to_add
 
 
