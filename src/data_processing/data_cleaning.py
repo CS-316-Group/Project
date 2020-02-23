@@ -58,9 +58,26 @@ def clean_top_tracks_artist_info(new_user:SpotifyUser,
     top_track_artists_to_add = top_track_created_by[['artist_id', 'artist_name']].drop_duplicates()
     del top_track_created_by['artist_name']
     top_track_artists_to_add['artist_name'] = top_track_artists_to_add['artist_name'].str.replace(",", "")
+
+    
     # TODO: GET THE REST OF ARTIST INFORMATION
-    top_track_artists_to_add_json = new_user.artists(top_track_artists_to_add['artist_id'])
-    print(top_track_artists_to_add_json)
+    top_track_artists_to_add = json_normalize(new_user.sp.artists(top_track_artists_to_add['artist_id'])['artists'])     
+    
+    # get first image from the images url
+    urls = top_track_artists_to_add.apply(lambda x: x['images'][0]['url'], axis=1)
+    top_track_artists_to_add['artist_image_url'] = urls
+    
+    # rows already have unique id so no drop_duplicates() is necessary
+    top_track_artists_to_add = (top_track_artists_to_add.reset_index()
+                                            .drop(['index', 'href', 'uri', 'external_urls.spotify', 
+                                                   'type', 'followers.href', 'type', 'genres', 'images'], axis=1)
+                                            .rename({'id': 'artist_id',
+                                                     'name': 'artist_name',
+                                                     'popularity': 'artist_pop',
+                                                     'followers.total': 'num_followers'}, 
+                                                     axis=1)
+    )
+    
     return top_track_created_by, top_track_artists_to_add
 
 
