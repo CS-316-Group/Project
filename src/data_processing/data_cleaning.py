@@ -143,11 +143,23 @@ def clean_top_tracks_album_info(new_user:SpotifyUser,
                                          'name': 'track_name',
                                          'popularity': 'track_pop'}, axis=1)
                  )
-
+    # record the album that contains the track
     album_contains_track = top_tracks[['album_id', 'track_id']]
     del top_tracks['album_id']
-    # add time range info 
+
+    # we must ensure that top_tracks are put in the tracks table
+    top_tracks_to_add = top_tracks
+
+    # finalize top_tracks: add time range info, delete other extra attributes, add listener id
     top_tracks['time_span'] = time_range
+    top_tracks = top_tracks.drop(['track_name',
+    							  'track_pop', 
+    							  'preview_url'], axis=1)
+    
+    listener_info = json_normalize(new_user.info())
+    top_tracks['listener_id'] = listener_info['id'][0]
+
+
 
     # we must ensure that albums corresponding to top tracks are in the Albums table 
     urls = top_tracks_df.apply(lambda x: x['album.images'][0]['url'], axis=1)
@@ -172,7 +184,7 @@ def clean_top_tracks_album_info(new_user:SpotifyUser,
                                           }, axis=1)
                                )
     # remove commas
-    top_tracks['track_name'] = top_tracks['track_name'].str.replace(",", "")
+    top_tracks_to_add['track_name'] = top_tracks_to_add['track_name'].str.replace(",", "")
     top_tracks_albums_to_add['album_name'] = top_tracks_albums_to_add['album_name'].str.replace(",", "")
 
-    return top_tracks, album_contains_track, top_tracks_albums_to_add
+    return top_tracks, top_tracks_to_add, album_contains_track, top_tracks_albums_to_add
