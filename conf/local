@@ -1,1 +1,7 @@
-
+# Here you can define credentials for different data sets and environment.
+# 
+# THIS FILE MUST BE PLACED IN `conf/local`. DO NOT PUSH THIS FILE TO GitHub.
+​
+spotify_dev_creds:
+  spotify_client_id: 46a21c22c2b84831a61e13aabc27dc30
+  spotify_client_secret: 3211a9953f4d4facbe8fad5d6b171ea2
