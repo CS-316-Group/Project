@@ -17,7 +17,7 @@ Loading data = load.sql
 
 
 Running dynamic sql queries.
-`psql productio  -af test-sample.sql > test-sample.out`
+`psql production  -af test-sample.sql > test-sample.out`
 
 
 
