@@ -11,3 +11,8 @@ Separate window:
 File creating all the tables and their references is create.sql in tge srv/ProjectDatabase folder.
 Loading data = load.sql
 
+8. Create tables: Run the command `\i /srv/ProjectDatabase/create.sql`
+8. Load data: Run the command `\i /srv/ProjectDatabase/load.sql`
+
+
+
