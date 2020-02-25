@@ -1,6 +1,6 @@
 # HOW TO CREATE AND LOAD DATABASE.
 1. `ssh vcm@vcm-13360.vm.duke.edu`
-2. password:merdr7vuEr
+2. password:`merdr7vuEr`
 3. `cd /srv/ProjectDatabase`
 4. `docker-compose down`
 5. `docker-compose up -d`
@@ -17,7 +17,7 @@ Loading data = load.sql
 
 
 Running dynamic sql queries.
-`psql production  -af test-sample.sql > test-sample.out`
+`psql -h vcm-13360.vm.duke.edu -p 5432 -U dbuser -W -d production -af test-sample.sql > test-sample.out`
 
 
 
