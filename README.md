@@ -6,7 +6,9 @@
 5. `docker-compose up -d`
 
 Database username: `dbuser`
+
 Database password: `example`
+
 Database name: `production`
 
 # NO LONGER NEEDED BECAUSE OF SQLALCHEMY
