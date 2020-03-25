@@ -11,6 +11,9 @@ Database password: `example`
 
 Database name: `production`
 
+# RUNNING DYNAMIC SQL QUERIES
+`psql -h vcm-13360.vm.duke.edu -p 5432 -U dbuser -W -d production -af test-sample.sql > test-sample.out`
+
 # NO LONGER NEEDED BECAUSE OF SQLALCHEMY
 Separate window:
 6. Might have to run this code to install psql: `sudo apt-get install postgresql-client`
@@ -23,9 +26,6 @@ Loading data = load.sql
 9. Create tables: Run the command `\i /home/vcm/create.sql`
 10. Load data: Run the command `\i /home/vcm/load.sql`
 
-
-Running dynamic sql queries.
-`psql -h vcm-13360.vm.duke.edu -p 5432 -U dbuser -W -d production -af test-sample.sql > test-sample.out`
 
 
 
