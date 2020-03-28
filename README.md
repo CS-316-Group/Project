@@ -19,6 +19,19 @@ Loading data = load.sql
 Running dynamic sql queries.
 `psql production  -af test-sample.sql > test-sample.out`
 
+# HOW TO SET UP CREDS FILE 
 
+To gain access to the Spotify API, you need to place the "credentials.yml" file into the following location: `conf/local/credentials.yml`. The correct folder structure looks like: 
+```
+├── conf    
+|   ├── base
+|   └── local 
+|       └── credentials.yml
+├── data_examples                    
+├── notebooks                     
+├── src                    
+├── .gitignore                    
+├── __init__.py
+└── README.md 
 
-
+```
