@@ -1,0 +1,18 @@
+--What are a user’s top artists?
+SELECT DISTINCT artist_name, TopArtists.artist_id
+FROM Artists JOIN TopArtists ON Artists.id = TopArtists.artist_id
+WHERE listener_id = '314xcqarki42gnkosjtfplluumyb' AND time_span = 'short_term';
+        artist_name        |       artist_id
+---------------------------+------------------------
+ Christian-Pierre La Marca | 5nRDtK82lHmYRXnKjAzI9j
+(1 row)
+
+--What are a user’s top tracks?
+SELECT Tracks.track_name, TopTracks.track_id
+FROM TopTracks JOIN Tracks ON TopTracks.track_id = Tracks.id
+WHERE listener_id = '314xcqarki42gnkosjtfplluumyb' AND time_span = 'short_term';
+                    track_name                     |        track_id
+---------------------------------------------------+------------------------
+ Trio pour piano violon & violoncelle: II. Pant... | 0xH4hjpQfNInY3lqC3Osc1
+(1 row)
+
