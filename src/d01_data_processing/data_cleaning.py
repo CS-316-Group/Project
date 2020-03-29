@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from pandas.io.json import json_normalize
 
-from data_processing.spotify_user import SpotifyUser
+from d01_data_processing.spotify_user import SpotifyUser
 
 
 def clean_listener_info(new_user:SpotifyUser):

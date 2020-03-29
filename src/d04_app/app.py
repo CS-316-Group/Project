@@ -1,6 +1,7 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 import forms
+import startup
 
 app = Flask(__name__)
 app.secret_key = 'cs316'
@@ -20,12 +21,15 @@ def welcome():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = forms.LoginForm()
-    if form.validate_on_submit():
-        flash('Login requested for user {}, remember_me={}'.format(
-            form.username.data, form.remember_me.data))
-        return redirect('/')#when we figure out hoow to connect to spotify we can redirect here.
-    return render_template('login.html', form=form)
+    # form = forms.LoginForm()
+    # if form.validate_on_submit():
+    #     flash('Login requested for user {}, remember_me={}'.format(
+    #         form.username.data, form.remember_me.data))
+    #     return redirect('/')#when we figure out hoow to connect to spotify we can redirect here.
+    # return render_template('login.html', form=form)
+    response = startup.getUser()
+    return redirect(response)
+
 
 @app.route('/database', methods=['GET', 'POST'])
 def database():

@@ -1,7 +1,7 @@
 import yaml
 import os
 import re
-from utils.get_project_directory import get_project_directory
+from d00_utils.get_project_directory import get_project_directory
 
 
 project_dir = get_project_directory()
