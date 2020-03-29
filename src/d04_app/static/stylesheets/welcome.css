@@ -1,0 +1,29 @@
+
+body {
+    font-family: 'Times New Roman', Times, Serif;
+    background-color: pink;
+  }
+  
+  h1 {
+    color: white;
+    text-align: center;
+  }
+  
+    ul{
+    list-style-type: square;
+  }
+  
+  
+  p {
+    font-family: 'Times New Roman', Times, Serif;
+  }
+
+  a{
+    text-decoration: none;
+    color: white;
+  }
+  
+  a:hover{
+    color:lightskyblue;
+    cursor: pointer;
+  }

@@ -1,0 +1,12 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stylesheets/style.css') }}">
+    <script type="text/javascript" src="{{ url_for('static',filename='js/style.js') }}"></script>
+  </head>
+  
+  <body>
+    <h1> Blaj Blah Blaj heading.</h1>
+
+    <h2 id="heading">{% block heading %}{% endblock %}</h2>
+    {% block content %}{% endblock %}
+  </body>
+</html>
