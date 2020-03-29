@@ -4,15 +4,14 @@ from pandas.io.json import json_normalize
 
 from data_processing.spotify_user import SpotifyUser
 from utils.explode import explode
+from d01_data_processing.spotify_user import SpotifyUser
+
 
 def clean_listener_info(new_user:SpotifyUser):
     """
     """
     listener_info = json_normalize(new_user.info())
-    
-    display(listener_info)
-    print(len(listener_info['images'][0]))
-    
+
     if (len(listener_info['images'][0]) > 0):
         profile_pic_url = listener_info['images'][0][0]['url']
     else:
@@ -87,19 +86,19 @@ def clean_top_tracks_artist_info(new_user:SpotifyUser,
     # add genre information when adding new artists
     top_track_artists_genres = top_track_artists_to_add.drop(['artist_name', 'artist_pop', 'num_followers', 'artist_image_url'], axis=1)
     genres_to_add = top_track_artists_genres.drop(['artist_id'], axis=1)
-    
+
     # explode panda dataframes to eliminate lists in genres
     top_track_artists_genres = explode(top_track_artists_genres, lst_cols=['genres'])
     genres_to_add      = explode(genres_to_add, lst_cols=['genres']).drop_duplicates()
-    
+
     # remove genre information from artists, as genres are their own entity set
-    top_track_artists_to_add = top_track_artists_to_add.drop(['genres'], axis=1)         
-    
+    top_track_artists_to_add = top_track_artists_to_add.drop(['genres'], axis=1)
+
     return top_track_created_by, top_track_artists_to_add, genres_to_add, top_track_artists_genres
 
 
 def clean_top_artists_info(new_user:SpotifyUser,
-						   number_of_artists:int=20, 
+						   number_of_artists:int=20,
 						   time_range:str='short_term', 
 						   offset:int=0):
     """
@@ -123,7 +122,7 @@ def clean_top_artists_info(new_user:SpotifyUser,
 
     # generate top artists table 
     user_top_artists = top_artists_to_add[['artist_id']]
-        
+
     # get listener id 
     listener_info = json_normalize(new_user.info())
     user_top_artists['listener_id'] = listener_info['id'][0]
@@ -134,11 +133,11 @@ def clean_top_artists_info(new_user:SpotifyUser,
 #     temp = pd.Series(genres_to_add)#set_index(['genres']).apply(pd.Series.explode).reset_index()
 #     genres_to_add = temp.explode()
 #     genres_to_add = genres_to_add.set_index('genres').apply(lambda x: x.apply(pd.Series).stack()).reset_index()
-    
+
     # all artist, genre pairs for top artists
     top_artists_genres = explode(top_artists_to_add[['artist_id', 'genres']], lst_cols=['genres'])
     del top_artists_to_add['genres']
-                                            
+
     return user_top_artists, top_artists_to_add, genres_to_add, top_artists_genres
 
 
@@ -154,7 +153,7 @@ def clean_top_tracks_album_info(new_user:SpotifyUser,
     										  offset=offset)['items']
 
     top_tracks_df = json_normalize(top_tracks_json)
-    user_top_tracks = (top_tracks_df.drop(['available_markets', 'disc_number', 'duration_ms', 
+    user_top_tracks = (top_tracks_df.drop(['available_markets', 'disc_number', 'duration_ms',
                                        'explicit', 'href', 'is_local', 'type', 'uri', 'track_number',
                                        'album.album_type', 'album.artists', 'album.available_markets',
                                        'album.external_urls.spotify', 'album.href', 
@@ -211,28 +210,28 @@ def clean_top_tracks_album_info(new_user:SpotifyUser,
     # remove commas
     top_tracks_to_add['track_name'] = top_tracks_to_add['track_name'].str.replace(",", "")
     top_tracks_albums_to_add['album_name'] = top_tracks_albums_to_add['album_name'].str.replace(",", "")
-    
+
     # delete time span for tracks to be added into Tracks entity set
     del top_tracks_to_add['time_span']
-    
-    # get track audio features 
+
+    # get track audio features
     top_track_ids = top_tracks_to_add[['track_id']]['track_id'].values.tolist()
-    
+
     top_track_audio_features = json_normalize(new_user.get_track_audio_features(top_track_ids))
     top_track_audio_features = top_track_audio_features.drop(['analysis_url', 'key', 'duration_ms', 'type', 'uri', 'track_href'], axis=1).rename({'id':'track_id'}, axis=1)
-        
+
     top_tracks_to_add = pd.merge(top_tracks_to_add, top_track_audio_features, on=['track_id'])
-    
+
     # TODO build track, genre relation and add any necessary genres into Genres entity set
     top_track_album_ids = top_tracks_albums_to_add[['album_id']]['album_id'].values.tolist()
-    
+
     top_track_album_info = json_normalize(new_user.get_album_info(top_track_album_ids))
     top_track_album_info = pd.DataFrame(top_track_album_info['albums'][0])
-    
+
     top_track_album_genres = top_track_album_info.drop(['album_type', 'artists', 'available_markets', 'copyrights', 'external_urls', 'href', 'external_ids', 'name', 'label', 'popularity', 'release_date_precision', 'release_date', 'total_tracks', 'tracks', 'images', 'type', 'uri'], axis=1).rename({'id':'album_id'}, axis=1)
     top_track_album_genres = explode(top_track_album_genres, lst_cols=['genres'])
-    
+
     genres_to_add = top_track_album_genres[['genres']]
     genres_to_add = explode(genres_to_add, lst_cols=['genres'])
-    
+
     return user_top_tracks, top_tracks_to_add, album_contains_track, top_tracks_albums_to_add, genres_to_add, top_track_album_genres

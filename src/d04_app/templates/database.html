@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+{% block content %}
+<form method="GET" id="form1">
+{{form.csrf_token}} 
+<p>{{form.artist_sel.label}}</p> 
+<select id="artist">
+    {% for artist in dropdown_list %}
+    <option value="{{ artist }}">{{ artist }}</option>
+    {% endfor %}
+</select>
+<p>
+    <button id="buttonID" form="form1" >Submit</button>
+</p>
+</form>
+<script type = "text/javascript" language = "javascript">
+console.log('start');
+    jQuery(document).ready(function() {
+       jQuery("#buttonID").click(function() {
+           var artist_value = $('#artist').val();
+		console.log(artist_value, ';jksdljfa;')
+
+           var artist_name = $('#artist :selected').text(); 
+
+               window.open(window.location.origin + "/artistpage") //modified this from original so it will redirect to artistpage.
+   
+       });
+    });
+</script>
+{% endblock %}
