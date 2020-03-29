@@ -30,6 +30,14 @@ def login():
     response = startup.getUser()
     return redirect(response)
 
+#this code gets the access token and returns to auth the access token that was 
+#previously stored in .cache thing. so the auth method getAccesstoken will store
+#all the access token from everybody who gives us permision. 
+@app.route('/callback/')
+def callback():
+    startup.getUserToken(request.args['code'])
+    #** I redirect to my homepage here **
+
 
 @app.route('/database', methods=['GET', 'POST'])
 def database():
