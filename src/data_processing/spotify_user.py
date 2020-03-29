@@ -21,13 +21,13 @@ class SpotifyUser:
         if self.token:
             self.sp = spotipy.Spotify(auth=self.token)
         else:
-            print("ERROR: User authorization unsuccessful.")
+            raise Exception("ERROR: User authorization unsuccessful.")
         
     def info(self):
         if self.token:
             return self.sp.me()
         else:
-            print("ERROR: Cannot get user info when user", self.username, "has not given authorization.")
+            raise Exception("ERROR: Cannot get user info when user", self.username, "has not given authorization.")
             
     def get_most_recent_tracks(self, number_of_tracks=20):
         '''
@@ -38,7 +38,7 @@ class SpotifyUser:
         if self.token:
             return self.sp.current_user_recently_played(number_of_tracks)
         else:
-            print("ERROR: Cannot get most recent tracks when user", self.username, "has not given authorization.")
+            raise Exception("ERROR: Cannot get most recent tracks when user", self.username, "has not given authorization.")
 
     def get_saved_tracks(self, number_of_tracks=20, offset=0):
         '''
@@ -51,7 +51,7 @@ class SpotifyUser:
         if self.token:
             return self.sp.current_user_saved_tracks(number_of_tracks, offset)
         else:
-            print("ERROR: Cannot get saved tracks when user", self.username, "has not given authorization.")
+            raise Exception("ERROR: Cannot get saved tracks when user", self.username, "has not given authorization.")
             
     def get_saved_albums(self, number_of_albums=20, offset=0):
         '''
@@ -65,7 +65,7 @@ class SpotifyUser:
         if self.token:
             return self.sp.current_user_saved_albums(number_of_albums, offset)
         else:
-            print("ERROR: Cannot get saved albums when user", self.username, "has not given authorization.")
+            raise Exception("ERROR: Cannot get saved albums when user", self.username, "has not given authorization.")
     
     def get_followed_artists(self, number_of_artists=20, after=None):
         '''
@@ -78,7 +78,7 @@ class SpotifyUser:
         if self.token:
             return self.sp.current_user_followed_artists(number_of_artists, after)
         else:
-            print("ERROR: Cannot get followed artists when user", self.username, "has not given authorization.")
+            raise Exception("ERROR: Cannot get followed artists when user", self.username, "has not given authorization.")
     
     def get_top_tracks(self, number_of_tracks=20, time_range='short_term', offset=0):
         '''
@@ -92,9 +92,9 @@ class SpotifyUser:
         if self.token:
             return self.sp.current_user_top_tracks(number_of_tracks, offset, time_range)
         else:
-            print("ERROR: Cannot get top tracks when user", self.username, "has not given authorization.")        
+            raise Exception("ERROR: Cannot get top tracks when user", self.username, "has not given authorization.")        
     
-    def get_top_artists(self, number_of_tracks=20, time_range='short_term', offset=0):
+    def get_top_artists(self, number_of_artists=20, time_range='short_term', offset=0):
         '''
         Returns the most popular artists for the current user.
         number_of_artists controls how many tracks are returned.
@@ -104,6 +104,25 @@ class SpotifyUser:
          I assume we will not need to use offset for our purposes so I set the default value to 0.    
         '''
         if self.token:
-            return self.sp.current_user_top_artists(number_of_tracks, offset, time_range)
+            return self.sp.current_user_top_artists(number_of_artists, offset, time_range)
         else:
-            print("ERROR: Cannot get top artists when user", self.username, "has not given authorization.")  
+            raise Exception("ERROR: Cannot get top artists when user", self.username, "has not given authorization.")  
+
+    def get_track_audio_features(self, track_ids):
+        '''
+        Given a list of track ids, returns an set of audio features for each track,
+        such as energy, liveliness, speechiness, tempo, etc.
+        '''
+        if self.token:
+            return self.sp.audio_features(track_ids)
+        else:
+            raise Exception("ERROR: Cannot get audio features for tracks when user", self.username, "has not given authorization.")  
+
+    def get_album_info(self, album_ids):
+        '''
+        Given a list of album ids, returns album info for each album.
+        '''
+        if self.token:
+            return self.sp.albums(album_ids)
+        else:
+            raise Exception("ERROR: Cannot get info for albums when user", self.username, "has not given authorization.")  
