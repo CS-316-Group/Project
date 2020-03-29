@@ -3,25 +3,25 @@ from auth import getAuth, refreshAuth, getToken
 #Aclient id from downloaded app.
 #CLIENT_ID = "98c167e218bd483891f8638caaca19cb"
 #bens client id:
-#CLIENT_ID = "713a065a310b499c93af68eaefb213e7"
+CLIENT_ID = "46a21c22c2b84831a61e13aabc27dc30"
 #selens:
 #CLIENT_ID ="713a065a310b499c93af68eaefb213e7"
 #mine
-CLIENT_ID = "975ac8a7753243389c7713dfe121cd52"
+#CLIENT_ID = "975ac8a7753243389c7713dfe121cd52"
 
 #cleint secret id from the downloaded up
 #CLIENT_SECRET = "e40d06af72524208bf0bbb048ba299a3"
 
 
 #ben client id:
-#CLIENT_SECRET = "c2cdbfa0fcdc4bbb9461638c57a0a41e"
+CLIENT_SECRET = "3211a9953f4d4facbe8fad5d6b171ea2"
 #selens ids.
 #CLIENT_SECRET = "c2cdbfa0fcdc4bbb9461638c57a0a41e"
 #mine
-CLIENT_SECRET = "df6cdabcedae407fa873427f3947f5bf"
+#CLIENT_SECRET = "df6cdabcedae407fa873427f3947f5bf"
 
 #Port and callback url can be changed or ledt to localhost:5000
-PORT = "5000" #intial host but i think ben has only approved 8888.
+PORT = "8889" #intial host but i think ben has only approved 8888.
 #PORT = "8888"
 CALLBACK_URL = "http://localhost"
 

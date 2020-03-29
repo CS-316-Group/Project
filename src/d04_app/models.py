@@ -18,7 +18,6 @@ class Artists(db.Model):
     #not sure about this to specify one to many relationship between classes.
     topartists = orm.relationship('Topartists')
     created = orm.relationship('Createdby')
-    tracksonalbum=orm.relationship('Albumcontainstrack')
     def __repr__(self):
        return '<Artist: {}>'.format(self.artist_name) 
 
@@ -39,6 +38,8 @@ class Tracks(db.Model):
     track_name = db.Column('track_name', db.String(200), nullable= False)
     pop = db.Column('pop',db.Integer(), nullable = False)
     review_url = db.Column('review_url',db.String(400), unique= False, nullable = False)
+    tracksonalbum=orm.relationship('Albumcontainstrack')
+
 
 class Albums(db.Model):
     __tablename__ = 'albums'
@@ -71,7 +72,7 @@ class Createdby(db.Model):
 
 class Albumcontainstrack(db.Model):
     __tablename__ = 'albumcontainstrack'
-    artist_id = db.Column('artist_id', db.String(200), db.ForeignKey('artists.id'), primary_key = True)
+    track_id = db.Column('track_id', db.String(200), db.ForeignKey('tracks.id'), primary_key = True)
     album_id = db.Column('album_id', db.String(200), db.ForeignKey('albums.id'), primary_key = True)
 
 
