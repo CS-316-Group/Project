@@ -32,7 +32,7 @@ def login():
     #return redirect(response)
     #this is the code to run authentication through the folder structure
 
-    authentication.autenticate()
+    authentication.authenticate()
 
 
 
