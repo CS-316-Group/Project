@@ -1,53 +1,63 @@
+	
+DROP TABLE albumcontainstrack;
 
-ALTER TABLE albumcontainstrack
-RENAME COLUMN artist_id TO track_id;
 
-ALTER TABLE albumcontainstrack
-DROP CONSTRAINT artistid_fkey;
-
-ALTER TABLE albumcontainstrack 
-ALTER COLUMN track_id SET CONSTRAINT track_id FOREIGN KEY (track_id)
+CREATE TABLE albumcontainstrack(
+album_id VARCHAR(200) NOT NULL,
+track_id VARCHAR(200) NOT NULL,
+PRIMARY KEY(album_id,track_id),
+CONSTRAINT albumid_fkey FOREIGN KEY (album_id)
+REFERENCES albums(id),
+CONSTRAINT track_id FOREIGN KEY (track_id)
 REFERENCES tracks(id));
 
 
 ALTER TABLE tracks 
-ADD COLUMN acousticness TYPE VARCHAR (500);
+ADD COLUMN acousticness NUMERIC;
 
 ALTER TABLE tracks 
-ADD COLUMN danceability TYPE VARCHAR (500);
+ADD COLUMN danceability NUMERIC;
 
 ALTER TABLE tracks 
-ADD COLUMN energy TYPE VARCHAR (500);
+ADD COLUMN energy NUMERIC;
 
 ALTER TABLE tracks 
-ADD COLUMN valence TYPE VARCHAR (500);
+ADD COLUMN instrumentalness NUMERIC;
 
 ALTER TABLE tracks 
-ADD COLUMN loudness TYPE VARCHAR (500);
+ADD COLUMN liveness NUMERIC;
 
 ALTER TABLE tracks 
-ADD COLUMN tempo TYPE VARCHAR (500);
+ADD COLUMN loudness NUMERIC;
 
 ALTER TABLE tracks 
-ADD COLUMN instrumentalness TYPE VARCHAR (500);
+ADD COLUMN mode INTEGER;
 
 ALTER TABLE tracks 
-ADD COLUMN speechiness TYPE VARCHAR (500);
+ADD COLUMN speechiness  NUMERIC;
 
 ALTER TABLE tracks 
-ADD COLUMN mode TYPE VARCHAR (500);
+ADD COLUMN tempo  NUMERIC;
 
 ALTER TABLE tracks 
-ADD COLUMN time_sig TYPE VARCHAR (500);
+ADD COLUMN time_sig INTEGER;
+
+ALTER TABLE tracks 
+ADD COLUMN valence  NUMERIC;
+
+
+
+
+
 
 CREATE TABLE genre(
-    genre_name VARCHAR(400) NOT NULL PRIMARY KEY
+    genre_name VARCHAR(200) NOT NULL PRIMARY KEY
 );
 
 
 
 CREATE TABLE artisthasgenre(
-    genre_name VARCHAR(400) NOT NULL,
+    genre_name VARCHAR(200) NOT NULL,
     artist_id VARCHAR(200) NOT NULL, 
     PRIMARY KEY(genre_name,artist_id),
     CONSTRAINT artistid_fkey FOREIGN KEY (artist_id)
@@ -65,5 +75,7 @@ CREATE TABLE albumhasgenre(
     REFERENCES albums(id),
     CONSTRAINT genre_fkey FOREIGN KEY (genre_name)
     REFERENCES genre(genre_name)
+
 );
 
+-- all of the above have been implemented.
