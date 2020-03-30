@@ -1,14 +1,15 @@
 from flask import Flask, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
-import forms
-import startup
+import d04_app.forms
+import d04_app.startup
+import d04_app.authentication
 
 app = Flask(__name__)
 app.secret_key = 'cs316'
-app.config.from_object('config')
+app.config.from_object('d04_app.config')
 db = SQLAlchemy(app, session_options={'autocommit': False})
 
-import models
+import d04_app.models
 
 @app.route('/')
 def home():
@@ -27,15 +28,20 @@ def login():
     #         form.username.data, form.remember_me.data))
     #     return redirect('/')#when we figure out hoow to connect to spotify we can redirect here.
     # return render_template('login.html', form=form)
-    response = startup.getUser()
-    return redirect(response)
+    #response = startup.getUser()
+    #return redirect(response)
+    #this is the code to run authentication through the folder structure
+
+    authentication.autenticate()
+
+
 
 #this code gets the access token and returns to auth the access token that was 
 #previously stored in .cache thing. so the auth method getAccesstoken will store
 #all the access token from everybody who gives us permision. 
-@app.route('/callback/')
-def callback():
-    startup.getUserToken(request.args['code'])
+#@app.route('/callback/')
+#def callback():
+    #startup.getUserToken(request.args['code'])
     #** I redirect to my homepage here **
 
 
