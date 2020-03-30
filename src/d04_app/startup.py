@@ -1,4 +1,4 @@
-from auth import getAuth, refreshAuth, getToken
+from d04_app.auth import getAuth, refreshAuth, getToken
 
 #Aclient id from downloaded app.
 #CLIENT_ID = "98c167e218bd483891f8638caaca19cb"

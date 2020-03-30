@@ -1,15 +1,15 @@
 from flask import Flask, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
-import forms
-import startup
-#import authentication
+import d04_app.forms
+import d04_app.startup
+import d04_app.authentication
 
 app = Flask(__name__)
 app.secret_key = 'cs316'
-app.config.from_object('config')
+app.config.from_object('d04_app.config')
 db = SQLAlchemy(app, session_options={'autocommit': False})
 
-import models
+import d04_app.models
 
 @app.route('/')
 def home():

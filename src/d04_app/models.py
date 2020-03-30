@@ -1,5 +1,5 @@
 from sqlalchemy import sql, orm
-from app import db
+from d04_app.app import db
 
 #to do-check the uniqueness of each attribute.
 #albums = orm.relationshio('Albums')-it is unclear whether 

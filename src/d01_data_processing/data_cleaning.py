@@ -2,8 +2,7 @@ import pandas as pd
 import numpy as np
 from pandas.io.json import json_normalize
 
-from data_processing.spotify_user import SpotifyUser
-from utils.explode import explode
+from d00_utils.explode import explode
 from d01_data_processing.spotify_user import SpotifyUser
 
 

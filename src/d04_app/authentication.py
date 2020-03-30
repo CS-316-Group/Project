@@ -7,9 +7,9 @@ import numpy as np
 from pandas.io.json import json_normalize	
 from IPython.display import display	
 
-from ..d01_data_processing.data_cleaning import *	
-from ..d01_data_processing.spotify_user import SpotifyUser	
-from ..d00_utils.load_confs import load_credentials	
+from d01_data_processing.data_cleaning import *	
+from d01_data_processing.spotify_user import SpotifyUser	
+from d00_utils.load_confs import load_credentials	
 
 
 def authenticate():	
