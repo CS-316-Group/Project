@@ -30,12 +30,16 @@ def welcome():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = forms.LoginForm()
+    form = forms.LoginForm() # have login form return username 
+    # check if exists already, if not, then go to spotify login 
     if form.validate_on_submit():
         response = startup.getUser()
         return redirect(response)
 
     return render_template('login.html', form=form)
+
+    # write the user's access token somewhere 
+    # change how spotifyUser is initialized 
 
     #if form.validate_on_submit():
     #response = startup.getUser()
