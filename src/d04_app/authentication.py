@@ -16,13 +16,13 @@ def authenticate():
     spotify_creds = load_credentials()['spotify_dev_creds']	
 
     # spotify = spotipy.Spotify()	
-    new_username = 'selen'	
+    new_username = 'aha'	
     new_user = SpotifyUser(spotify_creds['spotify_client_id'],	
                            spotify_creds['spotify_client_secret'],	
                            'http://localhost:8889',	
                            new_username)	
 
-    top_track_created_by, top_track_artists_to_add = clean_top_tracks_artist_info(new_user)	
+    #top_track_created_by, top_track_artists_to_add = clean_top_tracks_artist_info(new_user)	
 
-    display(top_track_artists_to_add.head())	
-    display(top_track_created_by.head())
+    #display(top_track_artists_to_add.head())	
+    #display(top_track_created_by.head())

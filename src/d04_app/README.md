@@ -1,23 +1,7 @@
 ## RUNNING APP LOCALLY. THROUGH LOCAL HOST.
-1. First step. Create a virtual environment through anaconda.
-`conda create -n flask_app python=3.7.3`
+Nav
 
-
-2. Install all the dependencies in your application
-`pip3 install -r requirements.txt`
-(when is available)
-dependencies is are all the pip libraries needed eg. flask, sqlalchemy. 
-2a. To generate requirements.text run `pip freeze >> requirements.txt`
-run this anytime you run a new library. 
-
-3. Export Flask app.
-
-`export FLASK_APP=app.py `
-then `export FLASK_ENV=development`
-and then `flask run` 
-4.(might need to modify commands a little bit if computer is not MAC).
-
-
+`python -m d04_app.app`
 
 ## General resources.
 

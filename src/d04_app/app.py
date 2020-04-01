@@ -1,15 +1,24 @@
 from flask import Flask, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
-import d04_app.forms
-import d04_app.startup
-import d04_app.authentication
+import d04_app.forms as forms
+import d04_app.startup as startup
+import d04_app.authentication as authentication
 
+# import pandas as pd	
+# import numpy as np	
+# from pandas.io.json import json_normalize	
+# from IPython.display import display	
+# from d01_data_processing.data_cleaning import *	
+# from d01_data_processing.spotify_user import SpotifyUser	
+# from d00_utils.load_confs import load_credentials	
+
+	
 app = Flask(__name__)
 app.secret_key = 'cs316'
 app.config.from_object('d04_app.config')
 db = SQLAlchemy(app, session_options={'autocommit': False})
 
-import d04_app.models
+import d04_app.models as models
 
 @app.route('/')
 def home():
@@ -22,26 +31,33 @@ def welcome():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # form = forms.LoginForm()
-    # if form.validate_on_submit():
-    #     flash('Login requested for user {}, remember_me={}'.format(
-    #         form.username.data, form.remember_me.data))
-    #     return redirect('/')#when we figure out hoow to connect to spotify we can redirect here.
-    # return render_template('login.html', form=form)
+    
+
+    form = forms.LoginForm()
+
+    if form.validate_on_submit():
+        response = startup.getUser()
+        return redirect(response)
+    
+    #when we change how spotifyUser is initialized. 
+    #new_user = SpotifyUser(token,	new_username)
+    # 	
+
+
     #response = startup.getUser()
     #return redirect(response)
     #this is the code to run authentication through the folder structure
 
-    authentication.authenticate()
+    
 
 
 
 #this code gets the access token and returns to auth the access token that was 
 #previously stored in .cache thing. so the auth method getAccesstoken will store
 #all the access token from everybody who gives us permision. 
-#@app.route('/callback/')
-#def callback():
-    #startup.getUserToken(request.args['code'])
+@app.route('/callback/')
+def callback():
+    startup.getUserToken(request.args['code'])
     #** I redirect to my homepage here **
 
 

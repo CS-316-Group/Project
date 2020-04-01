@@ -11,7 +11,6 @@ class Artists(db.Model):
     __tablename__ = 'artists'
     id = db.Column('id', db.String(200), primary_key=True)
     artist_name = db.Column('artist_name',db.String(200), unique=True)
-    genres = db.Column('genres',db.String(200), unique=False)
     pop = db.Column('pop',db.Integer(), unique=False)
     followers = db.Column('followers',db.Integer(), unique=False)
     image_url = db.Column('image_url', db.String(400), unique= False)
@@ -38,6 +37,7 @@ class Tracks(db.Model):
     track_name = db.Column('track_name', db.String(200), nullable= False)
     pop = db.Column('pop',db.Integer(), nullable = False)
     review_url = db.Column('review_url',db.String(400), unique= False, nullable = False)
+    
     tracksonalbum=orm.relationship('Albumcontainstrack')
 
 
@@ -47,6 +47,7 @@ class Albums(db.Model):
     name = db.Column('name', db.String(200), nullable= False)
     album_type = db.Column('album_type', db.String(200), nullable = False)
     image_url = db.Column('image_url',db.String(400), unique= False, nullable = False)
+    date= db.Column('date', db.String(200), unique = False)
     #not sure about this to specify one to many relationship between classes.
     tracksonalbum=orm.relationship('Albumcontainstrack')
 
