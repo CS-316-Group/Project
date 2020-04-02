@@ -54,6 +54,7 @@ def login():
 
 
 
+
 #this code gets the access token and returns to auth the access token that was 
 #previously stored in .cache thing. so the auth method getAccesstoken will store
 #all the access token from everybody who gives us permision. 
@@ -88,18 +89,18 @@ def callback():
 
 @app.route('/database', methods=['GET', 'POST'])
 def database():
-    artist_names = db.session.query(d04_app.models.Artists.artist_name) 
+    listener_names = db.session.query(d04_app.models.Listeners.display_name)
     dropdown_list = []
-    for artist in artist_names:
-        dropdown_list.append(artist[0])
-    form = forms.artistsform.form(dropdown_list)
+    for listener in listener_names:
+        dropdown_list.append(listener[0])
+    form = forms.artistsform.form(dropdown_list)#artistsforms is just the name of the form.
     if form.validate_on_submit():
-        return redirect('/artistpage') # not sure if this is right
+        return redirect('/artistpage/'+ form.listener_sel.data) # not sure if this is right
     return render_template('database.html', dropdown_list=dropdown_list, form=form)
 
 
-@app.route('/artistpage', methods=['GET', 'POST'])
-def artistpage():
+@app.route('/artistpage/<listener_name>', methods=['GET', 'POST'])
+def artistpage(listener_name):
     return render_template('artistpage.html')
 
 #this is eventually the route page  we will need.

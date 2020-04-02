@@ -37,7 +37,17 @@ class Tracks(db.Model):
     track_name = db.Column('track_name', db.String(200), nullable= False)
     pop = db.Column('pop',db.Integer(), nullable = False)
     review_url = db.Column('review_url',db.String(400), unique= False, nullable = False)
-    
+    acoustic = db.Column('acousticness',db.Numeric() , nullable = False)
+    danceability = db.Column('danceability',db.Numeric(), nullable = False)
+    energy = db.Column('energy',db.Numeric() , nullable = False)
+    instrumalness = db.Column('instrumentalness',db.Numeric() , nullable = False)
+    liveness = db.Column('liveness',db.Numeric() , nullable = False)
+    loudness = db.Column('loudness',db.Numeric() , nullable = False)
+    mode = db.Column('mode',db.Integer(), nullable = False)
+    speechiness = db.Column('speechiness',db.Numeric(), nullable = False)
+    tempo = db.Column('tempo',db.Numeric(), nullable = False)
+    time_signature = db.Column('time_signature',db.Integer() , nullable = False)
+    valence = db.Column('valence',db.Numeric(), nullable = False)
     tracksonalbum=orm.relationship('Albumcontainstrack')
 
 
@@ -74,6 +84,20 @@ class Createdby(db.Model):
 class Albumcontainstrack(db.Model):
     __tablename__ = 'albumcontainstrack'
     track_id = db.Column('track_id', db.String(200), db.ForeignKey('tracks.id'), primary_key = True)
+    album_id = db.Column('album_id', db.String(200), db.ForeignKey('albums.id'), primary_key = True)
+
+class Genre(db.Model):
+     __tablename__ = 'genre'
+     genre_name = db.Column('genre_name', db.String(200), primary_key= True)
+
+class Artisthasgenre(db.Model):
+    __tablename__ = 'artisthasgenre'
+    genre_name = db.Column('genre_name', db.String(200), db.ForeignKey('genre.genre_name'), primary_key = True)
+    artist_id = db.Column('artist_id', db.String(200), db.ForeignKey('artists.id'), primary_key = True)
+
+class Albumhasgenre(db.Model):
+    __tablename__ = 'albumhasgenre'
+    genre_name = db.Column('genre_name', db.String(200), db.ForeignKey('genre.genre_name'), primary_key = True)
     album_id = db.Column('album_id', db.String(200), db.ForeignKey('albums.id'), primary_key = True)
 
 
