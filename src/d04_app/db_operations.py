@@ -1,9 +1,9 @@
 import pandas as pd 
-import csv
-from io import StringIO
 from d00_utils.upsert_pandas_df import clean_df_db_dups
+from d00_utils.data_loading_helpers import copy_df_to_db
 
-
+#specify the primary key columns of database 
+# TODO: put this in params 
 primary_key_cols = {"artists": ['artist_id'],
                     "listeners": ['listener_id'],
                     "tracks": ['track_id'], 
@@ -53,19 +53,8 @@ def insert_new_user_to_database(new_user_data:dict, db_engine):
                               tablename=table_name, 
                               engine=db_engine, 
                               dup_cols=primary_key_cols[table_name])
+        # bulk insert df to database 
+        copy_df_to_db(df=df, table_name=table_name, conn=conn, cursor=cursor)
 
-        output = StringIO()
-        df.to_csv(output, sep='\t', header=False, index=False)
-        output.seek(0)
-        contents = output.getvalue()
-        # null values become ''
-        cursor.copy_from(output, table_name, null="")
-        conn.commit()
-
-        # new_user_data[df_name].to_sql(name=table_name, 
-        #                       con=db_connection, 
-        #                       if_exists='append',
-        #                       index=False,
-        #                       method=psql_upsert)
     return 
 

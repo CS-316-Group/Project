@@ -1,11 +1,11 @@
 import os
 import sys
-import time
+# import time
 import pandas as pd
 import numpy as np
-from sqlalchemy import create_engine
+# from sqlalchemy import create_engine
 import threading
-from timeit import default_timer as timer
+# from timeit import default_timer as timer
 
 os.path.dirname(os.path.abspath(__file__))
 
@@ -96,92 +96,3 @@ def to_sql_newrows(df, pool_size, *args, **kargs):
     df.iloc[INITIAL_CHUNK+(i+1)*CHUNKSIZE:, :].to_sql(*args, **kargs)
     [t.join() for t in workers]
 
-
-def setup(engine, tablename):
-    engine.execute("""DROP TABLE IF EXISTS "%s" """ % (tablename))
-
-    engine.execute("""CREATE TABLE "%s" (
-                  "A" INTEGER,
-                  "B" INTEGER,
-                  "C" INTEGER,
-                  "D" INTEGER,
-                  CONSTRAINT pk_A_B PRIMARY KEY ("A","B")) 
-                  """ % (tablename))
-
-# if __name__ == '__main__':
-    # DB_TYPE = 'postgresql'
-    # DB_DRIVER = 'psycopg2'
-    # DB_USER = 'admin'
-    # DB_PASS = 'password'
-    # DB_HOST = 'localhost'
-    # DB_PORT = '5432'
-    # DB_NAME = 'pandas_upsert'
-    # POOL_SIZE = 50
-    # TABLENAME = 'test_upsert'
-    # SQLALCHEMY_DATABASE_URI = '%s+%s://%s:%s@%s:%s/%s' % (DB_TYPE, DB_DRIVER, DB_USER,
-    #                                                       DB_PASS, DB_HOST, DB_PORT, DB_NAME)
-    # ENGINE = create_engine(
-    #     SQLALCHEMY_DATABASE_URI, pool_size=POOL_SIZE, max_overflow=0)
-
-    # print 'setting up db'
-    # setup(ENGINE, TABLENAME)
-
-    # try:
-    #     i=0
-    #     prev = timer()
-    #     start = timer()
-    #     for i in range(10):
-    #         print 'running test %s' %(str(i))
-    #         df = pd.DataFrame(
-    #             np.random.randint(0, 500, size=(100000, 4)), columns=list('ABCD'))
-    #         df = clean_df_db_dups(df, TABLENAME, ENGINE, dup_cols=['A', 'B'])
-    #         print 'row count after drop db duplicates is now : %s' %(df.shape[0])
-    #         df.to_sql(TABLENAME, ENGINE, if_exists='append', index=False)
-    #         end = timer()
-    #         elapsed_time = end - prev
-    #         prev = timer()
-    #         print 'completed loop in %s sec!' %(elapsed_time)
-    #         i += 1
-    #     end = timer()
-    #     elapsed_time = end - start
-    #     print 'completed singlethread insert loops in %s sec!' %(elapsed_time)
-    #     inserted = pd.read_sql('SELECT count("A") from %s' %(TABLENAME), ENGINE)
-    #     print 'inserted %s new rows into database!' %(inserted.iloc[0]['count'])
-
-    #     print '\n setting up db'
-    #     setup(ENGINE, TABLENAME)
-    #     print '\n'
-
-    #     i=0
-    #     prev = timer()
-    #     start = timer()
-    #     for i in range(10):
-    #         print 'running test %s' %(str(i))
-    #         df = pd.DataFrame(
-    #             np.random.randint(0, 500, size=(100000, 4)), columns=list('ABCD'))
-    #         df.drop_duplicates(['A', 'B'], keep='last', inplace=True)
-    #         df.to_sql('temp', ENGINE, if_exists='replace', index=False)
-    #         connection = ENGINE.connect() 
-    #         args1 = """ INSERT INTO "test_upsert"
-    #                     SELECT * FROM 
-    #                     (SELECT a.* 
-    #                     FROM "temp" a LEFT OUTER JOIN "test_upsert" b 
-    #                         ON (a."A" = b."A" and a."B"=b."B")
-    #                         WHERE b."A" is null) b"""
-    #         result = connection.execute(args1)
-    #         args2 = """ DROP Table If Exists "temp" """
-    #         connection.execute(args2)
-    #         connection.close()
-    #         end = timer()
-    #         elapsed_time = end - prev
-    #         prev = timer()
-    #         print 'completed loop in %s sec!' %(elapsed_time)
-    #         i += 1
-    #     end = timer()
-    #     elapsed_time = end - start
-    #     print 'completed staging insert loops in %s sec!' %(elapsed_time)
-    #     inserted = pd.read_sql('SELECT count("A") from %s' %(TABLENAME), ENGINE)
-    #     print 'inserted %s new rows into database!' %(inserted.iloc[0]['count'])
-              
-    # except KeyboardInterrupt:
-    #     print("Interrupted... exiting...")

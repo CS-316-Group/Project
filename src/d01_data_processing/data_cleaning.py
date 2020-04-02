@@ -6,6 +6,7 @@ from d00_utils.explode import explode
 from d01_data_processing.spotify_user import SpotifyUser
 
 
+# TODO: remove drop duplicates for efficiency since we already check that in the app
 def clean_listener_info(new_user:SpotifyUser):
     """
     """
