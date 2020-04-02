@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import d04_app.forms as forms
 import d04_app.startup as startup
 import d04_app.authentication as authentication
+from d04_app.db_operations import insert_new_user_to_database
 
 from d01_data_processing.data_cleaning import clean_all_data
 from d01_data_processing.spotify_user import SpotifyUser	
@@ -47,19 +48,15 @@ def login():
 
     return render_template('login.html', form=form)
 
-    # write the user's access token somewhere in database
-    # change how spotifyUser is initialized 
-    
-    #this is the code to run authentication through the folder structure
 
-
-
-
-#this code gets the access token and returns to auth the access token that was 
-#previously stored in .cache thing. so the auth method getAccesstoken will store
-#all the access token from everybody who gives us permision. 
 @app.route('/callback/')
 def callback():
+"""
+#this code gets the access token and returns to auth the access token that was 
+#previously stored in .cache thing. access token and refresh token 
+are written to the database, along with all the other information we 
+pull from the spotify api. 
+"""
     user_auth_code = request.args['code']
     # exchange user_auth_code for access token, refresh token
     user_token_data = startup.getUserToken(code=user_auth_code)
@@ -69,20 +66,12 @@ def callback():
                            from_scratch=False, 
                            token=user_token_data[0])
 
-    new_user_data = clean_all_data(new_user)
-
-    new_user_data["top_tracks_to_add"].to_sql(name='tracks', 
-                                              con=db.engine, 
-                                              if_exists='append',
-                                              index=False)
-
-    new_user_data["user_top_tracks"].to_sql(name='toptracks', 
-                                            con=db.engine, 
-                                            if_exists='append',
-                                            index=False)
-
-
-    # TODO: write all new user data to database, along with the token data 
+    new_user_data = clean_all_data(new_user=new_user, 
+                                   user_token_data=user_token_data)
+    # TODO: this step takes a while, perhaps redirect to a 
+    # "loading" page? 
+    insert_new_user_to_database(new_user_data=new_user_data, 
+                                db_engine=db.engine)
 
     return redirect('/')
 
@@ -107,8 +96,6 @@ def artistpage(listener_name):
 #@app.route('/artistpage/<artist_name>', methods=['GET', 'POST'])
 #def artistpage():
 #    return render_template('artistpage.html')
-
-
 
 
 if __name__ == '__main__':
