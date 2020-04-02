@@ -11,18 +11,39 @@ class SpotifyUser:
     authorization is given, multiple methods will obtain user 
     related information from Spotify.
     """
-    
-    def __init__(self, spotipy_client_id, spotipy_client_secret, spotipy_redirect_uri, username):
+    def __init__(self, username, from_scratch,
+                 spotipy_client_id=None, 
+                 spotipy_client_secret=None, 
+                 spotipy_redirect_uri=None, 
+                 # OR
+                 token=None):
+        """
+        Two methods to initialize a SpotifyUser: either by directly passing in access token, 
+        or initializing a SpotifyUser "from scratch" by passing in developer creds. 
+        """
         self.username = username
-        scope = 'user-library-read user-follow-read user-top-read user-read-recently-played'
-        self.token = util.prompt_for_user_token(username, scope, spotipy_client_id, spotipy_client_secret, spotipy_redirect_uri)
+
+
+        if from_scratch: 
+            scope = 'user-library-read user-follow-read user-top-read user-read-recently-played'
+            self.token = util.prompt_for_user_token(username, 
+                                                    scope, 
+                                                    spotipy_client_id, 
+                                                    spotipy_client_secret, 
+                                                    spotipy_redirect_uri)
         
+        else: 
+            assert token is not None, "Must pass in token."
+            self.token=token
+
         #verify that user authorization was successful
-        if self.token:
+        try: 
             self.sp = spotipy.Spotify(auth=self.token)
-        else:
-            raise Exception("ERROR: User authorization unsuccessful.")
-        
+        except Exception as e:
+            print("ERROR: User authorization unsuccessful.")
+
+
+
     def info(self):
         if self.token:
             return self.sp.me()

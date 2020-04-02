@@ -1,4 +1,4 @@
-import base64, json, requests
+import json, requests
 
 SPOTIFY_URL_AUTH = 'https://accounts.spotify.com/authorize/?'
 SPOTIFY_URL_TOKEN = 'https://accounts.spotify.com/api/token/'
@@ -25,7 +25,7 @@ def getToken(code, client_id, client_secret, redirect_uri):
     # headers = {"Content-Type" : HEADER, 
                # "Authorization" : f"Basic {creds_encoded}"} 
     headers = {"Content-Type" : HEADER}
-    
+
     post = requests.post(SPOTIFY_URL_TOKEN, params=body, headers=headers)
     return handleToken(json.loads(post.text))
     
@@ -36,7 +36,10 @@ def handleToken(response):
     except Exception as e: 
         print("Authorization failed. Response from API was: ", response)
 
-    return [response["access_token"], auth_head, response["scope"], response["expires_in"]]
+    return [response["access_token"], 
+            auth_head, 
+            response["scope"], 
+            response["expires_in"]]
 
 def refreshAuth():
     body = {

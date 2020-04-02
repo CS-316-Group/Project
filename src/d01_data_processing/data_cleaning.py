@@ -9,6 +9,7 @@ from d01_data_processing.spotify_user import SpotifyUser
 def clean_listener_info(new_user:SpotifyUser):
     """
     """
+    listener_username = new_user.username
     listener_info = json_normalize(new_user.info())
 
     if (len(listener_info['images'][0]) > 0):
@@ -18,7 +19,9 @@ def clean_listener_info(new_user:SpotifyUser):
 
     user_type = listener_info['type'][0]
     assert user_type == 'user', f'Individual type must be user, instead is {user_type}'
-    listener_info = (listener_info.drop(['href', 'images', 'uri', 'external_urls.spotify', 'type', 'followers.href'], axis=1)
+    listener_info = (listener_info.drop(['href', 'images', 'uri', 
+                                         'external_urls.spotify', 
+                                         'type', 'followers.href'], axis=1)
                                   .rename({'id': 'listener_id',
                                            'followers.total': 'num_followers'}, axis=1)
                      )
@@ -26,7 +29,8 @@ def clean_listener_info(new_user:SpotifyUser):
     # remove commas
     listener_info['display_name'] = listener_info['display_name'].str.replace(
         ",", "")
-    return listener_info
+    listener_info['username'] = listener_username
+    return {"user_info": listener_info}
 
 
 def clean_top_tracks_artist_info(new_user:SpotifyUser,
@@ -93,13 +97,16 @@ def clean_top_tracks_artist_info(new_user:SpotifyUser,
     # remove genre information from artists, as genres are their own entity set
     top_track_artists_to_add = top_track_artists_to_add.drop(['genres'], axis=1)
 
-    return top_track_created_by, top_track_artists_to_add, genres_to_add, top_track_artists_genres
+    return {"top_track_created_by": top_track_created_by, 
+            "top_track_artists_to_add": top_track_artists_to_add, 
+            "genres_to_add": genres_to_add, 
+            "top_track_artists_genres": top_track_artists_genres}
 
 
 def clean_top_artists_info(new_user:SpotifyUser,
-						   number_of_artists:int=20,
-						   time_range:str='short_term', 
-						   offset:int=0):
+            						   number_of_artists:int=20,
+            						   time_range:str='short_term', 
+            						   offset:int=0):
     """
     """
     # generate artists to add table
@@ -137,13 +144,16 @@ def clean_top_artists_info(new_user:SpotifyUser,
     top_artists_genres = explode(top_artists_to_add[['artist_id', 'genres']], lst_cols=['genres'])
     del top_artists_to_add['genres']
 
-    return user_top_artists, top_artists_to_add, genres_to_add, top_artists_genres
+    return {"user_top_artists": user_top_artists, 
+            "top_artists_to_add": top_artists_to_add, 
+            "genres_to_add": genres_to_add, 
+            "top_artists_genres": top_artists_genres}
 
 
 def clean_top_tracks_album_info(new_user:SpotifyUser,
-								number_of_tracks:int=20,
-								time_range:str='short_term',
-								offset:int=0):
+                								number_of_tracks:int=20,
+                								time_range:str='short_term',
+                								offset:int=0):
     '''
     '''
     # generic information about all top tracks 
@@ -233,4 +243,26 @@ def clean_top_tracks_album_info(new_user:SpotifyUser,
     genres_to_add = top_track_album_genres[['genres']]
     genres_to_add = explode(genres_to_add, lst_cols=['genres'])
 
-    return user_top_tracks, top_tracks_to_add, album_contains_track, top_tracks_albums_to_add, genres_to_add, top_track_album_genres
+    return {"user_top_tracks": user_top_tracks, 
+            "top_tracks_to_add": top_tracks_to_add, 
+            "album_contains_track": album_contains_track, 
+            "top_tracks_albums_to_add": top_tracks_albums_to_add, 
+            "genres_to_add": genres_to_add, 
+            "top_track_album_genres": top_track_album_genres}
+
+
+def clean_all_data(new_user:SpotifyUser):
+    """
+    Runs all the data cleaning functions, as though for a new user
+    """
+    user_info = clean_listener_info(new_user)
+    top_tracks_artist_info = clean_top_tracks_artist_info(new_user) 
+    top_tracks_album_info = clean_top_tracks_album_info(new_user)
+    top_artists_info = clean_top_artists_info(new_user)
+
+    data = {**user_info, 
+            **top_tracks_artist_info, 
+            **top_tracks_album_info, 
+            **top_artists_info}
+
+    return data
