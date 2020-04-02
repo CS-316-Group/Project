@@ -3,9 +3,9 @@
 <form action = "/artistpage" method="post" id="form1">
 {{form.csrf_token}} 
 <p>{{form.artist_sel.label}}</p> 
-<select id="artist">
-    {% for artist in dropdown_list %}
-    <option value="{{ artist }}">{{ artist }}</option>
+<select id="Listener">
+    {% for listener in dropdown_list %}
+    <option value="{{ listener }}">{{ listener }}</option>
     {% endfor %}
 </select>
 <p>

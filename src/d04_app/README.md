@@ -1,30 +1,6 @@
 ## RUNNING APP LOCALLY. THROUGH LOCAL HOST.
-Nav
-
+1. Navigate to the src folder and run:
 `python -m d04_app.app`
-
-## General resources.
-
-What are forms?
-
-Web forms are one of the most basic building blocks in any web application. The Flask-WTF extension uses Python classes to represent web forms. A form class simply defines the fields of the form as class variables.
-
-from forms to page templates.
-The next step is to add the form to an HTML template so that it can be rendered on a web page.
-
-useful pip commands.
-1. `pip3 list` 
-to show a list of packages installed. (this is specific to linus os might be different for mac os or windows os.
-
-
-
-How to run the app.
-
-1.there is an outdated version of this in
-the vcm so if you are trying to run it from the vcm redownload the whole flask_app to the vcm through filezilla.
-
-2.trying to run the app through visual studio go terminal will not work because it uses your global python settings not the local packages needed to flask app so you need to run it through terminal.
-
 
 ## TODO LIST.
 1. Still need a page that directly links to spotify authentication on our website.
@@ -35,3 +11,10 @@ the vcm so if you are trying to run it from the vcm redownload the whole flask_a
 
 
 
+SELECT display_name, artist_name
+FROM topartists, listeners,artists
+WHERE topartists.listener_id = listeners.id  and topartists.artist_id=artists.id;
+
+results=db.session.query(models.Topartists, models.Listeners,model.Artists).filter(models.Listeners.display_name == listener_name).join(models.Topartists.listener_id == models.Listeners.id).all()
+
+results=db.session.query(models.Topartists, listeners,artists).filter(listeners.display_name == listener_name).join(topartists.listener_id == listeners.id).all();

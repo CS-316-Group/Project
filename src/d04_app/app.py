@@ -17,7 +17,7 @@ app.secret_key = 'cs316'
 app.config.from_object('d04_app.config')
 db = SQLAlchemy(app, session_options={'autocommit': False})
 
-import d04_app.models
+import d04_app.models as models
 
 @app.route('/')
 def home():
@@ -37,18 +37,6 @@ def login():
 
     return render_template('login.html', form=form)
 
-    #if form.validate_on_submit():
-    #response = startup.getUser()
-    #return redirect(response)
-    
-    #when we change how spotifyUser is initialized. 
-    #new_user = SpotifyUser(token,	new_username)
-    # 	
-
-
-    #response = startup.getUser()
-    #return redirect(response)
-    #this is the code to run authentication through the folder structure
 
     
 
@@ -60,23 +48,23 @@ def login():
 @app.route('/callback/')
 def callback():
     startup.getUserToken(request.args['code'])
-    #** I redirect to my homepage here **
+    return render_template('home.html')
 
 
 @app.route('/database', methods=['GET', 'POST'])
 def database():
-    artist_names = db.session.query(d04_app.models.Artists.artist_name) 
+    listener_names = db.session.query(models.Listeners.display_name) 
     dropdown_list = []
-    for artist in artist_names:
-        dropdown_list.append(artist[0])
-    form = forms.artistsform.form(dropdown_list)
+    for listener in listener_names:
+        dropdown_list.append(listener[0])
+    form = forms.artistsform.form(dropdown_list)#artistsforms is just the name of the form.
     if form.validate_on_submit():
-        return redirect('/artistpage') # not sure if this is right
+        return redirect('/artistpage/'+ form.listener_sel.data) # not sure if this is right
     return render_template('database.html', dropdown_list=dropdown_list, form=form)
 
 
-@app.route('/artistpage', methods=['GET', 'POST'])
-def artistpage():
+@app.route('/artistpage/<listener_name>', methods=['GET', 'POST'])
+def artistpage(listener_name):
     return render_template('artistpage.html')
 
 #this is eventually the route page  we will need.
