@@ -51,12 +51,12 @@ def login():
 
 @app.route('/callback/')
 def callback():
-"""
-#this code gets the access token and returns to auth the access token that was 
-#previously stored in .cache thing. access token and refresh token 
-are written to the database, along with all the other information we 
-pull from the spotify api. 
-"""
+    """
+    #this code gets the access token and returns to auth the access token that was 
+    #previously stored in .cache thing. access token and refresh token 
+    are written to the database, along with all the other information we 
+    pull from the spotify api. 
+    """
     user_auth_code = request.args['code']
     # exchange user_auth_code for access token, refresh token
     user_token_data = startup.getUserToken(code=user_auth_code)
