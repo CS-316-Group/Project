@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import d04_app.forms as forms
 import d04_app.startup as startup
 import d04_app.authentication as authentication
+from d04_app.db_operations import insert_new_user_to_database
 
 from d01_data_processing.data_cleaning import clean_all_data
 from d01_data_processing.spotify_user import SpotifyUser	
@@ -69,20 +70,11 @@ def callback():
                            from_scratch=False, 
                            token=user_token_data[0])
 
-    new_user_data = clean_all_data(new_user)
+    new_user_data = clean_all_data(new_user=new_user, 
+                                   user_token_data=user_token_data)
 
-    new_user_data["top_tracks_to_add"].to_sql(name='tracks', 
-                                              con=db.engine, 
-                                              if_exists='append',
-                                              index=False)
-
-    new_user_data["user_top_tracks"].to_sql(name='toptracks', 
-                                            con=db.engine, 
-                                            if_exists='append',
-                                            index=False)
-
-
-    # TODO: write all new user data to database, along with the token data 
+    insert_new_user_to_database(new_user_data=new_user_data, 
+                                db_engine=db.engine)
 
     return redirect('/')
 

@@ -1,0 +1,4 @@
+db_paths:
+  db_host: "vcm-13360.vm.duke.edu"
+  db_name: "production"
+ 

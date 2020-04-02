@@ -42,7 +42,7 @@ def getUserToken(code):
     code: string authorization code
 
     Returns
-    TOKEN_DATA: a list as follows: [access_token, auth_head, scope, expires_in]
+    TOKEN_DATA: a list as follows: [access_token, auth_head, scope, expires_in, refresh_token]
     '''
     global TOKEN_DATA
     TOKEN_DATA = getToken(code=code, 

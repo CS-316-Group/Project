@@ -92,14 +92,29 @@ def clean_top_tracks_artist_info(new_user:SpotifyUser,
 
     # explode panda dataframes to eliminate lists in genres
     top_track_artists_genres = explode(top_track_artists_genres, lst_cols=['genres'])
-    genres_to_add      = explode(genres_to_add, lst_cols=['genres']).drop_duplicates()
+    genres_to_add = explode(genres_to_add, lst_cols=['genres']).drop_duplicates()
 
     # remove genre information from artists, as genres are their own entity set
     top_track_artists_to_add = top_track_artists_to_add.drop(['genres'], axis=1)
 
+    # reordering columns 
+    top_track_created_by = top_track_created_by[["track_id", "artist_id"]]
+    top_track_artists_to_add = top_track_artists_to_add[["artist_id", "artist_name", "artist_pop", "num_followers", "artist_image_url"]]
+    top_track_artists_genres = top_track_artists_genres[["artist_id", "genres"]]
+
+    # rename columns 
+    top_track_artists_genres = top_track_artists_genres.rename({'genres':'genre_name'}, axis=1)
+    genres_to_add = genres_to_add.rename({'genres':'genre_name'}, axis=1)
+
+    #remove duplicate rows, fill empty strings
+    top_track_artists_to_add.drop_duplicates(inplace=True)
+    genres_to_add = genres_to_add.drop_duplicates().replace({"":"none"})
+    top_track_artists_genres = top_track_artists_genres.replace({"":"none"})
+
+
     return {"top_track_created_by": top_track_created_by, 
             "top_track_artists_to_add": top_track_artists_to_add, 
-            "genres_to_add": genres_to_add, 
+            "top_track_genres_to_add": genres_to_add, 
             "top_track_artists_genres": top_track_artists_genres}
 
 
@@ -136,17 +151,31 @@ def clean_top_artists_info(new_user:SpotifyUser,
     
     # all genres associated with artists
     genres_to_add = explode(top_artists_to_add[['genres']], lst_cols=['genres']).drop_duplicates()
-#     temp = pd.Series(genres_to_add)#set_index(['genres']).apply(pd.Series.explode).reset_index()
-#     genres_to_add = temp.explode()
-#     genres_to_add = genres_to_add.set_index('genres').apply(lambda x: x.apply(pd.Series).stack()).reset_index()
+    #     temp = pd.Series(genres_to_add)#set_index(['genres']).apply(pd.Series.explode).reset_index()
+    #     genres_to_add = temp.explode()
+    #     genres_to_add = genres_to_add.set_index('genres').apply(lambda x: x.apply(pd.Series).stack()).reset_index()
 
     # all artist, genre pairs for top artists
     top_artists_genres = explode(top_artists_to_add[['artist_id', 'genres']], lst_cols=['genres'])
     del top_artists_to_add['genres']
 
+    # reorder columns 
+    user_top_artists = user_top_artists[['listener_id', 'artist_id', 'time_span']]
+    top_artists_to_add = top_artists_to_add[["artist_id", "artist_name", "artist_pop", "num_followers", "artist_image_url"]]
+    top_artists_genres = top_artists_genres[['artist_id', 'genres']]
+
+    # rename columns 
+    top_artists_genres = top_artists_genres.rename({'genres':'genre_name'}, axis=1)
+    genres_to_add = genres_to_add.rename({'genres':'genre_name'}, axis=1)
+
+    # remove duplicate rows and clean nones
+    top_artists_to_add.drop_duplicates(inplace=True)
+    genres_to_add = genres_to_add.drop_duplicates().replace({"":"none"})
+    top_artists_genres = top_artists_genres.replace({"":"none"})
+
     return {"user_top_artists": user_top_artists, 
             "top_artists_to_add": top_artists_to_add, 
-            "genres_to_add": genres_to_add, 
+            "top_artists_genres_to_add": genres_to_add, 
             "top_artists_genres": top_artists_genres}
 
 
@@ -231,31 +260,69 @@ def clean_top_tracks_album_info(new_user:SpotifyUser,
 
     top_tracks_to_add = pd.merge(top_tracks_to_add, top_track_audio_features, on=['track_id'])
 
-    # TODO build track, genre relation and add any necessary genres into Genres entity set
     top_track_album_ids = top_tracks_albums_to_add[['album_id']]['album_id'].values.tolist()
 
     top_track_album_info = json_normalize(new_user.get_album_info(top_track_album_ids))
     top_track_album_info = pd.DataFrame(top_track_album_info['albums'][0])
 
-    top_track_album_genres = top_track_album_info.drop(['album_type', 'artists', 'available_markets', 'copyrights', 'external_urls', 'href', 'external_ids', 'name', 'label', 'popularity', 'release_date_precision', 'release_date', 'total_tracks', 'tracks', 'images', 'type', 'uri'], axis=1).rename({'id':'album_id'}, axis=1)
-    top_track_album_genres = explode(top_track_album_genres, lst_cols=['genres'])
+    top_tracks_album_genres = top_track_album_info.drop(['album_type', 'artists', 'available_markets', 'copyrights', 'external_urls', 'href', 'external_ids', 'name', 'label', 'popularity', 'release_date_precision', 'release_date', 'total_tracks', 'tracks', 'images', 'type', 'uri'], axis=1).rename({'id':'album_id'}, axis=1)
+    top_tracks_album_genres = explode(top_tracks_album_genres, lst_cols=['genres'])
 
-    genres_to_add = top_track_album_genres[['genres']]
+    genres_to_add = top_tracks_album_genres[['genres']]
     genres_to_add = explode(genres_to_add, lst_cols=['genres'])
+
+    # reorder columns 
+    user_top_tracks = user_top_tracks[['listener_id', 'track_id', 'time_span']]
+    top_tracks_to_add = top_tracks_to_add[['track_id', 'track_name', 'track_pop', 
+                                           'preview_url', 'acousticness', 'danceability', 
+                                           'energy', 'valence', 'loudness', 'tempo', 
+                                           'instrumentalness', 'speechiness', 'mode',
+                                           'time_signature', 'liveness'
+                                         ]]
+    album_contains_track = album_contains_track[['album_id', 'track_id']]
+    top_tracks_albums_to_add = top_tracks_albums_to_add[['album_id', 'album_type', 'album_name', 'album_release_date', 'album_image_url']]
+    top_tracks_album_genres = top_tracks_album_genres[['album_id', 'genres']]
+
+    # rename columns 
+    top_tracks_album_genres = top_tracks_album_genres.rename({'genres':'genre_name'}, axis=1)
+    genres_to_add = genres_to_add.rename({'genres':'genre_name'}, axis=1)
+
+    # remove duplicate rows for tables with primary key constraint
+    top_tracks_to_add.drop_duplicates(inplace=True)
+    top_tracks_albums_to_add.drop_duplicates(inplace=True)
+    genres_to_add = genres_to_add.drop_duplicates().replace({"":"none"})
+    top_tracks_album_genres = top_tracks_album_genres.replace({"":"none"})
+
 
     return {"user_top_tracks": user_top_tracks, 
             "top_tracks_to_add": top_tracks_to_add, 
             "album_contains_track": album_contains_track, 
             "top_tracks_albums_to_add": top_tracks_albums_to_add, 
-            "genres_to_add": genres_to_add, 
-            "top_track_album_genres": top_track_album_genres}
+            "top_tracks_album_genres_to_add": genres_to_add, 
+            "top_tracks_album_genres": top_tracks_album_genres}
 
 
-def clean_all_data(new_user:SpotifyUser):
+def clean_all_data(new_user:SpotifyUser,
+                   user_token_data:list):
     """
     Runs all the data cleaning functions, as though for a new user
     """
     user_info = clean_listener_info(new_user)
+  
+    user_info["user_info"]['access_token'] = user_token_data[0]
+    user_info["user_info"]['scope'] = user_token_data[2]
+    user_info["user_info"]['expires_in'] = user_token_data[3]
+    user_info["user_info"]['refresh_token'] = user_token_data[-1]
+    user_info["user_info"] = user_info["user_info"][["listener_id", 
+                                                     "display_name",
+                                                     "username",
+                                                     "access_token",
+                                                     "expires_in",
+                                                     "refresh_token",
+                                                     "scope", 
+                                                     "num_followers",
+                                                     "listener_image_url"]]
+
     top_tracks_artist_info = clean_top_tracks_artist_info(new_user) 
     top_tracks_album_info = clean_top_tracks_album_info(new_user)
     top_artists_info = clean_top_artists_info(new_user)
