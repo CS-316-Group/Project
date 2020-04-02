@@ -33,25 +33,21 @@ def login():
     form = forms.LoginForm() # have login form return username 
     # check if exists already, if not, then go to spotify login 
     if form.validate_on_submit():
-        response = startup.getUser()
+        
+        username = form.username.data
+        remember_me = form.remember_me.data
+
+        response = startup.getUser()# response is the redirect url to Spotify permission page 
         return redirect(response)
 
     return render_template('login.html', form=form)
 
-    # write the user's access token somewhere 
+    # write the user's access token somewhere in database
     # change how spotifyUser is initialized 
-
-    #if form.validate_on_submit():
-    #response = startup.getUser()
-    #return redirect(response)
     
     #when we change how spotifyUser is initialized. 
     #new_user = SpotifyUser(token,	new_username)
-    # 	
 
-
-    #response = startup.getUser()
-    #return redirect(response)
     #this is the code to run authentication through the folder structure
 
     
