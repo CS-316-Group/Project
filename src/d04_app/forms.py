@@ -10,6 +10,7 @@ from wtforms import PasswordField, BooleanField, SubmitField
 #users login through spotify.
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
+    # return username? 
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 

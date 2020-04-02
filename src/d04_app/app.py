@@ -30,13 +30,26 @@ def welcome():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = forms.LoginForm()
+    form = forms.LoginForm() # have login form return username 
+    # check if exists already, if not, then go to spotify login 
     if form.validate_on_submit():
-        response = startup.getUser()
-        return redirect(response)
+        
+        username = form.username.data
+        remember_me = form.remember_me.data
+        # check if exists already, if not, then go to spotify login 
+        # response is the redirect url to Spotify permission page
+        response = startup.getUser()  
+        return redirect(response) # user is redirected from Spotify back to /callback
 
     return render_template('login.html', form=form)
 
+    # write the user's access token somewhere in database
+    # change how spotifyUser is initialized 
+    
+    #when we change how spotifyUser is initialized. 
+    #new_user = SpotifyUser(token,	new_username)
+
+    #this is the code to run authentication through the folder structure
 
     
 
@@ -47,7 +60,9 @@ def login():
 #all the access token from everybody who gives us permision. 
 @app.route('/callback/')
 def callback():
-    startup.getUserToken(request.args['code'])
+    user_auth_code = request.args['code']
+    # must exchange user_auth_code for an access token
+    startup.getUserToken(code=user_auth_code)
     return render_template('home.html')
 
 
