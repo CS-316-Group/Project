@@ -1,16 +1,11 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, session
 from flask_sqlalchemy import SQLAlchemy
 import d04_app.forms as forms
 import d04_app.startup as startup
 import d04_app.authentication as authentication
 
-# import pandas as pd	
-# import numpy as np	
-# from pandas.io.json import json_normalize	
-# from IPython.display import display	
-# from d01_data_processing.data_cleaning import *	
-# from d01_data_processing.spotify_user import SpotifyUser	
-# from d00_utils.load_confs import load_credentials	
+from d01_data_processing.data_cleaning import clean_all_data
+from d01_data_processing.spotify_user import SpotifyUser	
 	
 app = Flask(__name__)
 app.secret_key = 'cs316'
@@ -28,34 +23,73 @@ def home():
 def welcome():
     return render_template('welcome.html')
 
+# TODO: need a new user/returning user login page 
+# returning user: check if username exists already in database, if so, then refresh creds
+# and redirect to homepage -- i.e. do what spotipy does 
+
+# this can be the new user method 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = forms.LoginForm() # have login form return username 
     # check if exists already, if not, then go to spotify login 
     if form.validate_on_submit():
         
-        username = form.username.data
+        new_username = form.username.data
+        session['new_username']= new_username
+
         remember_me = form.remember_me.data
-        # check if exists already, if not, then go to spotify login 
+
+        # TODO: check that desired username is unique by querying database and verifying no matches 
+
         # response is the redirect url to Spotify permission page
         response = startup.getUser()  
         return redirect(response) # user is redirected from Spotify back to /callback
 
     return render_template('login.html', form=form)
 
+    # write the user's access token somewhere in database
+    # change how spotifyUser is initialized 
+    
+    #this is the code to run authentication through the folder structure
 
 
 
+
+#this code gets the access token and returns to auth the access token that was 
+#previously stored in .cache thing. so the auth method getAccesstoken will store
+#all the access token from everybody who gives us permision. 
 @app.route('/callback/')
 def callback():
+    user_auth_code = request.args['code']
+    # exchange user_auth_code for access token, refresh token
+    user_token_data = startup.getUserToken(code=user_auth_code)
 
-    startup.getUserToken(request.args['code'])
-    return render_template('home.html')
+    #when we change how spotifyUser is initialized. 
+    new_user = SpotifyUser(username=session.get("new_username", None), 
+                           from_scratch=False, 
+                           token=user_token_data[0])
+
+    new_user_data = clean_all_data(new_user)
+
+    new_user_data["top_tracks_to_add"].to_sql(name='tracks', 
+                                              con=db.engine, 
+                                              if_exists='append',
+                                              index=False)
+
+    new_user_data["user_top_tracks"].to_sql(name='toptracks', 
+                                            con=db.engine, 
+                                            if_exists='append',
+                                            index=False)
+
+
+    # TODO: write all new user data to database, along with the token data 
+
+    return redirect('/')
 
 
 @app.route('/database', methods=['GET', 'POST'])
 def database():
-    listener_names = db.session.query(d04_app.models.Listeners.display_name) 
+    listener_names = db.session.query(d04_app.models.Listeners.display_name)
     dropdown_list = []
     for listener in listener_names:
         dropdown_list.append(listener[0])

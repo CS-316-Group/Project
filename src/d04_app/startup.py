@@ -28,18 +28,28 @@ TOKEN_DATA = []
 
 
 def getUser():
-	# constructs get request to /authorize endpt of Spotify API
+    # constructs get request to /authorize endpt of Spotify API
     return getAuth(client_id=CLIENT_ID, 
-    			   redirect_uri=f"{CALLBACK_URL}:{PORT}/callback/", 
-    			   scope=SCOPE)
+                   redirect_uri=f"{CALLBACK_URL}:{PORT}/callback/", 
+                   scope=SCOPE)
 
 def getUserToken(code):
+    '''
+    getUserToken takes the authorization code given to us by the Spotify authorization 
+    endpoint and goes back to the Spotify API to get the user access token. 
+
+    Keyword arguments
+    code: string authorization code
+
+    Returns
+    TOKEN_DATA: a list as follows: [access_token, auth_head, scope, expires_in]
+    '''
     global TOKEN_DATA
     TOKEN_DATA = getToken(code=code, 
-    					  client_id=CLIENT_ID, 
-    					  client_secret=CLIENT_SECRET, 
-    					  redirect_uri=f"{CALLBACK_URL}:{PORT}/callback/")
-    print("TOKEN DATA IS ", TOKEN_DATA)
+                          client_id=CLIENT_ID, 
+                          client_secret=CLIENT_SECRET, 
+                          redirect_uri=f"{CALLBACK_URL}:{PORT}/callback/")
+    return TOKEN_DATA 
     # store access token with username
     #TODO: write token data to a file in the credentials folder 
  
