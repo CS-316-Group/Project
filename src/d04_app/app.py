@@ -48,19 +48,15 @@ def login():
 
     return render_template('login.html', form=form)
 
-    # write the user's access token somewhere in database
-    # change how spotifyUser is initialized 
-    
-    #this is the code to run authentication through the folder structure
 
-
-
-
-#this code gets the access token and returns to auth the access token that was 
-#previously stored in .cache thing. so the auth method getAccesstoken will store
-#all the access token from everybody who gives us permision. 
 @app.route('/callback/')
 def callback():
+"""
+#this code gets the access token and returns to auth the access token that was 
+#previously stored in .cache thing. access token and refresh token 
+are written to the database, along with all the other information we 
+pull from the spotify api. 
+"""
     user_auth_code = request.args['code']
     # exchange user_auth_code for access token, refresh token
     user_token_data = startup.getUserToken(code=user_auth_code)
@@ -72,7 +68,8 @@ def callback():
 
     new_user_data = clean_all_data(new_user=new_user, 
                                    user_token_data=user_token_data)
-
+    # TODO: this step takes a while, perhaps redirect to a 
+    # "loading" page? 
     insert_new_user_to_database(new_user_data=new_user_data, 
                                 db_engine=db.engine)
 
@@ -99,8 +96,6 @@ def artistpage(listener_name):
 #@app.route('/artistpage/<artist_name>', methods=['GET', 'POST'])
 #def artistpage():
 #    return render_template('artistpage.html')
-
-
 
 
 if __name__ == '__main__':
