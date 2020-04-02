@@ -17,7 +17,7 @@ app.secret_key = 'cs316'
 app.config.from_object('d04_app.config')
 db = SQLAlchemy(app, session_options={'autocommit': False})
 
-import d04_app.models as models
+import d04_app.models
 
 @app.route('/')
 def home():
@@ -43,32 +43,19 @@ def login():
 
     return render_template('login.html', form=form)
 
-    # write the user's access token somewhere in database
-    # change how spotifyUser is initialized 
-    
-    #when we change how spotifyUser is initialized. 
-    #new_user = SpotifyUser(token,	new_username)
-
-    #this is the code to run authentication through the folder structure
-
-    
 
 
 
-#this code gets the access token and returns to auth the access token that was 
-#previously stored in .cache thing. so the auth method getAccesstoken will store
-#all the access token from everybody who gives us permision. 
 @app.route('/callback/')
 def callback():
-    user_auth_code = request.args['code']
-    # must exchange user_auth_code for an access token
-    startup.getUserToken(code=user_auth_code)
+
+    startup.getUserToken(request.args['code'])
     return render_template('home.html')
 
 
 @app.route('/database', methods=['GET', 'POST'])
 def database():
-    listener_names = db.session.query(models.Listeners.display_name) 
+    listener_names = db.session.query(d04_app.models.Listeners.display_name) 
     dropdown_list = []
     for listener in listener_names:
         dropdown_list.append(listener[0])

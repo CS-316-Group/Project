@@ -9,6 +9,7 @@ REFRESH_TOKEN = ''
 def getAuth(client_id, redirect_uri, scope):
     data = f"{SPOTIFY_URL_AUTH}client_id={client_id}&response_type=code&redirect_uri={redirect_uri}&scope={scope}" 
     return data
+    
 
 def getToken(code, client_id, client_secret, redirect_uri):
     body = {
@@ -19,15 +20,16 @@ def getToken(code, client_id, client_secret, redirect_uri):
             "client_secret": client_secret
             }
     
-    # creds_bytes =  f"{client_id}:{client_secret}".encode('utf-8')
-    # creds_encoded = base64.b64encode(creds_bytes)
+    encoded_oauth2_tokens = base64.b64encode('{}:{}'.format(client_id, client_secret).encode())
 
-    # headers = {"Content-Type" : HEADER, 
-               # "Authorization" : f"Basic {creds_encoded}"} 
-    headers = {"Content-Type" : HEADER}
+    headers = {"Authorization": "Basic {}".format(encoded_oauth2_tokens.decode())}
+
     
-    post = requests.post(SPOTIFY_URL_TOKEN, params=body, headers=headers)
-    return handleToken(json.loads(post.text))
+    post = requests.post(SPOTIFY_URL_TOKEN, data=body, headers=headers)
+    if post.status_code != 200:
+        return "AH SHIT"
+
+    return handleToken(json.loads(post.text))	
     
 def handleToken(response):
     try:

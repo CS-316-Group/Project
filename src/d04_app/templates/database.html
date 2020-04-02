@@ -1,8 +1,8 @@
 {% extends 'layout.html' %}
 {% block content %}
-<form action = "/artistpage" method="post" id="form1">
+<form action = "/artistpage/listener_sel" method="post" id="form1">
 {{form.csrf_token}} 
-<p>{{form.artist_sel.label}}</p> 
+<p>{{form.listener_sel.label}}</p> 
 <select id="Listener">
     {% for listener in dropdown_list %}
     <option value="{{ listener }}">{{ listener }}</option>
