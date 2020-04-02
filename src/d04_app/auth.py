@@ -7,28 +7,35 @@ HEADER = 'application/x-www-form-urlencoded'
 REFRESH_TOKEN = ''
     
 def getAuth(client_id, redirect_uri, scope):
-    data = "{}client_id={}&response_type=code&redirect_uri={}&scope={}".format(SPOTIFY_URL_AUTH, client_id, redirect_uri, scope) 
+    data = f"{SPOTIFY_URL_AUTH}client_id={client_id}&response_type=code&redirect_uri={redirect_uri}&scope={scope}" 
     return data
 
 def getToken(code, client_id, client_secret, redirect_uri):
     body = {
-        "grant_type": 'authorization_code',
-        "code" : code,
-        "redirect_uri": redirect_uri,
-        "client_id": client_id,
-        "client_secret": client_secret
-    }
-        
-     
-    encoded = base64.b64encode("{}:{}".format(client_id, client_secret))
-    headers = {"Content-Type" : HEADER, "Authorization" : "Basic {}".format(encoded)} 
+            "grant_type": 'authorization_code',
+            "code" : code,
+            "redirect_uri": redirect_uri,
+            "client_id": client_id,
+            "client_secret": client_secret
+            }
+    
+    # creds_bytes =  f"{client_id}:{client_secret}".encode('utf-8')
+    # creds_encoded = base64.b64encode(creds_bytes)
 
+    # headers = {"Content-Type" : HEADER, 
+               # "Authorization" : f"Basic {creds_encoded}"} 
+    headers = {"Content-Type" : HEADER}
+    
     post = requests.post(SPOTIFY_URL_TOKEN, params=body, headers=headers)
     return handleToken(json.loads(post.text))
     
 def handleToken(response):
-    auth_head = {"Authorization": "Bearer {}".format(response["access_token"])}
-    REFRESH_TOKEN = response["refresh_token"]
+    try:
+        auth_head = {"Authorization": "Bearer {}".format(response["access_token"])}
+        REFRESH_TOKEN = response["refresh_token"]
+    except Exception as e: 
+        print("Authorization failed. Response from API was: ", response)
+
     return [response["access_token"], auth_head, response["scope"], response["expires_in"]]
 
 def refreshAuth():
