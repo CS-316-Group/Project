@@ -36,9 +36,10 @@ def login():
         
         username = form.username.data
         remember_me = form.remember_me.data
-
-        response = startup.getUser()# response is the redirect url to Spotify permission page 
-        return redirect(response)
+        # check if exists already, if not, then go to spotify login 
+        # response is the redirect url to Spotify permission page
+        response = startup.getUser()  
+        return redirect(response) # user is redirected from Spotify back to /callback
 
     return render_template('login.html', form=form)
 
@@ -59,7 +60,9 @@ def login():
 #all the access token from everybody who gives us permision. 
 @app.route('/callback/')
 def callback():
-    startup.getUserToken(request.args['code'])
+    user_auth_code = request.args['code']
+    # must exchange user_auth_code for an access token
+    startup.getUserToken(code=user_auth_code)
     #** I redirect to my homepage here **
 
 
