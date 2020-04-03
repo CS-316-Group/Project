@@ -1,17 +1,112 @@
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stylesheets/welcome.css') }}">
-  </head>
+    <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+    <style>
+      .button {
+        border-radius: 0px;
+        background-color: none;
+        border: none;
+        color: #FFFFFF;
+        font-size: 20px;
+        padding: 0px;
+        width: 0px;
+        height: 0px;
+        text-align: center;
+        vertical-align: center;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 5px;
+      }
 
-  <ul>
-    <li><a href="/">Home Page</a></li>
-  </ul>
+      .button span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+      }
 
-<h1>WELCOME TO OUR CS316 GROUP PROJECT!</h1>
-<h2> Who we Are </h2>
-<ul>
-<li> Selen Berkman </li>
-<li> Elise Brown </li>
-<li> Caroline Wang </li>
-<li> Ben Nativi </li>
-<li> Martha Aboagye </li> 
-</ul>
+      .button span:after {
+        content: '\00bb';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+      }
+
+      .button:hover span {
+        padding-right: 25px;
+      }
+
+      .button:hover span:after {
+        opacity: 1;
+        right: 0;
+        transform: rotate(180deg)
+      }
+    </style>
+    <script>
+      function goBack() {
+        window.history.back();
+      }
+    </script>
+</head>
+
+<button class="button" style="vertical-align:middle" onclick="goBack()"><span>Back </span></button>
+
+<div class="toptop">
+  <h1>Meet the Spotify Share Team</h1>
+  <p>We have spent countless hours working to perfect the way you view your music.</p>
+</div>
+
+<div class="container" style = "position: absolute; left:50%; top:60%;">
+  <section>
+      <div class="our-team">
+        <div class="picture">
+          <img class="img-fluid" src="https://picsum.photos/130/130?image=1027">
+        </div>
+        <div class="team-content">
+          <h3 class="name">Selen Berkman</h3>
+          <h4 class="title">Back-End Developer</h4>
+        </div>
+      </div>
+      <div class="our-team">
+        <div class="picture">
+          <img class="img-fluid" src="static/img/eb.jpg" >
+        </div>
+        <div class="team-content">
+          <h3 class="name">Elise Brown</h3>
+          <h4 class="title">Front-End Developer</h4>
+        </div>
+      </div>
+      <div class="our-team">
+        <div class="picture">
+          <img class="img-fluid" src="https://picsum.photos/130/130?image=856">
+        </div>
+        <div class="team-content">
+          <h3 class="name">Martha Aboagye</h3>
+          <h4 class="title">Front/Back-End Developer</h4>
+        </div>
+    </div>
+    <div class="our-team">
+        <div class="picture">
+          <img class="img-fluid" src="https://picsum.photos/130/130?image=856">
+        </div>
+        <div class="team-content">
+          <h3 class="name">Ben Nativi</h3>
+          <h4 class="title">Back-End Developer</h4>
+        </div>
+    </div>
+    <div class="our-team">
+        <div class="picture">
+          <img class="img-fluid" src="https://picsum.photos/130/130?image=856">
+        </div>
+        <div class="team-content">
+          <h3 class="name">Caroline Wang</h3>
+          <h4 class="title">Back-End Developer</h4>
+        </div>
+    </div>
+  </section>
+</div>
