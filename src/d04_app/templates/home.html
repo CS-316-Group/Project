@@ -1,18 +1,22 @@
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stylesheets/home.css') }}">
     <!-- <script type="text/javascript" src="{{ url_for('static',filename='js/home.js') }}"></script> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 
 <body>
-
   <div class="hero-image">
-    <div class=welcome>
+    <div class="welcome">
       <h1>WELCOME TO SPOTIFY SHARE</h1>
       <h3>Discover more about yourself and others based on music taste</h3>
+      <section id="section07" class="demo">
+        <a href="#index"><span></span><span></span><span></span></a>
+      </section>
+      <!-- <div class="chevron"></div>
+      <div class="chevron"></div>
+      <div class="chevron"></div> -->
     </div>
   </div>
-    
   <div class=services>
     <h2>OUR SERVICES</h2>
   </div> 
@@ -32,19 +36,46 @@
     <p>Some text..</p>
   </div>
 
-  <div class="index"> 
+  <div class="index" id="index"> 
     <div class="column">
       <a href="/"><button class="btn">Home</button></a>
     </div>
     <div class="column">
-      <a href="/welcome"><button class="btn">Welcome</button></a>
+      <a href="/login"><button class="btn">Login</button></a>
     </div>
     <div class="column">
-      <a href="/login"><button class="btn">Login</button></a>
+      <a href="/welcome"><button class="btn">Meet the Team</button></a>
     </div>
     <div class="column">
       <a href="/database"><button class="btn">Database</button></a>
     </div>
   </div>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Add smooth scrolling to all links
+  $("a").on('click', function(event) {
+
+    // Make sure this.hash has a value before overriding default behavior
+    if (this.hash !== "") {
+      // Prevent default anchor click behavior
+      event.preventDefault();
+
+      // Store hash
+      var hash = this.hash;
+
+      // Using jQuery's animate() method to add smooth page scroll
+      // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+      $('html, body').animate({
+        scrollTop: $(hash).offset().top
+      }, 1600, function(){
+   
+        // Add hash (#) to URL when done scrolling (default click behavior)
+        window.location.hash = hash;
+      });
+    } // End if
+  });
+});
+</script>
 </body>

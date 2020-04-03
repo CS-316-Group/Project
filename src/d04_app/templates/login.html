@@ -1,20 +1,69 @@
+<!-- db_string =  "postgres://vcm:dbpasswd@localhost:5432/beers"
+db = create_engine(db_string)   -->
 
+<!-- this page is the sign in page --> 
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stylesheets/login.css') }}">
     <script type="text/javascript" src="{{ url_for('static',filename='js/login.js') }}"></script>
-  </head>
+    <style>
+        .button {
+          border-radius: 0px;
+          background-color: none;
+          border: none;
+          color: #FFFFFF;
+          font-size: 20px;
+          padding: 0px;
+          width: 0px;
+          height: 0px;
+          text-align: center;
+          vertical-align: center;
+          transition: all 0.5s;
+          cursor: pointer;
+          margin: 5px;
+        }
+  
+        .button span {
+          cursor: pointer;
+          display: inline-block;
+          position: relative;
+          transition: 0.5s;
+        }
+  
+        .button span:after {
+          content: '\00bb';
+          position: absolute;
+          opacity: 0;
+          top: 0;
+          right: -20px;
+          transition: 0.5s;
+        }
+  
+        .button:hover span {
+          padding-right: 25px;
+        }
+  
+        .button:hover span:after {
+          opacity: 1;
+          right: 0;
+          transform: rotate(180deg)
+        }
+      </style>
+</head>
 
-    <form action="" method="post" novalidate>
-        {{form.hidden_tag() }}
-            <h1> LOG IN TO SPOTIFY!</h1>
-        <p>
-            {{form.username.label }}<br>
-            {{form.username(size=32) }}
-            {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-        <p>{{ form.submit() }}</p>
-    </form>
-
+<button class="button" style="vertical-align:middle" onclick="location.href='/'"><span>Back </span></button>
+<body>
+    <h1>Log into Spotify</h1>
+        <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.username.label }}<br>
+                {{ form.username(size=32) }}
+            </p>
+            <p>
+                {{ form.password.label }}<br>
+                {{ form.password(size=32) }}
+            </p>
+            <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+            <p>{{ form.submit() }}</p>
+        </form>
+</body>
