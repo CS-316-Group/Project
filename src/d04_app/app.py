@@ -28,17 +28,16 @@ def welcome():
 # returning user: check if username exists already in database, if so, then refresh creds
 # and redirect to homepage -- i.e. do what spotipy does 
 
-# this can be the new user method 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = forms.LoginForm() # have login form return username 
+# this is the new user method 
+@app.route('/newlogin', methods=['GET', 'POST'])
+def newlogin():
+    form = forms.NewLoginForm() # have login form return username 
     # check if exists already, if not, then go to spotify login 
     if form.validate_on_submit():
         
         new_username = form.username.data
+        new_password = form.password.data
         session['new_username']= new_username
-
-        remember_me = form.remember_me.data
 
         # TODO: check that desired username is unique by querying database and verifying no matches 
 
@@ -46,8 +45,31 @@ def login():
         response = startup.getUser()  
         return redirect(response) # user is redirected from Spotify back to /callback
 
-    return render_template('login.html', form=form)
+    return render_template('newlogin.html', form=form)
 
+# this is the returning user method 
+@app.route('/returninglogin', methods=['GET', 'POST'])
+def returninglogin():
+    form = forms.ReturningLoginForm() # have returning login form return username and password
+    # check if exists already, if not, then 
+    if form.validate_on_submit():
+        
+        new_username = form.username.data
+        new_password = form.password.data
+        session['new_username']= new_username
+
+        # if username is in database
+        	# if correct password
+
+        	# if incorrect password
+
+        # if username not in the database 
+
+        # response is the redirect url to Spotify permission page
+        response = startup.getUser()  
+        return redirect(response) # user is redirected from Spotify back to /callback
+
+    return render_template('returninglogin.html', form=form)
 
 @app.route('/callback/')
 def callback():

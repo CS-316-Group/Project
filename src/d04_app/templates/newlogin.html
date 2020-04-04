@@ -3,8 +3,8 @@ db = create_engine(db_string)   -->
 
 <!-- this page is the sign in page --> 
 <head>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stylesheets/login.css') }}">
-    <script type="text/javascript" src="{{ url_for('static',filename='js/login.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stylesheets/newlogin.css') }}">
+    <script type="text/javascript" src="{{ url_for('static',filename='js/newlogin.js') }}"></script>
     <style>
         .button {
           border-radius: 0px;
@@ -52,14 +52,17 @@ db = create_engine(db_string)   -->
 
 <button class="button" style="vertical-align:middle" onclick="location.href='/'"><span>Back </span></button>
 <body>
-    <h1>Log into Spotify</h1>
+    <h1>(New User) Log into Spotify</h1>
         <form action="" method="post" novalidate>
             {{ form.hidden_tag() }}
             <p>
                 {{ form.username.label }}<br>
                 {{ form.username(size=32) }}
             </p>
-            <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+            <p>
+                {{ form.password.label }}<br>
+                {{ form.password(size=32) }}
+            </p>
             <p>{{ form.submit() }}</p>
         </form>
 </body>
