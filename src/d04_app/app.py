@@ -1,19 +1,22 @@
 from flask import Flask, render_template, redirect, url_for, request, session
 from flask_sqlalchemy import SQLAlchemy
+
+from d00_utils.load_confs import load_parameters
+from d01_data_processing.data_cleaning import clean_all_data
+from d01_data_processing.spotify_user import SpotifyUser    
 import d04_app.forms as forms
 import d04_app.startup as startup
 import d04_app.authentication as authentication
 from d04_app.db_operations import insert_new_user_to_database
+import d04_app.models
 
-from d01_data_processing.data_cleaning import clean_all_data
-from d01_data_processing.spotify_user import SpotifyUser	
-	
+app_params = load_parameters()
+
 app = Flask(__name__)
-app.secret_key = 'cs316'
+app.secret_key = app_params['secret_key']
 app.config.from_object('d04_app.config')
 db = SQLAlchemy(app, session_options={'autocommit': False})
 
-import d04_app.models
 
 @app.route('/')
 def home():
@@ -121,4 +124,4 @@ def artistpage(listener_name):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=app_params['port'], debug=True)
