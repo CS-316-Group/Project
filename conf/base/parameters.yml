@@ -3,4 +3,5 @@ app_parameters:
   secret_key: "cs316"
   host_url: "http://localhost"
   scope: "user-library-read user-follow-read user-top-read user-read-recently-played"
+  debug_mode_on: TRUE
   

@@ -21,16 +21,6 @@ def load_parameters():
         params = yaml.safe_load(f)
     return collapse_dict_hierarchy(params)
 
-
-def load_app_parameters():
-    filepath = os.sep.join(
-        project_dir + 'conf/base/app_parameters.yml'.split('/'))
-
-    with open(filepath) as f:
-        params = yaml.safe_load(f)
-    return collapse_dict_hierarchy(params)
-
-
 def load_credentials():
 
     filepath = os.sep.join(
