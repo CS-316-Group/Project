@@ -13,6 +13,10 @@ body {
 toptop{
   text-align: center;
 }
+h3{
+  padding: 0;
+  margin: 0;
+}
 h1 {
   text-align: center;
   text-transform: uppercase;
