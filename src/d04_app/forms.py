@@ -8,10 +8,14 @@ from wtforms import PasswordField, BooleanField, SubmitField
 
 # found this class that asks users to login. might be a good starting point for
 #users login through spotify.
-class LoginForm(FlaskForm):
+class NewLoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
-    # return username? 
-    remember_me = BooleanField('Remember Me')
+    password = StringField('Password', validators=[DataRequired()])
+    submit = SubmitField('Sign In')
+
+class ReturningLoginForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = StringField('Password', validators=[DataRequired()])
     submit = SubmitField('Sign In')
 
 class artistsform:
