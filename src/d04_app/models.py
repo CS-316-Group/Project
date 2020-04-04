@@ -22,10 +22,12 @@ class Artists(db.Model):
 
 class Listeners(db.Model):
     __tablename__ = 'listeners'
-    id = db.Column('id', db.String(200), primary_key=True)
+    listener_id = db.Column('listener_id', db.String(200), primary_key=True)
     display_name = db.Column('display_name', db.String(200), nullable= False)
+    username = db.Column('username', db.String(200), nullable = False)
     followers = db.Column('followers',db.Integer(), nullable = False)
     image_url = db.Column('image_url',db.String(400), unique= False, nullable = False)
+
     #not sure about this to specify one to many relationship between classes.
     topartists = orm.relationship('Topartists') #from blog miguelgrinberg
     toptracks = orm.relationship('Toptracks')

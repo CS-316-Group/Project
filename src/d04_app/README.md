@@ -6,6 +6,7 @@
 1. Still need a page that directly links to spotify authentication on our website. done
 2. Still need to redirect artist page but bigger problem is to redirect from our base dataset to one that is customized for the user.
 3. Also need to figure out how to run the website through vcm if that is what we eventually want to do.
+4. Need to allow for returning users and new users.
 
 
 

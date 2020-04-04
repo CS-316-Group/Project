@@ -1,105 +1,300 @@
 --What artists does each user listen to?
-
 SELECT display_name, artist_name
 FROM topartists, listeners,artists
 WHERE topartists.listener_id = listeners.listener_id and topartists.artist_id=artists.artist_id;
-
- display_name  |              artist_name
----------------+----------------------------------------
+ display_name  |       artist_name
+---------------+--------------------------
+ Martha        | Taylor Swift
+ Martha        | Beyoncé
+ Martha        | Bon Iver
+ Martha        | Megan Thee Stallion
+ Martha        | Kanye West
+ Martha        | Lana Del Rey
+ Martha        | Ariana Grande
+ Martha        | Rihanna
+ Martha        | Noname
+ Martha        | FKA twigs
+ Martha        | Sturgill Simpson
+ Martha        | Young Thug
+ Martha        | Frank Ocean
+ Martha        | Solange
+ Martha        | Miguel
+ Martha        | Lorde
+ Martha        | Jorja Smith
+ Martha        | Lizzo
+ Martha        | Jason Isbell
+ Martha        | Kendrick Lamar
+ 1214600613    | Lady Gaga
+ 1214600613    | Halsey
+ 1214600613    | Nicki Minaj
+ 1214600613    | Kesha
+ 1214600613    | Krewella
+ 1214600613    | Beyoncé
+ 1214600613    | Pentatonix
+ 1214600613    | Melanie Martinez
+ 1214600613    | Shakira
+ 1214600613    | Dua Lipa
+ 1214600613    | Demi Lovato
+ 1214600613    | Little Boots
+ 1214600613    | Childish Gambino
+ 1214600613    | Adele
+ 1214600613    | Rihanna
+ 1214600613    | Doja Cat
+ 1214600613    | Ariana Grande
+ 1214600613    | Tarkan
+ 1214600613    | Drake
+ 1214600613    | Troye Sivan
+ ninjakichi    | Ramin Djawadi
+ ninjakichi    | John Williams
+ ninjakichi    | Toby Fox
+ ninjakichi    | Japandroids
+ ninjakichi    | Howard Shore
+ ninjakichi    | Monsalve
+ ninjakichi    | Good Knight Productions
+ ninjakichi    | François-Joël Thiollier
+ ninjakichi    | Andrei Krylov
+ ninjakichi    | Taylor Davis
+ ninjakichi    | Video Game Piano Players
+ ninjakichi    | Billie Eilish
+ ninjakichi    | Lady Gaga
+ ninjakichi    | String Player Gamer
+ ninjakichi    | Brad Derrick
+ ninjakichi    | Braxton Burks
+ ninjakichi    | The Greatest Bits
+ ninjakichi    | Trans-Siberian Orchestra
+ ninjakichi    | Trevor Morris
+ ninjakichi    | daigoro789
+ Caroline Wang | Hippo Campus
+ Caroline Wang | Billie Eilish
+ Caroline Wang | Yaeji
+ Caroline Wang | Grimes
  Caroline Wang | Taylor Swift
+ Caroline Wang | Whitney
+ Caroline Wang | Lizzo
+ Caroline Wang | ROSALÍA
+ Caroline Wang | flor
+ Caroline Wang | Jean-Guihen Queyras
+ Caroline Wang | DJ Khaled
+ Caroline Wang | Martha Argerich
+ Caroline Wang | Red Velvet
+ Caroline Wang | Post Malone
+ Caroline Wang | Leif Ove Andsnes
+ Caroline Wang | Khalid
+ Caroline Wang | Maria João Pires
+ Caroline Wang | Justin Bieber
+ Caroline Wang | Céline Dion
+ Caroline Wang | Bing Crosby
  Elise Brown   | Steven Universe
- Elise Brown   | Jonathan McReynolds
- Elise Brown   | Queen
- Elise Brown   | Weezer
+ Elise Brown   | Tyler, The Creator
  Elise Brown   | Chance the Rapper
+ Elise Brown   | Kendrick Lamar
+ Elise Brown   | Frank Ocean
+ Elise Brown   | Rex Orange County
+ Elise Brown   | Queen
  Elise Brown   | Kirk Franklin
- Elise Brown   | The Walls Group
- Elise Brown   | Donald Lawrence & The Tri-City Singers
- Elise Brown   | Dexter Walker & Zion Movement
- Elise Brown   | Mary Mary
- Elise Brown   | Tye Tribbett
- Elise Brown   | Childish Gambino
+ Elise Brown   | Panic! At The Disco
+ Elise Brown   | Mac Miller
+ Elise Brown   | Rapsody
  Elise Brown   | Fred Hammond
+ Elise Brown   | Big Time Rush
  Elise Brown   | Donnie McClurkin
- Elise Brown   | Yolanda Adams
- Elise Brown   | Lin-Manuel Miranda
- Elise Brown   | Tauren Wells
- Elise Brown   | Kesha
+ Elise Brown   | Anderson .Paak
+ Elise Brown   | Mary Mary
+ Elise Brown   | The Beatles
+ Elise Brown   | Madvillain
+ Elise Brown   | The Walls Group
+ Elise Brown   | Demi Lovato
+ bnativi17     | Tobu
+ bnativi17     | Calvin Harris
+ bnativi17     | Feint
  bnativi17     | Different Heaven
- bnativi17     | Pegboard Nerds
  bnativi17     | Hellberg
-(22 rows)
+ bnativi17     | Aero Chord
+ bnativi17     | Red Hot Chili Peppers
+ bnativi17     | Hardwell
+ bnativi17     | Pegboard Nerds
+ bnativi17     | Fitz and The Tantrums
+ bnativi17     | Third Eye Blind
+ bnativi17     | Ahrix
+ bnativi17     | Fall Out Boy
+ bnativi17     | Laszlo
+ bnativi17     | Linkin Park
+ bnativi17     | Blasterjaxx
+ bnativi17     | Nickelback
+ bnativi17     | Vicetone
+ bnativi17     | Veorra
+ bnativi17     | Eminem
+(120 rows)
 
 --Which artists have a popularity above 50?
-
 SELECT artist_name
 FROM artists
 WHERE artist_pop>=50;
-     artist_name
-----------------------
+        artist_name
+---------------------------
+ Sturgill Simpson
+ Megan Thee Stallion
+ Solange
+ Bon Iver
+ Jason Isbell
+ Cardi B
+ Beyoncé
+ Angel Olsen
+ Noname
  Taylor Swift
- Shawn Mendes
- Lil Loaded
- King Von
- Young T & Bugsey
- Adam Lambert
- Rico Nasty
- Shordie Shordie
- K CAMP
- Ari Lennox
- 6LACK
- Tink
- NLE Choppa
- Roddy Ricch
- Perfume Genius
+ Lana Del Rey
+ Tyler, The Creator
+ Kanye West
+ Ariana Grande
+ Rihanna
+ FKA twigs
+ Young Thug
+ Frank Ocean
+ Miguel
+ Lorde
+ Jorja Smith
+ Lizzo
+ Kendrick Lamar
+ Doja Cat
+ FRENSHIP
+ Emily Warren
+ Jonas Blue
+ Dakota
+ Melanie Martinez
  DVBBS
- Tauren Wells
- Tye Tribbett
- Arctic Monkeys
- Phillip Phillips
- Todd Dulaney
- Jonathan McReynolds
- Chance the Rapper
- BJ The Chicago Kid
- Smash Mouth
- Action Bronson
- Queen
+ Shaun Frank
+ Delaney Jane
+ Krewella
+ Sia
+ Zara Larsson
+ MNEK
  Lady Gaga
- Rufus Wainwright
- Anthem Lights
- Steven Universe
- Weezer
- Kirk Franklin
- Mary Mary
+ Mike Posner
+ Seeb
+ Nicki Minaj
+ Halsey
+ Kesha
+ Pentatonix
+ Shakira
+ Dua Lipa
+ Demi Lovato
  Childish Gambino
+ Adele
+ Tarkan
+ Drake
+ Troye Sivan
+ John Williams
+ London Symphony Orchestra
+ Luis Fonsi
+ Daddy Yankee
+ Justin Bieber
+ TOTO
+ Guns N' Roses
+ Auli'i Cravalho
+ Ramin Djawadi
+ Tom Morello
+ Pinkfong
+ Donny Osmond
+ Chorus - Mulan
+ Christopher Jackson
+ Rachel House
+ Nicole Scherzinger
+ Louise Bush
+ A Touch Of Class
+ Pete Konemann
+ Imagine Dragons
+ Shawn Mendes
+ Camila Cabello
+ Selena Gomez
+ Marshmello
+ Caramella Girls
+ Katy Perry
+ Snoop Dogg
+ Inon Zur
+ Taylor Davis
+ Toby Fox
+ Howard Shore
+ Good Knight Productions
+ Billie Eilish
+ Brad Derrick
+ The Greatest Bits
+ Trevor Morris
+ daigoro789
+ Hippo Campus
+ Wyclef Jean
+ flor
+ Johannes Brahms
+ Grimes
+ Benjamin Britten
+ Yaeji
+ Whitney
+ ROSALÍA
+ DJ Khaled
+ Martha Argerich
+ Red Velvet
+ Post Malone
+ Leif Ove Andsnes
+ Khalid
+ Maria João Pires
+ Céline Dion
+ Bing Crosby
+ Kali Uchis
+ Anthem Lights
+ Rex Orange County
+ Anna of the North
+ Roy Ayers
+ Syd
  Fred Hammond
  Donnie McClurkin
- Yolanda Adams
- Lin-Manuel Miranda
- Kesha
- Panda Eyes
- Teminite
- S3RL
- Lewis Capaldi
- Deaf Kev
- Tristam
- Braken
- Electro-Light
- Alan Walker
+ Steve Lacy
+ William Murphy
+ Steven Universe
+ Chance the Rapper
+ Queen
+ Kirk Franklin
+ Panic! At The Disco
+ Mac Miller
+ Rapsody
+ Big Time Rush
+ Anderson .Paak
+ Mary Mary
+ The Beatles
+ Madvillain
  Different Heaven
-  Billie Eilish
- Adventure Club
- Yuna
+ Flux Pavilion
+ Feint
+ Sander van Doorn
+ Martin Garrix
  Nitro Fun
- Pegboard Nerds
- Ludwig van Beethoven
+ Kygo
+ Conrad Sewell
+ Calvin Harris
+ Tinie Tempah
+ Omar LinX
+ Aero Chord
+ T-Wayne
+ Lynyrd Skynyrd
+ Mura Masa
+ A$AP Rocky
+ Disfigure
+ Tobu
  Hellberg
- Cozi Zuehlsdorff
- Stonebank
-(59 rows)
+ Red Hot Chili Peppers
+ Hardwell
+ Pegboard Nerds
+ Fitz and The Tantrums
+ Third Eye Blind
+ Ahrix
+ Fall Out Boy
+ Linkin Park
+ Blasterjaxx
+ Nickelback
+ Vicetone
+ Veorra
+ Eminem
+(160 rows)
 
 --What is the artist id, popularity, and number of followers of a particular listener's top artists in the short time span?
-
 select a1.artist_id, a1.artist_pop, a1.num_followers
 from artists as a1
 where a1.artist_id in
@@ -107,13 +302,11 @@ where a1.artist_id in
      from topartists as a2
      where listener_id='314xcqarki42gnkosjtfplluumya' and time_span='short_term'
     );
-       artist_id        | artist_pop | num_followers
-------------------------+------------+---------------
- 06HL4z0CvFAxyc27GXpf02 |         91 |      27964509
-(1 row)
+ artist_id | artist_pop | num_followers
+-----------+------------+---------------
+(0 rows)
 
 --What are the genre and characteristics of a particular user's top tracks in the short term?
-
 select *
 from albumhasgenre
 natural join
@@ -129,3 +322,4 @@ where albumhasgenre.album_id = track_album_info.track_id;
  album_id | genre_name | track_id | track_name | track_pop | preview_url | acousticness | danceability | energy | valence | loudness | tempo | instrumentalness | speechiness | mode | time_signature | liveness
 ----------+------------+----------+------------+-----------+-------------+--------------+--------------+--------+---------+----------+-------+------------------+-------------+------+----------------+----------
 (0 rows)
+
