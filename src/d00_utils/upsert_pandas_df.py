@@ -1,11 +1,9 @@
 import os
 import sys
-# import time
+
 import pandas as pd
 import numpy as np
-# from sqlalchemy import create_engine
 import threading
-# from timeit import default_timer as timer
 
 os.path.dirname(os.path.abspath(__file__))
 

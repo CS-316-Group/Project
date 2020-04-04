@@ -1,0 +1,6 @@
+app_parameters: 
+  port: "5000"
+  secret_key: "cs316"
+  host_url: "http://localhost"
+  scope: "user-library-read user-follow-read user-top-read user-read-recently-played"
+  
