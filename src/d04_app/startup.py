@@ -14,7 +14,7 @@ CLIENT_ID= "975ac8a7753243389c7713dfe121cd52"
 CLIENT_SECRET= "df6cdabcedae407fa873427f3947f5bf"
 
 
-#Port and callback url can be changed or ledt to localhost:5000
+#Port and callback url can be changed or left to localhost:5000
 PORT = "5000"
 CALLBACK_URL = "http://localhost"
 

@@ -29,9 +29,9 @@ def create_sql_tables(drop=False):
     CREATE TABLE artists
     (artist_id VARCHAR(200) NOT NULL PRIMARY KEY ,
      artist_name VARCHAR(200) NOT NULL,
-     artist_pop INTEGER NOT NULL,
-     num_followers INTEGER NOT NULL,
-     artist_image_url VARCHAR(400) NOT NULL)
+     artist_pop INTEGER ,
+     num_followers INTEGER ,
+     artist_image_url VARCHAR(400))
     """,
 
     """
@@ -43,8 +43,8 @@ def create_sql_tables(drop=False):
      expires_in INTEGER NOT NULL,  
      refresh_token VARCHAR(200) NOT NULL, 
      scope VARCHAR(200) NOT NULL,
-     num_followers INTEGER NOT NULL,
-     listener_image_url VARCHAR(400) NOT NULL
+     num_followers INTEGER,
+     listener_image_url VARCHAR(400) 
     )
     """,
 
@@ -52,8 +52,8 @@ def create_sql_tables(drop=False):
     CREATE TABLE tracks
     (track_id VARCHAR(200) NOT NULL PRIMARY KEY,
      track_name VARCHAR(200) NOT NULL,
-     track_pop INTEGER NOT NULL,
-     preview_url VARCHAR(400) NOT NULL,
+     track_pop INTEGER,
+     preview_url VARCHAR(400),
      acousticness NUMERIC,
      danceability NUMERIC,
      energy NUMERIC,
@@ -73,8 +73,8 @@ def create_sql_tables(drop=False):
     (album_id VARCHAR(200) NOT NULL PRIMARY KEY,
      album_type VARCHAR(200) NOT NULL,
      album_name VARCHAR(200) NOT NULL,
-     album_release_date timestamp NOT NULL,
-     album_image_url VARCHAR(400) NOT NULL
+     album_release_date timestamp,
+     album_image_url VARCHAR(400) 
     )
     """,
     
@@ -137,7 +137,7 @@ def create_sql_tables(drop=False):
     """
     CREATE TABLE artisthasgenre(
     artist_id VARCHAR(200) NOT NULL, 
-    genre_name VARCHAR(200) NOT NULL,
+    genre_name VARCHAR(200),
     PRIMARY KEY(genre_name,artist_id),
     CONSTRAINT artistid_fkey FOREIGN KEY (artist_id)
     REFERENCES artists(artist_id),
@@ -149,7 +149,7 @@ def create_sql_tables(drop=False):
     """
     CREATE TABLE albumhasgenre(
     album_id VARCHAR(200) NOT NULL, 
-    genre_name VARCHAR(400) NOT NULL,
+    genre_name VARCHAR(400) ,
     PRIMARY KEY(genre_name,album_id),
     CONSTRAINT albumid_fkey FOREIGN KEY (album_id)
     REFERENCES albums(album_id),

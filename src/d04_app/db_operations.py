@@ -47,6 +47,8 @@ def insert_new_user_to_database(new_user_data:dict, db_engine):
     cursor = conn.cursor()
 
     for df_name, table_name in df_table_mapping:
+        if new_user_data[df_name].empty: 
+             continue
         df = new_user_data[df_name]
         #remove dups before insertion
         df = clean_df_db_dups(df=df, 
