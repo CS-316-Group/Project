@@ -6,7 +6,7 @@ from d01_data_processing.data_cleaning import clean_all_data
 from d01_data_processing.spotify_user import SpotifyUser    
 import d04_app.forms as forms
 import d04_app.startup as startup
-import d04_app.authentication as authentication
+# import d04_app.authentication as authentication
 from d04_app.db_operations import insert_new_user_to_database
 import d04_app.models
 
