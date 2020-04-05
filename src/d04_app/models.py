@@ -3,10 +3,11 @@ from d04_app.app import db
 
 #to do-check the uniqueness of each attribute.
 #albums = orm.relationshio('Albums')-it is unclear whether 
-    #this is needed because as defined on the 
-    #er diagram, there is no artist associated with 
-    #album. i think each one to many relationship might need a foreign key id. 
-    #double check that they do.
+#this is needed because as defined on the 
+#er diagram, there is no artist associated with 
+#album. i think each one to many relationship might need a foreign key id. 
+#double check that they do.
+
 class Artists(db.Model):
     __tablename__ = 'artists'
     id = db.Column('id', db.String(200), primary_key=True)

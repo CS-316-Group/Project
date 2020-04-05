@@ -17,7 +17,9 @@ TOKEN_DATA = []
 
 
 def getUser():
-    # constructs get request to /authorize endpt of Spotify API
+    '''
+    Constructs get request to /authorize endpt of Spotify API
+    '''
     return getAuth(client_id=CLIENT_ID, 
                    redirect_uri=f"{CALLBACK_URL}:{PORT}/callback/", 
                    scope=SCOPE)
@@ -39,8 +41,6 @@ def getUserToken(code):
                           client_secret=CLIENT_SECRET, 
                           redirect_uri=f"{CALLBACK_URL}:{PORT}/callback/")
     return TOKEN_DATA 
-    # store access token with username
-    #TODO: write token data to a file in the credentials folder 
  
 def refreshToken(time):
     time.sleep(time)

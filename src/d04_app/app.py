@@ -42,7 +42,6 @@ def newlogin():
         session['new_username']= new_username
 
         # TODO: check that desired username is unique by querying database and verifying no matches 
-
         # response is the redirect url to Spotify permission page
         response = startup.getUser()  
         return redirect(response) # user is redirected from Spotify back to /callback
