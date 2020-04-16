@@ -1,6 +1,9 @@
 import pandas as pd 
+import csv
+from io import StringIO
+import psycopg2
+
 from d00_utils.upsert_pandas_df import clean_df_db_dups
-from d00_utils.data_loading_helpers import copy_df_to_db
 
 #specify the primary key columns of database 
 # TODO: put this in params 
@@ -59,4 +62,50 @@ def insert_new_user_to_database(new_user_data:dict, db_engine):
         copy_df_to_db(df=df, table_name=table_name, conn=conn, cursor=cursor)
 
     return 
+
+
+def copy_df_to_db(df, table_name, conn, cursor):
+    """
+    Given pandas dataframe, raw database connection, and cursor, 
+    performs builk insert into database 
+    """
+    output = StringIO()
+    df.to_csv(output, sep='\t', header=False, index=False)
+    output.seek(0)
+    contents = output.getvalue()
+    # null values become ''
+    cursor.copy_from(output, table_name, null="")
+    conn.commit()
+
+
+
+def select_from_table(sql, db_engine): 
+    """
+    execute select type sql command on db and 
+    returns pandas dataframe 
+    """ 
+    conn = db_engine.raw_connection()
+    cursor = conn.cursor()
+
+    results = None
+    try:
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        col_names = list(map(lambda x: x[0], cursor.description))
+        results = pd.DataFrame(results, columns=col_names)
+        conn.commit()
+    except(Exception, psycopg2.errors.UndefinedTable) as error:
+        results = None
+        print('Table does not exist. Please create first. Here is the full error message:')
+        print(error)
+        conn.rollback()
+    except(Exception, psycopg2.DatabaseError) as error:
+        print(error)
+        conn.rollback()
+    finally:
+        cursor.close()
+        if conn:
+            conn.close()
+
+    return results
 
