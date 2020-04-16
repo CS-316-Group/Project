@@ -105,21 +105,22 @@ def database():
     dropdown_list = []
     for listener in listener_names:
         dropdown_list.append(listener[0])
-    form = forms.artistsform.form(dropdown_list)#artistsforms is just the name of the form.
+    form = forms.artistsform.form(dropdown_list) #artistsforms is just the name of the form.
     if form.validate_on_submit():
-        return redirect('/artistpage/'+ form.listener_sel.data) # not sure if this is right
+        try:
+            return redirect('/artistpage/'+ form.listener_sel.data) # not sure if this is right
+        except:
+            return redirect('/')
     return render_template('database.html', dropdown_list=dropdown_list, form=form)
 
 
 @app.route('/artistpage/<listener_name>', methods=['GET', 'POST'])
 def artistpage(listener_name):
-    return render_template('artistpage.html')
-
-#this is eventually the route page  we will need.
-#@app.route('/artistpage/<artist_name>', methods=['GET', 'POST'])
-#def artistpage():
-#    return render_template('artistpage.html')
-
+    # results=db.session.query(d04_app.models.Topartists.artist_id).join(d04_app.models.Listeners, d04_app.models.Topartists.listener_id == d04_app.models.Listeners.listener_id).all()
+    results=db.session.query(d04_app.models.Topartists.artist_id, d04_app.models.Topartists.listener_id)
+    return render_template('listener_artists.html', 
+                            listener_name=listener_name,
+                            data=results)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=params['port'], debug=params['debug_mode_on'])

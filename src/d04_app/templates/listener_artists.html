@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% block content %}
+<p>Listener: {{listener_name}}</p>
+<p>Servings:
+<table>
+	<tr>
+		<td>Bar Name</td>
+		<td>Bar Address</td>
+		<td>Price</td>
+	</tr>
+	{% for bar in data %}
+	<tr>
+		<td>{{bar}}</td>
+	</tr>
+	{% endfor %}
+</table>
+{% endblock %}

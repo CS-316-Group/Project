@@ -1,11 +1,11 @@
 {% extends 'layout.html' %}
 {% block content %}
-<form method="GET" id="form1">
+<form action="{{url_for('artistpage', listener_name=listener_name)}}"class="form" method="get" id="form1">
 {{form.csrf_token}} 
 <p>{{form.listener_sel.label}}</p> 
-<select id="artist">
-    {% for artist in dropdown_list %}
-    <option value="{{ artist }}">{{ artist }}</option>
+<select id="listener">
+    {% for listener in dropdown_list %}
+    <option value="{{ listener }}">{{ listener }}</option>
     {% endfor %}
 </select>
 <p>
@@ -16,12 +16,10 @@
 console.log('start');
     jQuery(document).ready(function() {
        jQuery("#buttonID").click(function() {
-           var artist_value = $('#artist').val();
-		console.log(artist_value, ';jksdljfa;')
-
-           var artist_name = $('#artist :selected').text(); 
-
-               window.open(window.location.origin + "/artistpage") //modified this from original so it will redirect to artistpage.
+           var listener_value = $('#listener').val();
+		console.log(listener_value, ';jksdljfa;')
+           var listener_name = $('#listener :selected').text(); 
+               window.open(window.location.origin + "/artistpage/"+ listener_name, '_blank')
    
        });
     });
