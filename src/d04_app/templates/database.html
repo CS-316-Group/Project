@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 {% block content %}
-<form action="{{url_for('artistpage', listener_name=listener_name)}}"class="form" method="get" id="form1">
+<form class="form" method="get" id="form1">
 {{form.csrf_token}} 
 <p>{{form.listener_sel.label}}</p> 
 <select id="listener">
