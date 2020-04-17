@@ -78,7 +78,6 @@ def copy_df_to_db(df, table_name, conn, cursor):
     conn.commit()
 
 
-
 def select_from_table(sql, db_engine): 
     """
     execute select type sql command on db and 
