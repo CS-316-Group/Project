@@ -65,11 +65,10 @@ def newlogin():
 		# print("=====================================")
 		# print()
 
-		if new_username in username_list:	# return to page with error
+		if new_username in username_list:	# return to page with error if the username is already registered
 			flash('Username is already registered, try another username.')
 			return redirect('/newlogin')
 
-		# TODO: also add password to database
 		response = startup.getUser()  
 		return redirect(response) # user is redirected from Spotify back to /callback
 
@@ -87,16 +86,20 @@ def returninglogin():
 		session['new_username'] = new_username
 		session['new_password'] = new_password
 
-		# if username is in database
-			# if correct password
+		listener_list = np.array(select_from_table("""
+							SELECT l.username, l.password
+							FROM Listeners l
+							WHERE l.username = '%s' """ % new_username, db_engine=db.engine))
 
-			# if incorrect password
+		if ((listener_list.size and listener_list.ndim) == 0): # if no listerner in Listeners has the same username as new_username
+			flash('Username is not registered.')
+			return redirect('/returninglogin')
+		elif (new_password != listener_list[0][1]):	# if new_password does not match the password in the database
+			flash('Password is incorrect.')
+			return redirect('/returninglogin')
 
-		# if username not in the database 
-
-		# response is the redirect url to Spotify permission page
-		response = startup.getUser()  
-		return redirect(response) # user is redirected from Spotify back to /callback
+		#if username and password are valid
+		return redirect('/') # user is redirected to home (temporarily)
 
 	return render_template('returninglogin.html', form=form)
 
