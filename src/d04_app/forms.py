@@ -11,7 +11,7 @@ from wtforms import PasswordField, BooleanField, SubmitField
 class NewLoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = StringField('Password', validators=[DataRequired()])
-    submit = SubmitField('Sign In')
+    submit = SubmitField('Register')
 
 class ReturningLoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

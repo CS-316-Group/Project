@@ -69,6 +69,21 @@ def copy_df_to_db(df, table_name, conn, cursor):
     Given pandas dataframe, raw database connection, and cursor, 
     performs builk insert into database 
     """
+
+    # print()
+    # print("============================================")
+    # print()
+    # print(df)
+    # for item in df:
+    #     print("   ", df[item])
+    #     print()
+    # print(table_name)
+    # print(conn)
+    # print(cursor)
+    # print()
+    # print("============================================")
+    # print()
+
     output = StringIO()
     df.to_csv(output, sep='\t', header=False, index=False)
     output.seek(0)

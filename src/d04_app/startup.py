@@ -20,6 +20,9 @@ def getUser():
     '''
     Constructs get request to /authorize endpt of Spotify API
     '''
+    # print(creds)
+    # print(PORT)
+    # print(CALLBACK_URL)
     return getAuth(client_id=CLIENT_ID, 
                    redirect_uri=f"{CALLBACK_URL}:{PORT}/callback/", 
                    scope=SCOPE)
