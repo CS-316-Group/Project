@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+{% block content %}
+<p>{{listener_name}}'s Top 20 Artists
+<table>
+	{% for arr in data %}
+	<tr>
+		<td><img src={{arr[0]}} alt="test" style="width:200px;height:200px;">{{arr[1]}}</td>
+	</tr>
+	{% endfor %}
+</table>
+{% endblock %}

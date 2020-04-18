@@ -6,14 +6,18 @@ from d01_data_processing.data_cleaning import clean_all_data
 from d01_data_processing.spotify_user import SpotifyUser    
 import d04_app.forms as forms
 import d04_app.startup as startup
-from d03_database_interaction.db_operations import insert_new_user_to_database
+from d03_database_interaction.db_operations import insert_new_user_to_database, select_from_table
 import d04_app.models
+import numpy as np
+from flask_wtf import CsrfProtect
 
+csrf = CsrfProtect()
 params = load_parameters()
 
 app = Flask(__name__)
 app.secret_key = params['secret_key']
 app.config.from_object('d04_app.config')
+csrf.init_app(app)
 db = SQLAlchemy(app, session_options={'autocommit': False})
 
 
@@ -105,21 +109,25 @@ def database():
     dropdown_list = []
     for listener in listener_names:
         dropdown_list.append(listener[0])
-    form = forms.artistsform.form(dropdown_list)#artistsforms is just the name of the form.
+    form = forms.artistsform.form(dropdown_list) #artistsforms is just the name of the form
     if form.validate_on_submit():
-        return redirect('/artistpage/'+ form.listener_sel.data) # not sure if this is right
+        try:
+            return redirect(url_for('/artistpage/'+ form.listener_sel.data)) # not sure if this is right
+        except:
+            return redirect('/')
     return render_template('database.html', dropdown_list=dropdown_list, form=form)
-
 
 @app.route('/artistpage/<listener_name>', methods=['GET', 'POST'])
 def artistpage(listener_name):
-    return render_template('artistpage.html')
-
-#this is eventually the route page  we will need.
-#@app.route('/artistpage/<artist_name>', methods=['GET', 'POST'])
-#def artistpage():
-#    return render_template('artistpage.html')
-
+    # results=db.session.query(d04_app.models.Topartists.artist_id).join(d04_app.models.Listeners, d04_app.models.Topartists.listener_id == d04_app.models.Listeners.listener_id).all()
+    # results=db.session.query(d04_app.models.Topartists.artist_id, d04_app.models.Topartists.listener_id)
+    results = np.array(select_from_table("""
+    SELECT a.artist_image_url, a.artist_name
+    FROM Topartists t, Listeners l, Artists a
+    WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.display_name = '%s'""" % listener_name, db_engine=db.engine))
+    return render_template('listener_artists.html', 
+                            listener_name=listener_name,
+                            data=results)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=params['port'], debug=params['debug_mode_on'])

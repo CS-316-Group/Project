@@ -40,9 +40,9 @@ body {
   float: left;
   width: 28%;
   height: 200px; 
+  text-align: center;
   padding: 1px 30px;
   letter-spacing: 1px;
-  
 }
 
 .row:after {
@@ -51,8 +51,22 @@ body {
   clear: both;
 }
 
-.index{
-  vertical-align: bottom;
+#index{
+  /* vertical-align: bottom; */
+  height: 125px;
+  text-align: justify;
+  font-size: 0.1px; /* IE 9/10 don't like font-size: 0; */
+  min-width: 600px;
+}
+
+#index div{
+  display: inline-block;
+}
+
+#index:after {
+  content: '';
+  width: 100%; /* Ensures there are at least 2 lines of text, so justification works */
+  display: inline-block;
 }
 
 .btn {
@@ -72,14 +86,13 @@ body {
 }
 
 .column {
-  float: left;
-  width: 25%;
+  /* float: left; */
 }
-.index:after{
+/* .index:after{
   content: "";
   display: table;
   clear: both;
-}
+} */
 
 @media screen and (max-width: 600px) {
   .column {
