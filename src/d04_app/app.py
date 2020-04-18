@@ -6,7 +6,7 @@ from d01_data_processing.data_cleaning import clean_all_data
 from d01_data_processing.spotify_user import SpotifyUser    
 import d04_app.forms as forms
 import d04_app.startup as startup
-from d03_database_interaction.db_operations import insert_new_user_to_database
+from d03_database_interaction.db_operations import insert_new_user_to_database, select_from_table
 import d04_app.models
 import numpy as np
 from flask_wtf import CsrfProtect
