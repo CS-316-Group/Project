@@ -86,32 +86,10 @@ def returninglogin():
 		session['new_username'] = new_username
 		session['new_password'] = new_password
 
-<<<<<<< HEAD
 		listener_list = np.array(select_from_table("""
 							SELECT l.username, l.password
 							FROM Listeners l
 							WHERE l.username = '%s' """ % new_username, db_engine=db.engine))
-=======
-		# if username is in database
-		username_list = np.array(select_from_table("""
-							SELECT l.username
-							FROM Listeners l""", db_engine=db.engine))
-		if new_username in username_list:
-			    results = np.array(select_from_table("""
-                SELECT a.artist_image_url, a.artist_name
-                FROM Topartists t, Listeners l, Artists a
-			    WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.display_name = '%s'""" % new_username, db_engine=db.engine))           	
-			    return render_template('listener_artists.html', 
-                            listener_name=new_username,
-                            data=results)
-		else:
-			response = startup.getUser()  
-			return redirect(response) #
-			 
-			
-
-			# if correct password
->>>>>>> ff72889389625aab46684385cba1890580ccc64c
 
 		if ((listener_list.size and listener_list.ndim) == 0): # if no listerner in Listeners has the same username as new_username
 			flash('Username is not registered.')
@@ -120,16 +98,14 @@ def returninglogin():
 			flash('Password is incorrect.')
 			return redirect('/returninglogin')
 
-<<<<<<< HEAD
-		#if username and password are valid
-		return redirect('/') # user is redirected to home (temporarily)
-=======
-		# if username not in the database 
-
-		# response is the redirect url to Spotify permission page
-		#response = startup.getUser()  
-		#return redirect(response) # user is redirected from Spotify back to /callback
->>>>>>> ff72889389625aab46684385cba1890580ccc64c
+		results = np.array(select_from_table("""
+			SELECT a.artist_image_url, a.artist_name
+			FROM Topartists t, Listeners l, Artists a
+			WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.display_name = '%s'""" % new_username, db_engine=db.engine))           	
+		
+		return render_template('listener_artists.html', 
+							listener_name=new_username,
+							data=results)
 
 	return render_template('returninglogin.html', form=form)
 
@@ -167,12 +143,12 @@ def callback():
 	insert_new_user_to_database(new_user_data=new_user_data, 
 								db_engine=db.engine)
 	results = np.array(select_from_table("""
-                SELECT a.artist_image_url, a.artist_name
-                FROM Topartists t, Listeners l, Artists a
-			    WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.display_name = '%s'""" % session.get('new_username', None), db_engine=db.engine))           	
-			    return render_template('listener_artists.html', 
-                            listener_name=session.get('new_username', None),
-                            data=results)
+				SELECT a.artist_image_url, a.artist_name
+				FROM Topartists t, Listeners l, Artists a
+				WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.display_name = '%s'""" % session.get('new_username', None), db_engine=db.engine))           	
+	return render_template('listener_artists.html', 
+				listener_name=session.get('new_username', None),
+				data=results)
 
 	#return redirect('/')
 
