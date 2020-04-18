@@ -4,11 +4,11 @@
 </head>
 <body>
 {% block content %}
-<p>{{listener_name}}'s Top 20 Artists</p>
+<p>{{usernamecheck}}'s Top 20 Artists</p>
 <table align="center">
 	{% for arr in data %}
 	<tr align="center">
-		<td>{{ loop.index }} <img src={{arr[0]}} style="width:200px;height:200px;">{{arr[1]}}</td>
+		<td>{{ loop.index }} {{arr}}</td>
 	</tr>
 	{% endfor %}
 </table>

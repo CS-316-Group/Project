@@ -65,7 +65,22 @@ def returninglogin():
 
         # if username is in database
         	# if correct password
-
+        usernamecheck=np.array(select_from_table("""
+        SELECT l.username,
+        FROM  Listeners l,
+        WHERE l.username = '%s'""" % new_username, db_engine=db.engine))
+       
+        if usernamecheck is None:
+            response = startup.getUser() 
+            return redirect(response)
+        else:
+            results = np.array(select_from_table("""
+            SELECT a.artist_image_url, a.artist_name
+            FROM Topartists t, Listeners l, Artists a
+            WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.username = '%s'""" % usernamecheck, db_engine=db.engine))
+            return render_template('listener_artists2.html', 
+                            listener_name=usernamecheck,
+                            data=results)
         	# if incorrect password
 
         # if username not in the database 
@@ -75,7 +90,18 @@ def returninglogin():
         return redirect(response) # user is redirected from Spotify back to /callback
 
     return render_template('returninglogin.html', form=form)
-
+    
+@app.route('/artistpage/<listener_name>', methods=['GET', 'POST'])
+def artistpage(listener_name):
+    # results=db.session.query(d04_app.models.Topartists.artist_id).join(d04_app.models.Listeners, d04_app.models.Topartists.listener_id == d04_app.models.Listeners.listener_id).all()
+    # results=db.session.query(d04_app.models.Topartists.artist_id, d04_app.models.Topartists.listener_id)
+    results = np.array(select_from_table("""
+    SELECT a.artist_image_url, a.artist_name
+    FROM Topartists t, Listeners l, Artists a
+    WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.display_name = '%s'""" % listener_name, db_engine=db.engine))
+    return render_template('listener_artists.html', 
+                            listener_name=listener_name,
+                            data=results)
 @app.route('/callback/')
 def callback():
     """
@@ -117,17 +143,7 @@ def database():
             return redirect('/')
     return render_template('database.html', dropdown_list=dropdown_list, form=form)
 
-@app.route('/artistpage/<listener_name>', methods=['GET', 'POST'])
-def artistpage(listener_name):
-    # results=db.session.query(d04_app.models.Topartists.artist_id).join(d04_app.models.Listeners, d04_app.models.Topartists.listener_id == d04_app.models.Listeners.listener_id).all()
-    # results=db.session.query(d04_app.models.Topartists.artist_id, d04_app.models.Topartists.listener_id)
-    results = np.array(select_from_table("""
-    SELECT a.artist_image_url, a.artist_name
-    FROM Topartists t, Listeners l, Artists a
-    WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.display_name = '%s'""" % listener_name, db_engine=db.engine))
-    return render_template('listener_artists.html', 
-                            listener_name=listener_name,
-                            data=results)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=params['port'], debug=params['debug_mode_on'])
