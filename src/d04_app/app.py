@@ -88,6 +88,23 @@ def returninglogin():
 		session['new_password'] = new_password
 
 		# if username is in database
+		username_list = np.array(select_from_table("""
+							SELECT l.username
+							FROM Listeners l""", db_engine=db.engine))
+		if new_username in username_list:
+			    results = np.array(select_from_table("""
+                SELECT a.artist_image_url, a.artist_name
+                FROM Topartists t, Listeners l, Artists a
+			    WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.display_name = '%s'""" % new_username, db_engine=db.engine))           	
+			    return render_template('listener_artists.html', 
+                            listener_name=new_username,
+                            data=results)
+		else:
+			response = startup.getUser()  
+			return redirect(response) #
+			 
+			
+
 			# if correct password
 
 			# if incorrect password
@@ -95,8 +112,8 @@ def returninglogin():
 		# if username not in the database 
 
 		# response is the redirect url to Spotify permission page
-		response = startup.getUser()  
-		return redirect(response) # user is redirected from Spotify back to /callback
+		#response = startup.getUser()  
+		#return redirect(response) # user is redirected from Spotify back to /callback
 
 	return render_template('returninglogin.html', form=form)
 
@@ -133,8 +150,15 @@ def callback():
 	# "loading" page? 
 	insert_new_user_to_database(new_user_data=new_user_data, 
 								db_engine=db.engine)
+	results = np.array(select_from_table("""
+                SELECT a.artist_image_url, a.artist_name
+                FROM Topartists t, Listeners l, Artists a
+			    WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.display_name = '%s'""" % session.get('new_username', None), db_engine=db.engine))           	
+			    return render_template('listener_artists.html', 
+                            listener_name=session.get('new_username', None),
+                            data=results)
 
-	return redirect('/')
+	#return redirect('/')
 
 
 @app.route('/database', methods=['GET', 'POST'])
