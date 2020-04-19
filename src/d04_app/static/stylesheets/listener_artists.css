@@ -1,5 +1,5 @@
 body{
-    background: linear-gradient(rgb(244, 190, 255), rgb(181, 120, 250));
+    background: linear-gradient(rgb(245, 190, 255), rgb(181, 120, 250));
 }
 table {
     border-collapse: collapse;
@@ -28,5 +28,5 @@ table tr:nth-child(odd) td {
     text-align:right;
 } 
 img{
-    border-radius: 5`0%;
+    border-radius: 50%;
 }

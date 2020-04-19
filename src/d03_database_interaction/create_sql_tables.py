@@ -39,6 +39,7 @@ def create_sql_tables(drop=False):
     (listener_id VARCHAR(200) NOT NULL PRIMARY KEY,
      display_name VARCHAR(200) NOT NULL,
      username VARCHAR(200) NOT NULL,
+     password VARCHAR(200) NOT NULL,
      access_token VARCHAR(200) NOT NULL, 
      expires_in INTEGER NOT NULL,  
      refresh_token VARCHAR(200) NOT NULL, 

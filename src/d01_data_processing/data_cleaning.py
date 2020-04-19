@@ -8,7 +8,7 @@ from d01_data_processing.spotify_user import SpotifyUser
 NULL_KEYWORD = 'NULL'
 
 
-def clean_listener_info(new_user:SpotifyUser):
+def clean_listener_info(new_user:SpotifyUser, new_password:str):
     """
     """
     listener_username = new_user.username
@@ -32,6 +32,7 @@ def clean_listener_info(new_user:SpotifyUser):
     # remove commas
     listener_info['display_name'] = listener_info['display_name'].str.replace(",", "")
     listener_info['username'] = listener_username
+    listener_info['password'] = new_password
 
     return {"user_info": listener_info}
 
@@ -360,6 +361,7 @@ def remove_nulls_drop_dups(df_dict):
     return df_dict 
 
 def clean_all_data(new_user:SpotifyUser,
+                   new_password:str,
                    user_token_data:list, 
                    number_of_tracks:int=20,
                    number_of_artists:int=20,
@@ -368,7 +370,7 @@ def clean_all_data(new_user:SpotifyUser,
     """
     Runs all the data cleaning functions, as though for a new user
     """
-    user_info = clean_listener_info(new_user)
+    user_info = clean_listener_info(new_user, new_password)
   
     user_info["user_info"]['access_token'] = user_token_data[0]
     user_info["user_info"]['scope'] = user_token_data[2]
@@ -377,6 +379,7 @@ def clean_all_data(new_user:SpotifyUser,
     user_info["user_info"] = user_info["user_info"][["listener_id", 
                                                      "display_name",
                                                      "username",
+                                                     "password",
                                                      "access_token",
                                                      "expires_in",
                                                      "refresh_token",

@@ -53,6 +53,13 @@ db = create_engine(db_string)   -->
 <button class="button" style="vertical-align:middle" onclick="location.href='/'"><span>Back </span></button>
 <body>
     <h1>(New User) Log into Spotify</h1>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <p style="color:red;">{{message}}</p>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
         <form action="" method="post" novalidate>
             {{ form.hidden_tag() }}
             <p>

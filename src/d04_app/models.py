@@ -26,6 +26,7 @@ class Listeners(db.Model):
     listener_id = db.Column('listener_id', db.String(200), primary_key=True)
     display_name = db.Column('display_name', db.String(200), nullable= False)
     username = db.Column('username', db.String(200), nullable = False)
+    password = db.Column('password', db.String(200), nullable = False)
     followers = db.Column('followers',db.Integer(), nullable = False)
     image_url = db.Column('image_url',db.String(400), unique= False, nullable = False)
 
