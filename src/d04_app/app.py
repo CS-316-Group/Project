@@ -87,18 +87,10 @@ def returninglogin():
 			flash('Password is incorrect.')
 			return redirect('/returninglogin')
 		###refreshtokencode.
-		#droptables/
+		#droptables for the returning user based on username.
 		#refreshtoken
-		#user_token_data=startup.refreshToken();
-		#returns token data. then we can copy how database is initialized for new user.
-		#new_user = SpotifyUser(username=new_username, 
-						   #from_scratch=False, 
-						   #token=user_token_data[0])
-
-		#new_user_data = clean_all_data(new_user=new_user, 
-							#	new_password = new_password,
-							#	user_token_data=user_token_data)
-
+		#user_token_data=startup.refreshToken(); #returns token data. then we can copy how database is initialized for new user.
+		
 		results = np.array(select_from_table("""
 			SELECT a.artist_image_url, a.artist_name
 			FROM Topartists t, Listeners l, Artists a
