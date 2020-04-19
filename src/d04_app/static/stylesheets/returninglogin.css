@@ -2,8 +2,9 @@ body {
     font-family: tahoma;
     height: 100%;
     width: 100%;
+    color: white;
     /* background-image: url(https://picsum.photos/g/3000/2000); */
-    background-image: url('../img/concert.jpeg');
+    background-image: url('../img/concert1.jpg');
     background-size: 100% auto;
     background-position: center;
     background-repeat: repeat;
