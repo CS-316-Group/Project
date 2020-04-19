@@ -93,10 +93,26 @@ def returninglogin():
 
 		if ((listener_list.size and listener_list.ndim) == 0): # if no listerner in Listeners has the same username as new_username
 			flash('Username is not registered.')
+			# TODO: if username isnt regisetred shouldnt this return to newlogin
 			return redirect('/returninglogin')
 		elif (new_password != listener_list[0][1]):	# if new_password does not match the password in the database
 			flash('Password is incorrect.')
 			return redirect('/returninglogin')
+		###refreshtokencode.
+		#droptables/
+		#refreshtoken
+		#user_token_data=startup.refreshToken();
+		#returns token data. then we can copy how database is initialized for new user.
+		#new_user = SpotifyUser(username=new_username, 
+						   #from_scratch=False, 
+						   #token=user_token_data[0])
+
+		#new_user_data = clean_all_data(new_user=new_user, 
+							#	new_password = new_password,
+							#	user_token_data=user_token_data)
+		
+
+
 
 		results = np.array(select_from_table("""
 			SELECT a.artist_image_url, a.artist_name
@@ -146,9 +162,9 @@ def callback():
 				SELECT a.artist_image_url, a.artist_name
 				FROM Topartists t, Listeners l, Artists a
 				WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.display_name = '%s'""" % session.get('new_username', None), db_engine=db.engine))           	
-	return render_template('listener_artists.html', 
-				listener_name=session.get('new_username', None),
-				data=results)
+				return render_template('listener_artists.html', 
+					listener_name=session.get('new_username', None),
+					data=results)
 
 	#return redirect('/')
 
