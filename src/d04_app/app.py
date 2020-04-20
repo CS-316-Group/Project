@@ -21,6 +21,9 @@ csrf.init_app(app)
 db = SQLAlchemy(app, session_options={'autocommit': False})
 
 session = {}
+loggedin = False
+username = ""
+
 
 
 @app.route('/')
@@ -91,14 +94,19 @@ def returninglogin():
 		#refreshtoken
 		#user_token_data=startup.refreshToken(); #returns token data. then we can copy how database is initialized for new user.
 		
-		results = np.array(select_from_table("""
-			SELECT a.artist_image_url, a.artist_name
-			FROM Topartists t, Listeners l, Artists a
-			WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.username = '%s'""" % new_username, db_engine=db.engine))           	
 		
-		return render_template('listener_artists.html', 
-							listener_name=new_username,
-							data=results)
+		#results = np.array(select_from_table("""
+		#	SELECT a.artist_image_url, a.artist_name
+		#	FROM Topartists t, Listeners l, Artists a
+		#	WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.username = '%s'""" % new_username, db_engine=db.engine))           	
+		
+		#return render_template('listener_artists.html', 
+		#					listener_name=new_username,
+		#					data=results)
+		global loggedin 
+		loggedin = True
+		return redirect('/yourdata')
+
 
 	return render_template('returninglogin.html', form=form)
 
@@ -126,30 +134,28 @@ def callback():
 	# "loading" page? 
 	insert_new_user_to_database(new_user_data=new_user_data, 
 								db_engine=db.engine)
-	results = np.array(select_from_table("""
-				SELECT a.artist_image_url, a.artist_name
-				FROM Topartists t, Listeners l, Artists a
-				WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.username = '%s'""" % session.get('new_username', None), db_engine=db.engine))           	
-	return render_template('listener_artists.html', 
-		listener_name=session.get('new_username', None),
-		data=results)
+	global loggedin 
+	loggedin= True
+	#results = np.array(select_from_table("""
+				#SELECT a.artist_image_url, a.artist_name
+				#FROM Topartists t, Listeners l, Artists a
+				#WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.username = '%s'""" % session.get('new_username', None), db_engine=db.engine))           	
+	#return render_template('listener_artists.html', 
+	#	listener_name=session.get('new_username', None),
+	#	data=results)
+	return redirect('/yourdata')
+
+
 
 	#return redirect('/')
 
 
-@app.route('/database', methods=['GET', 'POST'])
-def database():
-	listener_names = db.session.query(d04_app.models.Listeners.display_name)
-	dropdown_list = []
-	for listener in listener_names:
-		dropdown_list.append(listener[0])
-	form = forms.artistsform.form(dropdown_list) #artistsforms is just the name of the form
-	if form.validate_on_submit():
-		try:
-			return redirect(url_for('/artistpage/'+ form.listener_sel.data)) # not sure if this is right
-		except:
-			return redirect('/')
-	return render_template('database.html', dropdown_list=dropdown_list, form=form)
+@app.route('/yourdata', methods=['GET', 'POST'])
+def yourdata():
+	if loggedin is False:
+		return returninglogin()
+	if loggedin is True:
+		return render_template('yourdata.html')
 
 @app.route('/artistpage/<listener_name>', methods=['GET', 'POST'])
 def artistpage(listener_name):

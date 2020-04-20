@@ -52,7 +52,7 @@ db = create_engine(db_string)   -->
 
 <button class="button" style="vertical-align:middle" onclick="location.href='/'"><span>Back </span></button>
 <body>
-    <h1>(Returning User) Log into Spotify</h1>
+    <h1>  Log into Spotify</h1>
         {% with messages = get_flashed_messages() %}
           {% if messages %}
             {% for message in messages %}
@@ -70,6 +70,7 @@ db = create_engine(db_string)   -->
                 {{ form.password.label }}<br>
                 {{ form.password(size=32) }}
             </p>
+            <p> Don't have an account? <a href="/newlogin">Sign up!</a></p>
             <p>{{ form.submit() }}</p>
         </form>
 </body>
