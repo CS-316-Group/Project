@@ -105,6 +105,8 @@ def returninglogin():
 		#					data=results)
 		global loggedin 
 		loggedin = True
+		global username
+		username= new_username
 		return redirect('/yourdata')
 
 
@@ -136,6 +138,10 @@ def callback():
 								db_engine=db.engine)
 	global loggedin 
 	loggedin= True
+	global username
+	username= session.get('new_username', None)
+	return redirect('/yourdata')
+	
 	#results = np.array(select_from_table("""
 				#SELECT a.artist_image_url, a.artist_name
 				#FROM Topartists t, Listeners l, Artists a
@@ -143,7 +149,7 @@ def callback():
 	#return render_template('listener_artists.html', 
 	#	listener_name=session.get('new_username', None),
 	#	data=results)
-	return redirect('/yourdata')
+	
 
 
 
@@ -155,7 +161,17 @@ def yourdata():
 	if loggedin is False:
 		return returninglogin()
 	if loggedin is True:
-		return render_template('yourdata.html')
+		#dropdown_list=["Top Artists", "Top Tracks", "Top Genres"]
+		#print("this is working until now")
+		#not sure why forms isnt working
+		#form = forms.artistsform.form(dropdown_list)
+		#print(form.validate())
+		#if form.validate_on_submit():
+		#	print("this is working until now 2222")
+		return artistpage(username)
+		#print("ahh shit is about to take me to your data")
+	return render_template('yourdata.html')
+		
 
 @app.route('/artistpage/<listener_name>', methods=['GET', 'POST'])
 def artistpage(listener_name):
@@ -164,7 +180,7 @@ def artistpage(listener_name):
 	results = np.array(select_from_table("""
 	SELECT a.artist_image_url, a.artist_name
 	FROM Topartists t, Listeners l, Artists a
-	WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.display_name = '%s'""" % listener_name, db_engine=db.engine))
+	WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.username = '%s'""" % listener_name, db_engine=db.engine))
 	return render_template('listener_artists.html', 
 							listener_name=listener_name,
 							data=results)

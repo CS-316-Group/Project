@@ -22,8 +22,9 @@ class artistsform:
     @staticmethod
     def form(dropdown_list):
         class F(FlaskForm):
-            listener_sel = SelectField('Listener', choices= [(x,x) for x in dropdown_list])
+            datachoice = SelectField('Your data', choices= [(x,x) for x in dropdown_list])
             submit = SubmitField('Submit')
         return F()
+        
 
 
