@@ -20,9 +20,6 @@ def getUser():
     '''
     Constructs get request to /authorize endpt of Spotify API
     '''
-    # print(creds)
-    # print(PORT)
-    # print(CALLBACK_URL)
     return getAuth(client_id=CLIENT_ID, 
                    redirect_uri=f"{CALLBACK_URL}:{PORT}/callback/", 
                    scope=SCOPE)
@@ -45,9 +42,10 @@ def getUserToken(code):
                           redirect_uri=f"{CALLBACK_URL}:{PORT}/callback/")
     return TOKEN_DATA 
  
-def refreshToken(time):
+def refreshToken(time, 
+                 refresh_token):
     time.sleep(time)
-    TOKEN_DATA = refreshAuth()
+    TOKEN_DATA = refreshAuth(refresh_token)
 
 def getAccessToken():
     return TOKEN_DATA

@@ -4,7 +4,6 @@ SPOTIFY_URL_AUTH = 'https://accounts.spotify.com/authorize/?'
 SPOTIFY_URL_TOKEN = 'https://accounts.spotify.com/api/token/'
 RESPONSE_TYPE = 'code'   
 HEADER = 'application/x-www-form-urlencoded'
-REFRESH_TOKEN = ''
     
 def getAuth(client_id, redirect_uri, scope):
     data = f"{SPOTIFY_URL_AUTH}client_id={client_id}&response_type=code&redirect_uri={redirect_uri}&scope={scope}" 
@@ -44,10 +43,10 @@ def handleToken(response):
             response["expires_in"],
             REFRESH_TOKEN]
 
-def refreshAuth():
+def refreshAuth(refresh_token):
     body = {
         "grant_type" : "refresh_token",
-        "refresh_token" : REFRESH_TOKEN
+        "refresh_token" : refresh_token
     }
 
     post_refresh = requests.post(SPOTIFY_URL_TOKEN, data=body, headers=HEADER)
