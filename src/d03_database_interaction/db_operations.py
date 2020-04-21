@@ -64,26 +64,22 @@ def insert_new_user_to_database(new_user_data:dict, db_engine):
     return 
 
 
+def remove_user_from_database(username, db_engine):
+    """Removes all the information related to given username from the database 
+    """ 
+    sql = f"""
+           DELETE FROM Listeners AS l
+           WHERE l.username='{username}'
+           """
+    execute_raw_sql_query(sql, db_engine)
+    return 
+
+
 def copy_df_to_db(df, table_name, conn, cursor):
     """
     Given pandas dataframe, raw database connection, and cursor, 
-    performs builk insert into database 
+    performs bulk insert into database 
     """
-
-    # print()
-    # print("============================================")
-    # print()
-    # print(df)
-    # for item in df:
-    #     print("   ", df[item])
-    #     print()
-    # print(table_name)
-    # print(conn)
-    # print(cursor)
-    # print()
-    # print("============================================")
-    # print()
-
     output = StringIO()
     df.to_csv(output, sep='\t', header=False, index=False)
     output.seek(0)
@@ -95,8 +91,8 @@ def copy_df_to_db(df, table_name, conn, cursor):
 
 def select_from_table(sql, db_engine): 
     """
-    execute select type sql command on db and 
-    returns pandas dataframe 
+    execute read type sql command on db and 
+    return results in pandas dataframe 
     """ 
     conn = db_engine.raw_connection()
     cursor = conn.cursor()
@@ -123,3 +119,20 @@ def select_from_table(sql, db_engine):
 
     return results
 
+
+def execute_raw_sql_query(sql, db_engine):
+    conn = db_engine.raw_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(sql)
+        conn.commit()
+        return True
+    except(Exception, psycopg2.DatabaseError) as error:
+        print(error)
+        conn.rollback()
+    finally:
+        cursor.close()
+        if conn:
+            conn.close()
+    return False
