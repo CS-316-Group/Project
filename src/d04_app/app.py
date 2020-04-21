@@ -20,8 +20,6 @@ app.config.from_object('d04_app.config')
 csrf.init_app(app)
 db = SQLAlchemy(app, session_options={'autocommit': False})
 
-session = {}
-
 
 @app.route('/')
 def home():
@@ -81,7 +79,7 @@ def returninglogin():
 
 		if ((listener_list.size and listener_list.ndim) == 0): # if no listerner in Listeners has the same username as new_username
 			flash('Username is not registered.')
-			# TODO: if username isnt regisetred shouldnt this return to newlogin
+			# TODO: if username isnt registered shouldnt this return to newlogin
 			return redirect('/returninglogin')
 		elif (new_password != listener_list[0][1]):	# if new_password does not match the password in the database
 			flash('Password is incorrect.')
@@ -118,17 +116,22 @@ def callback():
 	are written to the database, along with all the other information we 
 	pull from the spotify api. 
 	"""
+	new_username = session.get('new_username', None)
+	new_password = session.get('new_password', None)
+
+	print(new_username, new_password)
+
 	user_auth_code = request.args['code']
 	# exchange user_auth_code for access token, refresh token
 	user_token_data = startup.getUserToken(code=user_auth_code)
 
 	#when we change how spotifyUser is initialized. 
-	new_user = SpotifyUser(username=session.get('new_username', None), 
+	new_user = SpotifyUser(username=new_username, 
 						   from_scratch=False, 
 						   token=user_token_data[0])
 
 	new_user_data = clean_all_data(new_user=new_user, 
-								   new_password = session.get('new_password', None),
+								   new_password=new_password,
 								   user_token_data=user_token_data)
 	# TODO: this step takes a while, perhaps redirect to a 
 	# "loading" page? 
@@ -137,13 +140,10 @@ def callback():
 	results = np.array(select_from_table("""
 				SELECT a.artist_image_url, a.artist_name
 				FROM Topartists t, Listeners l, Artists a
-				WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.username = '%s'""" % session.get('new_username', None), db_engine=db.engine))           	
+				WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.username = '%s'""" % new_username, db_engine=db.engine))           	
 	return render_template('listener_artists.html', 
-		listener_name=session.get('new_username', None),
+		listener_name=new_username,
 		data=results)
-
-	#return redirect('/')
-
 
 @app.route('/database', methods=['GET', 'POST'])
 def database():
