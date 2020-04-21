@@ -1,6 +1,7 @@
 import pandas as pd
 from pandas.io.json import json_normalize
 import numpy as np
+import datetime 
 
 from d00_utils.explode import explode
 from d01_data_processing.spotify_user import SpotifyUser
@@ -376,6 +377,7 @@ def clean_all_data(new_user:SpotifyUser,
     user_info["user_info"]['scope'] = user_token_data[2]
     user_info["user_info"]['expires_in'] = user_token_data[3]
     user_info["user_info"]['refresh_token'] = user_token_data[-1]
+    user_info["user_info"]['creation_datetime'] = datetime.datetime.utcnow()
     user_info["user_info"] = user_info["user_info"][["listener_id", 
                                                      "display_name",
                                                      "username",
@@ -384,6 +386,7 @@ def clean_all_data(new_user:SpotifyUser,
                                                      "expires_in",
                                                      "refresh_token",
                                                      "scope", 
+                                                     "creation_datetime", 
                                                      "num_followers",
                                                      "listener_image_url"]]
 
