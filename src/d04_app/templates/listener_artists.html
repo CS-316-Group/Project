@@ -1,16 +1,31 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stylesheets/listener_artists.css') }}">
-    <script type="text/javascript" src="{{ url_for('static',filename='js/style.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/listener_artists.js') }}"></script>
 </head>
 <body>
 {% block content %}
-<p>{{listener_name}}'s Top 20 Artists</p>
-<table align="center">
-	{% for arr in data %}
-	<tr align="center">
-		<td>{{ loop.index }} <img src={{arr[0]}} style="width:200px;height:200px;">{{arr[1]}}</td>
-	</tr>
-	{% endfor %}
-</table>
+<p>{{listener_name}}'s Music</p>
+<h1>Top Artists</h1>
+<div class="slider"></div>
+	<div class="slides">
+		{% for arr in data %}
+		<div id="slide">
+			<img src={{arr[0]}} style="width:200px; height:200px;">
+			<div class="slide-label" style = "position:relative; top:240px;">{{ loop.index }}. {{arr[1]}}</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+
+<h1 class="h11">Top Tracks</h1>
+<div class="scrollit2">
+	<table class="toptracks" align="right">
+		{% for arr in query2 %}
+		<tr align="center">
+			<td>{{ loop.index }}. {{arr}}</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
 {% endblock %}
 </body>

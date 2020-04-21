@@ -169,7 +169,7 @@ def yourdata():
 		#if form.validate_on_submit():
 		#	print("this is working until now 2222")
 		return artistpage(username)
-		#print("ahh shit is about to take me to your data")
+		#print("ahh this is about to take me to your data")
 	return render_template('yourdata.html')
 		
 
@@ -177,13 +177,18 @@ def yourdata():
 def artistpage(listener_name):
 	# results=db.session.query(d04_app.models.Topartists.artist_id).join(d04_app.models.Listeners, d04_app.models.Topartists.listener_id == d04_app.models.Listeners.listener_id).all()
 	# results=db.session.query(d04_app.models.Topartists.artist_id, d04_app.models.Topartists.listener_id)
-	results = np.array(select_from_table("""
+	query1 = np.array(select_from_table("""
 	SELECT a.artist_image_url, a.artist_name
 	FROM Topartists t, Listeners l, Artists a
 	WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.username = '%s'""" % listener_name, db_engine=db.engine))
+	query2 = np.array(select_from_table("""
+	SELECT distinct t.track_name, a.artist_name
+	FROM TopTracks tt, Tracks t, Listeners l, Artists a, CreatedBy c, AlbumContainsTrack act, Albums al
+	WHERE act.album_id = al.album_id and act.track_id = t.track_id and c.artist_id = a.artist_id and tt.track_id = c.track_id and c.track_id = t.track_id and l.listener_id = tt.listener_id and l.username = '%s'""" % listener_name, db_engine=db.engine))
 	return render_template('listener_artists.html', 
 							listener_name=listener_name,
-							data=results)
+							data=query1,
+							query2=query2)
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=params['port'], debug=params['debug_mode_on'])
