@@ -73,7 +73,7 @@ def returninglogin():
         session['new_username'] = new_username
 
         listener_list = np.array(select_from_table("""
-                            SELECT l.username, l.password, l.refresh_token, l.creation_datetime, l.display_name
+                            SELECT l.username, l.password, l.refresh_token, l.creation_datetime
                             FROM Listeners l
                             WHERE l.username = '%s' """ % new_username, db_engine=db.engine))
 
@@ -95,8 +95,8 @@ def returninglogin():
         if time_delta > timedelta(days=params['acct_refresh_time']): 
             return redirect(f'/callback/?reauth_code={db_refresh_token}') 
         else: 
-            display_name = listener_list[0][4]
-            return redirect(f'/artistpage/{display_name}')
+            # display_name = listener_list[0][4]
+            return redirect(f'/artistpage/{new_username}')
 
     return render_template('returninglogin.html', form=form)
 
@@ -137,8 +137,8 @@ def callback():
     insert_new_user_to_database(new_user_data=new_user_data, 
                                 db_engine=db.engine)
 
-    display_name = new_user_data['user_info']['display_name'][0]
-    return redirect(f'/artistpage/{display_name}')
+    # display_name = new_user_data['user_info']['display_name'][0]
+    return redirect(f'/artistpage/{new_username}')
 
 
 @app.route('/database', methods=['GET', 'POST'])
@@ -156,17 +156,17 @@ def database():
     return render_template('database.html', dropdown_list=dropdown_list, form=form)
 
 
-@app.route('/artistpage/<listener_name>', methods=['GET', 'POST'])
-def artistpage(listener_name):
+@app.route('/artistpage/<listener_username>', methods=['GET', 'POST'])
+def artistpage(listener_username):
     results = np.array(select_from_table("""
     SELECT a.artist_image_url, a.artist_name
     FROM Topartists t, Listeners l, Artists a
     WHERE a.artist_id = t.artist_id 
     and l.listener_id = t.listener_id 
-    and l.display_name = '%s'""" % listener_name, db_engine=db.engine))
+    and l.username = '%s'""" % listener_username, db_engine=db.engine))
 
     return render_template('listener_artists.html', 
-                            listener_name=listener_name,
+                            listener_name=listener_username,
                             data=results)
 
 
