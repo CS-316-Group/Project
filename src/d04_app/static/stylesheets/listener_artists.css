@@ -6,6 +6,23 @@ table  {
     border-collapse: collapse;
     width: 50%;
 }
+h1.welcome{
+  text-align: center;
+  font-size: 30px;
+}
+.toptop .userpic{
+  object-fit: cover;
+  position: relative;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  border-radius: 50%;
+}
+h2.heading{
+  text-align: center;
+  text-decoration: hotpink;
+}
 h1.h11{
     text-align: right;
 }
@@ -79,7 +96,7 @@ table.toptracks {
     color:black;
     font-size: large;
 }
-  img {
+  img.slide-pic{
     object-fit: cover;
     position: absolute;
     top: 10;

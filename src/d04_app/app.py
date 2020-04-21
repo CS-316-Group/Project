@@ -176,11 +176,18 @@ def artistpage():
      and l.listener_id = tt.listener_id 
      and l.username = '%s'""" % current_username,
                             db_engine=db.engine))
+    query3 = np.array(
+        select_from_table("""
+    SELECT l.listener_image_url
+    FROM Listeners l
+    WHERE l.username = '%s'""" % current_username,
+                            db_engine=db.engine))
 
     return render_template('listener_artists.html',
                             listener_name=current_username,
                             data=results,
-                            query2=query2)
+                            query2=query2,
+                            query3=query3)
 
 
 if __name__ == '__main__':
