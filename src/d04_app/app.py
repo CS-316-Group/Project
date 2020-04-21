@@ -23,7 +23,7 @@ db = SQLAlchemy(app, session_options={'autocommit': False})
 
 
 loggedin = False
-username = ""
+current_username = ""
 
 
 @app.route('/')
@@ -41,12 +41,10 @@ def newlogin():
     form = forms.NewLoginForm() # have login form return username
     # check if exists already, if not, then go to spotify login
     if form.validate_on_submit():
-
         new_username = form.username.data
-        # hash the password before proceeding
-        new_password = pbkdf2_sha256.hash(form.password.data, rounds = 20000)
-        session['new_username'] = new_username
-        session['new_password'] = new_password
+        hashed_password = pbkdf2_sha256.hash(form.password.data, rounds = 20000)
+
+        session['hashed_password'] = hashed_password
 
         username_list = np.array(select_from_table("""
                             SELECT l.username
@@ -55,6 +53,9 @@ def newlogin():
         if new_username in username_list:   # return to page with error if the username is already registered
             flash('Username is already registered, try another username.')
             return redirect('/newlogin')
+
+        global loggedin; global current_username
+        loggedin, current_username = True, new_username
 
         response = startup.getUser()
         return redirect(response) # user is redirected from Spotify back to /callback
@@ -71,8 +72,9 @@ def returninglogin():
     form = forms.ReturningLoginForm() # have returning login form return username and password
     # check if exists already, if not, then
     if form.validate_on_submit():
+
         new_username, new_password = form.username.data, form.password.data
-        session['new_username'] = new_username
+        # session['current_username'] = current_username
 
         listener_list = np.array(select_from_table("""
                             SELECT l.username, l.password, l.refresh_token, l.creation_datetime
@@ -90,6 +92,8 @@ def returninglogin():
             flash('Password is incorrect. Try again.')
             return redirect('/returninglogin')
 
+        global loggedin; global current_username
+        loggedin, current_username = True, new_username
 
         # check if it has been more than x days since last acct update time
         # if so, use refresh token to request new auth code
@@ -98,10 +102,7 @@ def returninglogin():
         if time_delta > timedelta(days=params['acct_refresh_time']):
             return redirect(f'/callback/?reauth_code={db_refresh_token}')
         else:
-            global loggedin;
-            global username
-            loggedin, username = True, new_username
-            return redirect(f'/artistpage/{new_username}')
+            return redirect('/')
 
     return render_template('returninglogin.html', form=form)
 
@@ -119,9 +120,7 @@ def callback():
     """
     # first-time auth token
     user_auth_code, user_reauth_code = request.args.get('code', None), request.args.get('reauth_code', None)
-    new_username, new_password = session.get('new_username', None), session.get('new_password', None)
-    global loggedin; global username
-    loggedin, username = True, new_username
+    hashed_password = session.get('hashed_password', None)
 
     # exchange user_auth_code for access token, refresh token
     if user_auth_code is not None:
@@ -130,21 +129,21 @@ def callback():
     # refresh auth info
     elif user_reauth_code is not None:
         user_token_data = startup.refreshToken(refresh_token=user_reauth_code)
-        remove_user_from_database(username=new_username,
+        remove_user_from_database(username=current_username,
                                   db_engine=db.engine)
     # insert new user to database
-    new_user = SpotifyUser(username=new_username,
+    new_user = SpotifyUser(username=current_username,
                            from_scratch=False,
                            token=user_token_data[0])
 
     new_user_data = clean_all_data(new_user=new_user,
-                                   new_password=new_password,
+                                   new_password=hashed_password,
                                    user_token_data=user_token_data)
 
     insert_new_user_to_database(new_user_data=new_user_data,
                                 db_engine=db.engine)
 
-    return redirect(f'/artistpage/{new_username}')
+    return redirect('/')
 
 
 @app.route('/yourdata', methods=['GET', 'POST'])
@@ -152,18 +151,18 @@ def yourdata():
 	if loggedin is False:
 		return returninglogin()
 	if loggedin is True:
-		return artistpage(username)
+		return artistpage()
 
 
-@app.route('/artistpage/<listener_username>', methods=['GET', 'POST'])
-def artistpage(listener_username):
+@app.route('/artistpage/', methods=['GET', 'POST'])
+def artistpage():
     results = np.array(
         select_from_table("""
     SELECT a.artist_image_url, a.artist_name
     FROM Topartists t, Listeners l, Artists a
     WHERE a.artist_id = t.artist_id 
     and l.listener_id = t.listener_id 
-    and l.username = '%s'""" % listener_username,
+    and l.username = '%s'""" % current_username,
                             db_engine=db.engine))
     query2 = np.array(
         select_from_table("""
@@ -175,11 +174,11 @@ def artistpage(listener_username):
     and tt.track_id = c.track_id 
     and c.track_id = t.track_id
      and l.listener_id = tt.listener_id 
-     and l.username = '%s'""" % listener_username,
+     and l.username = '%s'""" % current_username,
                             db_engine=db.engine))
 
     return render_template('listener_artists.html',
-                            listener_name=listener_username,
+                            listener_name=current_username,
                             data=results,
                             query2=query2)
 
