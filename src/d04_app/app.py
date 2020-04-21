@@ -107,8 +107,7 @@ def returninglogin():
 		loggedin = True
 		global username
 		username= new_username
-		return redirect('/yourdata')
-
+		return artistpage(username)
 
 	return render_template('returninglogin.html', form=form)
 
@@ -142,40 +141,16 @@ def callback():
 	username= session.get('new_username', None)
 	return redirect('/yourdata')
 	
-
-
 @app.route('/yourdata', methods=['GET', 'POST'])
 def yourdata():
 	if loggedin is False:
 		return returninglogin()
 	if loggedin is True:
-<<<<<<< HEAD
-		#dropdown_list=["Top Artists", "Top Tracks", "Top Genres"]
-		#print("this is working until now")
-		#not sure why forms isnt working
-		#form = forms.artistsform.form(dropdown_list)
-		#print(form.validate())
-		#if form.validate_on_submit():
-		#	print("this is working until now 2222")
-		return artistpage(username)
-		#print("ahh this is about to take me to your data")
-	return render_template('yourdata.html')
-=======
-		return render_template('yourdata.html', name = username)
-		
-	return render_template('yourdata.html', name = username )
->>>>>>> 2d54a103079b47603ae47b73bc3564a3fe59199d
-		
+		return artistpage(username)		
 
 @app.route('/artistpage/<listener_name>', methods=['GET', 'POST'])
 def artistpage(listener_name):
-<<<<<<< HEAD
-	# results=db.session.query(d04_app.models.Topartists.artist_id).join(d04_app.models.Listeners, d04_app.models.Topartists.listener_id == d04_app.models.Listeners.listener_id).all()
-	# results=db.session.query(d04_app.models.Topartists.artist_id, d04_app.models.Topartists.listener_id)
-	query1 = np.array(select_from_table("""
-=======
 	results = np.array(select_from_table("""
->>>>>>> 2d54a103079b47603ae47b73bc3564a3fe59199d
 	SELECT a.artist_image_url, a.artist_name
 	FROM Topartists t, Listeners l, Artists a
 	WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.username = '%s'""" % listener_name, db_engine=db.engine))
@@ -185,7 +160,7 @@ def artistpage(listener_name):
 	WHERE act.album_id = al.album_id and act.track_id = t.track_id and c.artist_id = a.artist_id and tt.track_id = c.track_id and c.track_id = t.track_id and l.listener_id = tt.listener_id and l.username = '%s'""" % listener_name, db_engine=db.engine))
 	return render_template('listener_artists.html', 
 							listener_name=listener_name,
-							data=query1,
+							data=results,
 							query2=query2)
 
 if __name__ == '__main__':
