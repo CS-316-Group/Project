@@ -142,18 +142,6 @@ def callback():
 	username= session.get('new_username', None)
 	return redirect('/yourdata')
 	
-	#results = np.array(select_from_table("""
-				#SELECT a.artist_image_url, a.artist_name
-				#FROM Topartists t, Listeners l, Artists a
-				#WHERE a.artist_id = t.artist_id and l.listener_id = t.listener_id and l.username = '%s'""" % session.get('new_username', None), db_engine=db.engine))           	
-	#return render_template('listener_artists.html', 
-	#	listener_name=session.get('new_username', None),
-	#	data=results)
-	
-
-
-
-	#return redirect('/')
 
 
 @app.route('/yourdata', methods=['GET', 'POST'])
@@ -161,22 +149,13 @@ def yourdata():
 	if loggedin is False:
 		return returninglogin()
 	if loggedin is True:
-		#dropdown_list=["Top Artists", "Top Tracks", "Top Genres"]
-		#print("this is working until now")
-		#not sure why forms isnt working
-		#form = forms.artistsform.form(dropdown_list)
-		#print(form.validate())
-		#if form.validate_on_submit():
-		#	print("this is working until now 2222")
-		return artistpage(username)
-		#print("ahh shit is about to take me to your data")
-	return render_template('yourdata.html')
+		return render_template('yourdata.html', name = username)
+		
+	return render_template('yourdata.html', name = username )
 		
 
 @app.route('/artistpage/<listener_name>', methods=['GET', 'POST'])
 def artistpage(listener_name):
-	# results=db.session.query(d04_app.models.Topartists.artist_id).join(d04_app.models.Listeners, d04_app.models.Topartists.listener_id == d04_app.models.Listeners.listener_id).all()
-	# results=db.session.query(d04_app.models.Topartists.artist_id, d04_app.models.Topartists.listener_id)
 	results = np.array(select_from_table("""
 	SELECT a.artist_image_url, a.artist_name
 	FROM Topartists t, Listeners l, Artists a

@@ -1,7 +1,4 @@
-<!-- db_string =  "postgres://vcm:dbpasswd@localhost:5432/beers"
-db = create_engine(db_string)   -->
 
-<!-- this page is the sign in page --> 
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stylesheets/returninglogin.css') }}">
     <script type="text/javascript" src="{{ url_for('static',filename='js/returninglogin.js') }}"></script>
@@ -50,9 +47,9 @@ db = create_engine(db_string)   -->
       </style>
 </head>
 
-<button class="button" style="vertical-align:middle" onclick="location.href='/'"><span>Back </span></button>
+<button class="button" style="vertical-align:right" onclick="location.href='/'"><span>Back </span></button>
 <body>
-    <h1>  Log into Spotify</h1>
+     <h1>  Log into Spotify</h1>
         {% with messages = get_flashed_messages() %}
           {% if messages %}
             {% for message in messages %}
