@@ -1,10 +1,35 @@
 body {
+   /*  width: 360px;
+    padding: 2% 0 0;
+    margin: auto;
+    background: #76b852; */
+      
     font-family: tahoma;
     height: 100%;
     width: 100%;
+    color: white;
     /* background-image: url(https://picsum.photos/g/3000/2000); */
-    background-image: url('../img/concert.jpeg');
+    background-image: url('../img/concert1.jpg');
     background-size: 100% auto;
     background-position: center;
     background-repeat: repeat;
 }
+<<<<<<< HEAD
+=======
+/* 
+form{
+    font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #ffffff;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 20px;
+
+} */
+
+
+
+>>>>>>> 2d54a103079b47603ae47b73bc3564a3fe59199d

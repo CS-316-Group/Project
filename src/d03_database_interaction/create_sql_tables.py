@@ -31,7 +31,8 @@ def create_sql_tables(drop=False):
      artist_name VARCHAR(200) NOT NULL,
      artist_pop INTEGER ,
      num_followers INTEGER ,
-     artist_image_url VARCHAR(400))
+     artist_image_url VARCHAR(400)
+    )
     """,
 
     """
@@ -44,8 +45,9 @@ def create_sql_tables(drop=False):
      expires_in INTEGER NOT NULL,  
      refresh_token VARCHAR(200) NOT NULL, 
      scope VARCHAR(200) NOT NULL,
+     creation_datetime TIMESTAMP NOT NULL,
      num_followers INTEGER,
-     listener_image_url VARCHAR(400) 
+     listener_image_url VARCHAR(400)
     )
     """,
 
@@ -92,7 +94,7 @@ def create_sql_tables(drop=False):
      time_span VARCHAR(200) NOT NULL ,
      PRIMARY KEY(listener_id, artist_id, time_span),
      CONSTRAINT listenerid_fkey FOREIGN KEY (listener_id)
-     REFERENCES listeners(listener_id),
+     REFERENCES listeners(listener_id) ON DELETE CASCADE,
      CONSTRAINT artistid_fkey FOREIGN KEY (artist_id)
      REFERENCES artists(artist_id)
     )
@@ -105,7 +107,7 @@ def create_sql_tables(drop=False):
     time_span VARCHAR(200) NOT NULL, 
     PRIMARY KEY(listener_id, track_id, time_span),
     CONSTRAINT listenerid_fkey FOREIGN KEY (listener_id)
-    REFERENCES listeners(listener_id),
+    REFERENCES listeners(listener_id) ON DELETE CASCADE,
     CONSTRAINT trackid_fkey FOREIGN KEY (track_id)
     REFERENCES tracks(track_id)
     )
