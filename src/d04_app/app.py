@@ -11,7 +11,6 @@ from d01_data_processing.spotify_user import SpotifyUser
 from d03_database_interaction.db_operations import insert_new_user_to_database, remove_user_from_database, select_from_table
 import d04_app.forms as forms
 import d04_app.startup as startup
-import d04_app.models
 
 csrf = CsrfProtect()
 params = load_parameters()
@@ -22,7 +21,6 @@ app.config.from_object('d04_app.config')
 csrf.init_app(app)
 db = SQLAlchemy(app, session_options={'autocommit': False})
 
-# session = {}
 
 @app.route('/')
 def home():
@@ -143,7 +141,8 @@ def callback():
 
 @app.route('/database', methods=['GET', 'POST'])
 def database():
-    listener_names = db.session.query(d04_app.models.Listeners.display_name)
+    listener_names = np.array(select_from_table("SELECT username FROM Listeners", 
+                                                db_engine=db.engine))
     dropdown_list = []
     for listener in listener_names:
         dropdown_list.append(listener[0])
