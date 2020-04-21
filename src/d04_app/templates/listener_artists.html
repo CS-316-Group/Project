@@ -46,19 +46,23 @@
       </style>
 </head>
 <button class="button" style="vertical-align:middle" onclick="location.href='/'"><span>Back </span></button>
-
+<div class="toptop">
+  <img class="userpic" src={{query3[0][0]}} style="width:200px; height:200px;">
+  <h1 class="welcome">Hi {{listener_name}}!</h1>
+  <h2 class="heading">Here is deeper dive into your music data.</h2>
+</div>
 <body>
-{% block content %}
-<p>{{listener_name}}'s Music</p>
-<h1>Top Artists</h1>
-<div class="slider"></div>
-	<div class="slides">
-		{% for arr in data %}
-		<div id="slide">
-			<img src={{arr[0]}} style="width:200px; height:200px;">
-			<div class="slide-label" style = "position:relative; top:240px;">{{ loop.index }}. {{arr[1]}}</div>
-		</div>
-		{% endfor %}
+  <!-- insert the user's spotify image -->
+  {% block content %}
+  <h1>Top Artists</h1>
+  <div class="slider"></div>
+    <div class="slides">
+      {% for arr in data %}
+      <div id="slide">
+        <img class="slide-pic" src={{arr[0]}} style="width:200px; height:200px;">
+        <div class="slide-label" style = "position:relative; top:240px;">{{ loop.index }}. {{arr[1]}}</div>
+      </div>
+      {% endfor %}
 	</div>
 </div>
 
