@@ -119,7 +119,7 @@ def returninglogin():
 		if time_delta > timedelta(days=params['acct_refresh_time']):
 			return redirect(f'/callback/?reauth_code={db_refresh_token}')
 		else:
-			return redirect('/')
+			return redirect('/yourdata')
 
 	return render_template('returninglogin.html', form=form)
 
