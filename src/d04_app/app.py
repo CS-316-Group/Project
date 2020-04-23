@@ -50,9 +50,9 @@ def welcome():
 def newlogin():
 	'''
 	This page allows a user to sign up to Spotify Share. The user must enter
-	a username and password. If the username matches a username of a listener 
-	in the database, then the page redirects to itself and indicates that the 
-	username is already taken. If the username is not currently taken by another 
+	a username and password. If the username matches a username of a listener
+	in the database, then the page redirects to itself and indicates that the
+	username is already taken. If the username is not currently taken by another
 	userin the database, then this page redirects to a Spotify page where the user
 	can give Spotify Share authorization to access their Spotify data. The user
 	is then redirected to callback on our website which redirects them to home
@@ -88,7 +88,7 @@ def newlogin():
 @app.route('/loginOrLogout', methods=['GET', 'POST'])
 def loginOrLogout():
 	'''
-	If the user is not logged in, it redirects to the returning login page. If the 
+	If the user is not logged in, it redirects to the returning login page. If the
 	user is logged in, it logs the user out by clearing the username and password
 	and setting loggedin to False.
 	'''
@@ -109,8 +109,8 @@ def returninglogin():
 	'''
 	This page allows users to login if they have previously signed up to our app.
 	It first prompts the user for a username and password and checks if the username
-	and password pair matches a pair in the database. If it finds a match, it 
-	refreshes the account if it has been more than 3 days since last time account was 
+	and password pair matches a pair in the database. If it finds a match, it
+	refreshes the account if it has been more than 3 days since last time account was
 	refreshed. Then it indicates that the user is logged in by changing the loggedin
 	and current_user attributes of session and redirects to the home page.
 
@@ -141,7 +141,7 @@ def returninglogin():
 
 		session.permanent = True
 		session["current_username"] = new_username
-		
+
 		# check if it has been more than x days since last acct update time
 		# if so, use refresh token to request new auth code
 		acct_update_time = listener_list[0][3].to_pydatetime()
@@ -151,7 +151,7 @@ def returninglogin():
 			return redirect(f'/callback/?reauth_code={db_refresh_token}')
 		else: # log in the user, don't need to store the password in session
 			session["loggedin"] = True
-			return redirect('/')
+			return redirect('/yourdata')
 
 	return render_template('returninglogin.html', form=form)
 
@@ -169,7 +169,7 @@ def callback():
 	"""
 	# first-time auth token
 	user_auth_code, user_reauth_code = request.args.get('code', None), request.args.get('reauth_code', None)
-	
+
 	# current username and password
 	current_username = session.get('current_username', None)
 	hashed_password = session.get('hashed_password', None)
@@ -258,4 +258,4 @@ def artistpage():
 
 
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', port=params['port'], debug=params['debug_mode_on'])
+	app.run(host='vcm@vcm-12647.vm.duke.edu', port=443, debug=params['debug_mode_on'])
