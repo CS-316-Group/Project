@@ -227,7 +227,7 @@ def artistpage():
 	fig.update_traces(fill='toself')
 	fig1 = fig
 	results = np.array(select_from_table("""
-		SELECT a.artist_image_url, a.artist_name
+		SELECT distinct a.artist_image_url, a.artist_name
 		FROM Topartists t, Listeners l, Artists a
 		WHERE a.artist_id = t.artist_id
 		and l.listener_id = t.listener_id
@@ -249,8 +249,9 @@ def artistpage():
 	return render_template('listener_artists.html',listener_name=current_username,
 			data=results,
 			query2=query2,
-			query3=query3)
+			query3=query3,
+			fig1=fig1)
 
 if __name__ == '__main__':
-	# app.run(host='vcm@vcm-12647.vm.duke.edu', port=443, debug=params['debug_mode_on'])
+	# app.run(host='vcm@vcm-12647.vm.duke.edu', port=5000, debug=params['debug_mode_on'])
     app.run(host='0.0.0.0', port=params['port'], debug=params['debug_mode_on'])

@@ -10,6 +10,7 @@ table  {
 h1.welcome{
   text-align: center;
   font-size: 30px;
+  color: rgb(160, 159, 159);
 }
 .toptop .userpic{
   object-fit: cover;
@@ -23,9 +24,11 @@ h1.welcome{
 h2.heading{
   text-align: center;
   text-decoration: hotpink;
+  color: whitesmoke;
 }
 h1.h11{
     text-align: right;
+    color: whitesmoke;
 }
 
 .tr {
@@ -69,7 +72,7 @@ table.toptracks {
     height: 10px;
   }
   .slides::-webkit-scrollbar-thumb {
-    background: black;
+    background: whitesmoke;
     border-radius: 10px;
   }
   .slides::-webkit-scrollbar-track {
@@ -82,7 +85,7 @@ table.toptracks {
     height: 310px;
     margin-right: 50px;
     border-radius: 10px;
-    background: #eee;
+    background: rgb(218, 216, 252);
     transform-origin: center center;
     transform: scale(1);
     transition: transform 0.5s;
@@ -94,7 +97,7 @@ table.toptracks {
   }
 
 #slide .slide-label{
-    color:black;
+    color:rgb(160, 159, 159);
     font-size: large;
     font: small-caps;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
