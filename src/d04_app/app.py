@@ -219,21 +219,23 @@ def yourdata():
 
 @app.route('/artistpage', methods=['GET', 'POST'])
 def artistpage():
-	'''
-	This page displays top artist and top track information for a user who
-	is logged in. It also allows the user to return to the home page.
-	'''
-	current_username = session.get('current_username', None)
-
-	results = np.array(
-		select_from_table("""
+	# This page displays top artist and top track information for a user who
+	# is logged in. It also allows the user to return to the home page.
+    current_username = session.get('current_username', None)
+    df = pd.DataFrame(dict(
+        r=[1, 5, 2, 2, 3],
+        theta=['processing cost','mechanical properties','chemical stability','thermal stability', 'device integration']))
+    fig = px.line_polar(df, r='r', theta='theta', line_close=True)
+    fig.update_traces(fill='toself')
+    fig1 = fig
+    results = np.array(select_from_table("""
 	SELECT a.artist_image_url, a.artist_name
 	FROM Topartists t, Listeners l, Artists a
 	WHERE a.artist_id = t.artist_id 
 		and l.listener_id = t.listener_id 
 		and l.username = '%s'""" % current_username,
 							db_engine=db.engine))
-	query2 = np.array(
+    query2 = np.array(
 		select_from_table("""
 	SELECT distinct t.track_name, a.artist_name
 	FROM TopTracks tt, Tracks t, Listeners l, Artists a, CreatedBy c, AlbumContainsTrack act, Albums al
@@ -245,19 +247,19 @@ def artistpage():
 		and l.listener_id = tt.listener_id 
 		and l.username = '%s'""" % current_username,
 							db_engine=db.engine))
-	query3 = np.array(
-		select_from_table("""
-	SELECT l.listener_image_url
+    query3 = np.array(
+	select_from_table("""
+	SELECT l.listener_image_url, l.display_name
 	FROM Listeners l
-	WHERE l.username = '%s'""" % current_username,
-							db_engine=db.engine))
-
-	return render_template('listener_artists.html',
+	WHERE l.username = '%s'""" % current_username, db_engine=db.engine))
+    return render_template('listener_artists.html',
 							listener_name=current_username,
 							data=results,
 							query2=query2,
-							query3=query3)
+							query3=query3,
+                            fig1=fig1)
 
 
 if __name__ == '__main__':
-	app.run(host='vcm@vcm-12647.vm.duke.edu', port=443, debug=params['debug_mode_on'])
+	# app.run(host='vcm@vcm-12647.vm.duke.edu', port=443, debug=params['debug_mode_on'])
+    app.run(host='0.0.0.0', port=params['port'], debug=params['debug_mode_on'])
