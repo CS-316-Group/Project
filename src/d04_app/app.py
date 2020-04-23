@@ -2,7 +2,6 @@ import numpy as np
 from datetime import datetime, timedelta
 from passlib.hash import pbkdf2_sha256
 from flask import Flask, render_template, redirect, url_for, request, session, flash
-from flask_wtf import CsrfProtect
 from flask_sqlalchemy import SQLAlchemy
 import plotly.express as px
 import pandas as pd
@@ -14,13 +13,13 @@ from d03_database_interaction.db_operations import insert_new_user_to_database, 
 import d04_app.forms as forms
 import d04_app.startup as startup
 # we need to add the following to requirements.txt: passlib, plotly, json
-csrf = CsrfProtect()
+
 params = load_parameters()
 
 app = Flask(__name__)
 app.secret_key = params['secret_key']
 app.config.from_object('d04_app.config')
-csrf.init_app(app)
+
 db = SQLAlchemy(app, session_options={'autocommit': False})
 
 
@@ -216,49 +215,41 @@ def yourdata():
 	if loggedin is True:
 		return artistpage()
 
-
 @app.route('/artistpage', methods=['GET', 'POST'])
 def artistpage():
 	# This page displays top artist and top track information for a user who
 	# is logged in. It also allows the user to return to the home page.
-    current_username = session.get('current_username', None)
-    df = pd.DataFrame(dict(
-        r=[1, 5, 2, 2, 3],
-        theta=['processing cost','mechanical properties','chemical stability','thermal stability', 'device integration']))
-    fig = px.line_polar(df, r='r', theta='theta', line_close=True)
-    fig.update_traces(fill='toself')
-    fig1 = fig
-    results = np.array(select_from_table("""
-	SELECT a.artist_image_url, a.artist_name
-	FROM Topartists t, Listeners l, Artists a
-	WHERE a.artist_id = t.artist_id 
-		and l.listener_id = t.listener_id 
-		and l.username = '%s'""" % current_username,
-							db_engine=db.engine))
-    query2 = np.array(
-		select_from_table("""
-	SELECT distinct t.track_name, a.artist_name
+    
+	current_username = session.get('current_username', None)
+	df = pd.DataFrame(dict(r=[1, 5, 2, 2, 3],theta=['processing cost','mechanical properties','chemical stability',
+	'thermal stability','device integration']))
+	fig = px.line_polar(df, r='r', theta='theta', line_close=True)
+	fig.update_traces(fill='toself')
+	fig1 = fig
+	results = np.array(select_from_table("""
+		SELECT a.artist_image_url, a.artist_name
+		FROM Topartists t, Listeners l, Artists a
+		WHERE a.artist_id = t.artist_id
+		and l.listener_id = t.listener_id
+		and l.username = '%s'""" % current_username,db_engine=db.engine))
+	query2 = np.array(
+	select_from_table("""
+	SELECT distinct t.track_name, al.album_image_url, al.album_name, preview_url
 	FROM TopTracks tt, Tracks t, Listeners l, Artists a, CreatedBy c, AlbumContainsTrack act, Albums al
-	WHERE act.album_id = al.album_id 
-		and act.track_id = t.track_id 
-		and c.artist_id = a.artist_id 
-		and tt.track_id = c.track_id 
-		and c.track_id = t.track_id
-		and l.listener_id = tt.listener_id 
-		and l.username = '%s'""" % current_username,
-							db_engine=db.engine))
-    query3 = np.array(
+	WHERE act.album_id = al.album_id and act.track_id = t.track_id and c.artist_id = a.artist_id 
+	and tt.track_id = c.track_id and c.track_id = t.track_id 
+	and l.listener_id = tt.listener_id and l.username = '%s'""" % current_username, db_engine=db.engine))
+
+	query3 = np.array(
 	select_from_table("""
 	SELECT l.listener_image_url, l.display_name
 	FROM Listeners l
 	WHERE l.username = '%s'""" % current_username, db_engine=db.engine))
-    return render_template('listener_artists.html',
-							listener_name=current_username,
-							data=results,
-							query2=query2,
-							query3=query3,
-                            fig1=fig1)
 
+	return render_template('listener_artists.html',listener_name=current_username,
+			data=results,
+			query2=query2,
+			query3=query3)
 
 if __name__ == '__main__':
 	# app.run(host='vcm@vcm-12647.vm.duke.edu', port=443, debug=params['debug_mode_on'])
