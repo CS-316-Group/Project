@@ -4,14 +4,16 @@ from passlib.hash import pbkdf2_sha256
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 from flask_wtf import CsrfProtect
 from flask_sqlalchemy import SQLAlchemy
-
+import plotly.express as px
+import pandas as pd
+import json
 from d00_utils.load_confs import load_parameters
 from d01_data_processing.data_cleaning import clean_all_data
 from d01_data_processing.spotify_user import SpotifyUser    
 from d03_database_interaction.db_operations import insert_new_user_to_database, remove_user_from_database, select_from_table
 import d04_app.forms as forms
 import d04_app.startup as startup
-
+# we need to add the following to requirements.txt: passlib, plotly, json
 csrf = CsrfProtect()
 params = load_parameters()
 
@@ -183,11 +185,19 @@ def artistpage():
     WHERE l.username = '%s'""" % current_username,
                             db_engine=db.engine))
 
+    df = pd.DataFrame(dict(
+        r=[1, 5, 2, 2, 3],
+        theta=['processing cost','mechanical properties','chemical stability',
+            'thermal stability', 'device integration']))
+    fig = px.line_polar(df, r='r', theta='theta', line_close=True)
+    fig.update_traces(fill='toself')
+    fig1 = fig
     return render_template('listener_artists.html',
                             listener_name=current_username,
                             data=results,
                             query2=query2,
-                            query3=query3)
+                            query3=query3,
+                            fig1=fig1)
 
 
 if __name__ == '__main__':
