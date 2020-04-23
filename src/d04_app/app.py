@@ -29,7 +29,6 @@ def home():
 	if session.get('loggedin', False) is False:
 		login_text = "Login"
 
-
 	return render_template('home.html', login_text = login_text)
 
 
@@ -41,14 +40,11 @@ def welcome():
 @app.route('/newlogin', methods=['GET', 'POST'])
 def newlogin():
 	form = forms.NewLoginForm() # have login form return username
+
 	# check if exists already, if not, then go to spotify login
 	if form.validate_on_submit():
 		new_username = form.username.data
 		hashed_password = pbkdf2_sha256.hash(form.password.data, rounds = 20000)
-
-		session.permanent = True
-		session['new_username'] = new_username
-		session['hashed_password'] = hashed_password
 
 		username_list = np.array(select_from_table("""
 							SELECT l.username
@@ -58,8 +54,9 @@ def newlogin():
 			flash('Username is already registered, try another username.')
 			return redirect('/newlogin')
 
-		session["loggedin"] = True
+		session.permanent = True
 		session["current_username"] = new_username
+		session['hashed_password'] = hashed_password
 
 		response = startup.getUser()
 		return redirect(response) # user is redirected from Spotify back to /callback
@@ -77,6 +74,7 @@ def loginOrLogout():
 	if loggedin is True:
 		session["loggedin"] = False
 		session["current_username"] = ""
+		session['hashed_password'] = ""
 		return home()
 
 
@@ -86,7 +84,6 @@ def returninglogin():
 	Check if username exists already in database. Refresh account if it has been more
 	than 3 days since last time account was refreshed and redirect to the artist page.
 	'''
-
 	form = forms.ReturningLoginForm() # have returning login form return username and password
 	# check if exists already, if not, then
 	if form.validate_on_submit():
@@ -109,22 +106,24 @@ def returninglogin():
 			flash('Password is incorrect. Try again.')
 			return redirect('/returninglogin')
 
-		session["loggedin"] = True
+		session.permanent = True
 		session["current_username"] = new_username
-
+		
 		# check if it has been more than x days since last acct update time
 		# if so, use refresh token to request new auth code
 		acct_update_time = listener_list[0][3].to_pydatetime()
 		time_delta = datetime.utcnow() - acct_update_time
-		if time_delta > timedelta(days=params['acct_refresh_time']):
+		if time_delta > timedelta(days=params['acct_refresh_time']): # refresh database data, need to save hashed_password in session for use in callback
+			session['hashed_password'] = pbkdf2_sha256.hash(new_password, rounds = 20000)
 			return redirect(f'/callback/?reauth_code={db_refresh_token}')
-		else:
+		else: # log in the user, don't need to store the password in session
+			session["loggedin"] = True
 			return redirect('/')
 
 	return render_template('returninglogin.html', form=form)
 
 
-@app.route('/callback/')
+@app.route('/callback')
 def callback():
 	"""
 	this code gets the access token and returns to auth the access token that was
@@ -137,8 +136,10 @@ def callback():
 	"""
 	# first-time auth token
 	user_auth_code, user_reauth_code = request.args.get('code', None), request.args.get('reauth_code', None)
-	hashed_password = session.get('hashed_password', None)
+	
+	# current username and password
 	current_username = session.get('current_username', None)
+	hashed_password = session.get('hashed_password', None)
 
 	# exchange user_auth_code for access token, refresh token
 	if user_auth_code is not None:
@@ -161,6 +162,9 @@ def callback():
 	insert_new_user_to_database(new_user_data=new_user_data,
 								db_engine=db.engine)
 
+	session["loggedin"] = True # only count the user as logged in if inserting the data into the database is successful
+	session['hashed_password'] = "" # remove the hashed_password from session
+
 	return redirect('/')
 
 
@@ -174,7 +178,7 @@ def yourdata():
 		return artistpage()
 
 
-@app.route('/artistpage/', methods=['GET', 'POST'])
+@app.route('/artistpage', methods=['GET', 'POST'])
 def artistpage():
 	current_username = session.get('current_username', None)
 
