@@ -213,4 +213,4 @@ def artistpage():
 
 
 if __name__ == '__main__':
-	app.run(host='vcm-13360.vm.duke.edu', port=5430, debug=params['debug_mode_on'])
+	app.run(host='vcm@vcm-12647.vm.duke.edu', port=443, debug=params['debug_mode_on'])
