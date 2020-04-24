@@ -4,8 +4,8 @@ from passlib.hash import pbkdf2_sha256
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 from flask_wtf import CSRFProtect
 from flask_sqlalchemy import SQLAlchemy
-import plotly.express as px
 import pandas as pd
+import plotly.express as px
 import json
 import sys
 sys.path.append(".")
