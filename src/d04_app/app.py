@@ -309,5 +309,5 @@ def artistpage():
 
 if __name__ == '__main__':
     # app.run(host='vcm@vcm-12647.vm.duke.edu', port=443, debug=params['debug_mode_on'])
-    app.run(host='0.0.0.0', port=params['port'], debug=params['debug_mode_on'])
+    app.run(host='0.0.0.0', port=5000, debug=params['debug_mode_on'])
     # app.run()
