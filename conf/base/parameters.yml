@@ -4,5 +4,6 @@ app_parameters:
   # host_url: "http://localhost:5000"
   scope: "user-library-read user-follow-read user-top-read user-read-recently-played"
   debug_mode_on: TRUE
+  local: FALSE
   acct_refresh_time: 2
   
