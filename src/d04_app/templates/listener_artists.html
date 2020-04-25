@@ -1,7 +1,9 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stylesheets/listener_artists.css') }}">
 	<script type="text/javascript" src="{{ url_for('static',filename='js/listener_artists.js') }}"></script>
-	<style>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+  <style>
         .button {
           border-radius: 0px;
           background-color: none;
@@ -84,9 +86,28 @@
   </div>
 
   <h1>Fancy Charts</h1>
-  <div class="slider" style="width:fit-content; height:400px;"></div>
-    Insert Radar Chart here. 
+  <div class="bottom" style="width:auto; height:400px;">
+    Insert Radar Chart 1 here. 
+    <div class="cropper">
+      <div class="chart" id="radargraph" style="width:auto; height:400px;">
+        <script>
+            var graphs = {{fig1 | safe}};
+            Plotly.plot('radargraph',graphs,{});
+        </script>
+      </div>
+    </div>
   </div>
+  <div class="bottom2" style="width:auto; height:400px;">
+    Insert Radar Chart 2 here. 
+    <div class="cropper">
+      <div class="chart" id="radargraph2" style="width:auto; height:400px;">
+        <script>
+            var graphs2 = {{fig2 | safe}};
+            Plotly.plot('radargraph2',graphs2,{});
+        </script>
+      </div>
+    </div>
+  </div>  
 {% endblock %}
 <script>
   var myAudio = document.getElementById('#myAudio');

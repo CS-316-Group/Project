@@ -6,6 +6,8 @@ from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
 import d02_visualization.radarchart as rc
 import plotly.express as px
+import plotly
+import plotly.graph_objs as go
 import json
 import sys
 sys.path.append(".")
@@ -294,9 +296,8 @@ def artistpage():
 
     listenerID = query3[0][2]
     af = compute_features_all(top_track_info=top_track_info, top_artist_info=top_artist_info)
-    
-    fig1,fig2= rc.makeRadarChart(af, listenerID)
 
+    fig1,fig2 = rc.makeRadarChart(af, listenerID)
     return render_template('listener_artists.html', listener_name=current_username,
                                 data=results, 
                                 query2=query2, 

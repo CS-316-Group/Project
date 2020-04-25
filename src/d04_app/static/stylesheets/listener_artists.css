@@ -58,10 +58,22 @@ table.toptracks {
     box-sizing: border-box;
   }
   
-  .slider {
+  .bottom, .bottom2 {
+    width: 100%;
+    text-align: left;
+    overflow: hidden;
+  }
+  .cropper{
+    width:550px;
+    height:600px;
+    overflow:hidden;
+    margin:0 auto;
+  }
+  .chart{
     width: 100%;
     text-align: center;
     overflow: hidden;
+    position:relative;
   }
 
   .slides {
