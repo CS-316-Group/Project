@@ -5,6 +5,7 @@ from flask import Flask, render_template, redirect, url_for, request, session, f
 from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
 import d02_visualization.radarchart as rc
+import plotly.express as px
 import json
 import sys
 sys.path.append(".")
