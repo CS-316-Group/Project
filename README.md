@@ -1,5 +1,3 @@
-
-
 # HOW TO LOG IN TO THE DATABASE.
 
 Run the following commands in the terminal: 
