@@ -105,13 +105,13 @@ def loginOrLogout():
     loggedin = session.get('loggedin', False)
 
     if loggedin is False:
-        return returninglogin()
+        return redirect('returninglogin')
 
     if loggedin is True:
         session["loggedin"] = False
         session["current_username"] = ""
         session['hashed_password'] = ""
-        return home()
+        return redirect('/')
 
 
 @app.route('/returninglogin', methods=['GET', 'POST'])
@@ -220,7 +220,7 @@ def yourdata():
     loggedin = session.get('loggedin', False)
 
     if loggedin is False:
-        return returninglogin()
+        return redirect('/returninglogin')
     if loggedin is True:
         return artistpage()
 
