@@ -9,8 +9,6 @@ app_params = load_parameters()
 CLIENT_ID= creds['spotify_dev_creds']['spotify_client_id']
 CLIENT_SECRET = creds['spotify_dev_creds']['spotify_client_secret']
 
-#Port and callback url can be changed or left to localhost:5000
-PORT = app_params['port']
 CALLBACK_URL = app_params['host_url']
 SCOPE = app_params['scope']
 
@@ -20,7 +18,7 @@ def getUser():
     Constructs get request to /authorize endpt of Spotify API
     '''
     return getAuth(client_id=CLIENT_ID, 
-                   redirect_uri=f"{CALLBACK_URL}:{PORT}/callback/", 
+                   redirect_uri=f"{CALLBACK_URL}/callback/", 
                    scope=SCOPE)
 
 def getUserToken(code):
@@ -37,7 +35,7 @@ def getUserToken(code):
     TOKEN_DATA = getToken(code=code, 
                           client_id=CLIENT_ID, 
                           client_secret=CLIENT_SECRET, 
-                          redirect_uri=f"{CALLBACK_URL}:{PORT}/callback/")
+                          redirect_uri=f"{CALLBACK_URL}/callback/")
     return TOKEN_DATA 
  
 
