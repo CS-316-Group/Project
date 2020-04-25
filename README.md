@@ -1,12 +1,6 @@
 
-# TODO LIST.
-1. Still need a page that directly links to spotify authentication on our website. done
-2. Still need to redirect artist page but bigger problem is to redirect from our base dataset to one that is customized for the user.
-3. Also need to figure out how to run the website through vcm if that is what we eventually want to do.
-4. Need to allow for returning users and new users. Need to check that a new user's username does not already exist in the database while a returning user's username DOES exist in the database. 
-5. Need to figure out how to deal with refreshing authorization for returning users. 
 
-# HOW TO CREATE THE DATABASE.
+# HOW TO LOG IN TO THE DATABASE.
 
 Run the following commands in the terminal: 
 1. `ssh vcm@vcm-13360.vm.duke.edu`
@@ -42,6 +36,14 @@ To create the tables: put the create SQL statements and any trigger statements i
 Run the command `\i /home/vcm/create.sql`,
 
 To load data into the tables: Create a load.sql, and run the command `\i /home/vcm/load.sql`.
+
+
+
+# SETTING UP SERVERS AND DEPLOYING APP.
+
+We chose to deploy our app nginx using as the server and uWSGI as the protocol server. To configure uWSGI, we created app.ini in d04_app folder. In the `app.ini` file, we specified how many processes and threads to use for the website. We also specificed the socket to for uwsgi. Next we cloned our project into our database stored in the group virtual machine. Next, we created a virtual environment and installed the necessary files needed for the project to work. Next  adjusted the firewall for our vm to allow for traffic from all HTTP ports. Next, we used nano to create a .service unit filled called ap. In that file, we created a unit and service blocker that communicates with nginx about where our app is stored and to use uwsgi to handle protocol. Next we configured Nginx by creating a new server block in the new file called app. In the server block, we definded listen as 80 to allow for http trafic. Next we set the server_name to our appi address and changed the localation to pass through uwsgi. We then restared the nginx to get our app running.
+
+
 
 
 # WHERE TO STORE CREDENTIALS IN THE PROJECT FOLDER STRUCTURE
@@ -98,24 +100,4 @@ Run this anytime you use new libraries in the project.
  -->
 <!-- ** You might need to modify commands a little bit if computer is not a MAC** -->
 
-# General resources.
 
-### What are forms?
-
-Web forms are one of the most basic building blocks in any web application. The Flask-WTF extension uses Python classes to represent web forms. A form class simply defines the fields of the form as class variables.
-
-from forms to page templates.
-The next step is to add the form to an HTML template so that it can be rendered on a web page.
-
-### Useful pip commands.
-1. `pip3 list` 
-to show a list of packages installed. (this is specific to linus os might be different for mac os or windows os.
-
-
-
-### Notes on running the flask app: 
-
-1.there is an outdated version of this in
-the vcm so if you are trying to run it from the vcm redownload the whole flask_app to the vcm through filezilla.
-
-2.trying to run the app through visual studio go terminal will not work because it uses your global python settings not the local packages needed to flask app so you need to run it through terminal.
