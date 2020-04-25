@@ -18,6 +18,7 @@ body {
 .welcome {
   margin: 0;
   color: white;
+  text-shadow: 2px 2px 6px  rgba(0, 0, 0, 0.2);
   text-align: center;
   vertical-align: center;
   text-shadow: 2px 2px darkgrey;
@@ -29,8 +30,11 @@ body {
   transform: translate(-50%, -50%);
   display: inline-block;
 }
+.loginout{
+  background-color: yellow;
+}
 .services{
- background-color: white;
+ background-color: #fafafa;
  margin: 2%;
  text-align: center;
  letter-spacing: 1px;
@@ -53,7 +57,7 @@ body {
 
 #index{
   /* vertical-align: bottom; */
-  height: 125px;
+  height: 50px;
   text-align: justify;
   font-size: 0.1px; /* IE 9/10 don't like font-size: 0; */
   min-width: 600px;
@@ -61,6 +65,7 @@ body {
 
 #index div{
   display: inline-block;
+  /* display: contents; */
 }
 
 #index:after {
@@ -69,7 +74,7 @@ body {
   display: inline-block;
 }
 
-.btn {
+.btn{
     padding: 14px 24px;
     border: 10px;
     border-color: white;
@@ -79,20 +84,23 @@ body {
     text-transform: uppercase;
     border-radius: 1%; 
 }
-
-.btn:hover{
+.btn-loginout{ 
+  padding: 14px 24px;
+  border: 10px;
+  border-color: white;
+  font-family: serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 1%;
+  position: absolute;
+  left: 90%;
+  top: 5%;
+}
+.btn-loginout:hover, .btn:hover{
   background-color:rgb(255, 189, 246);
   color: whitesmoke;
 }
-
-.column {
-  /* float: left; */
-}
-/* .index:after{
-  content: "";
-  display: table;
-  clear: both;
-} */
 
 @media screen and (max-width: 600px) {
   .column {
@@ -163,4 +171,38 @@ body {
   }
 }
 
-
+.flex-container { 
+  background-color:green; 
+  display: flex;
+  justify-content: center;
+} 
+.flex-container > div {
+  background-color: #f1f1f1;
+  width: 100px;
+  margin: 10px;
+  text-align: center;
+  line-height: 75px;
+  font-size: 30px;
+}
+#box1 { 
+  float:left; 
+  width:180px; 
+  height:160px; 
+  background-color:white; 
+  border:solid black; 
+} 
+#box2 { 
+  float:left; 
+  width:180px; 
+  height:160px; 
+  background-color:white; 
+  border:solid black; 
+  margin-left:20px; 
+} 
+#box3 { 
+  float:right; 
+  width:180px; 
+  height:160px; 
+  background-color:white; 
+  border:solid black; 
+}

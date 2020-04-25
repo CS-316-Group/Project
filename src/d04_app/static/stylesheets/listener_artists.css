@@ -1,5 +1,5 @@
 body{
-    background: linear-gradient(rgb(246, 193, 252), rgb(239, 166, 252), rgb(169, 112, 235));
+    background: linear-gradient(rgb(255, 207, 253), rgb(255, 159, 255), rgb(169, 112, 235));
     overflow-y: scroll;
 }
 table  {
@@ -10,7 +10,9 @@ table  {
 h1.welcome{
   text-align: center;
   font-size: 30px;
-  color: rgb(160, 159, 159);
+  color: rgb(34, 33, 33);
+  text-shadow: 2px 2px 6px  rgba(0, 0, 0, 0.2);
+  font-family: Fixed, monospace;
 }
 .toptop .userpic{
   object-fit: cover;
@@ -23,12 +25,15 @@ h1.welcome{
 }
 h2.heading{
   text-align: center;
-  text-decoration: hotpink;
-  color: whitesmoke;
+  color: rgb(34, 33, 33);
+  letter-spacing: 1.5px;
+  font-family: Fixed, monospace;
+  text-shadow: 2px 2px 6px  rgba(0, 0, 0, 0.2);
+  font-size: large;
 }
 h1.h11{
     text-align: right;
-    color: whitesmoke;
+    color: black;
 }
 
 .tr {
@@ -72,8 +77,11 @@ table.toptracks {
     height: 10px;
   }
   .slides::-webkit-scrollbar-thumb {
-    background: whitesmoke;
+    /* background: rgb(34, 33, 33); */
+    background: rgb(255, 232, 255);
     border-radius: 10px;
+    border-width: 2px;
+    border-color: black;
   }
   .slides::-webkit-scrollbar-track {
     background: transparent;
@@ -85,7 +93,7 @@ table.toptracks {
     height: 310px;
     margin-right: 50px;
     border-radius: 10px;
-    background: rgb(218, 216, 252);
+    background: rgb(255, 243, 251);
     transform-origin: center center;
     transform: scale(1);
     transition: transform 0.5s;
@@ -94,13 +102,14 @@ table.toptracks {
     justify-content: center;
     /* align-items: center; */
     font-size: 30px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   }
 
 #slide .slide-label{
-    color:rgb(160, 159, 159);
+    color:rgb(34, 33, 33);
     font-size: large;
     font: small-caps;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-family: Avantgarde, TeX Gyre Adventor, URW Gothic L, sans-serif;
 }
 img.slide-pic{
   object-fit: cover;
@@ -147,5 +156,5 @@ img.slide-pic2{
   color: green;
   position: absolute;
   top: -70;
-  left: -55;
+  left: -60;
 }

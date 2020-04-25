@@ -2,10 +2,9 @@ import numpy as np
 from datetime import datetime, timedelta
 from passlib.hash import pbkdf2_sha256
 from flask import Flask, render_template, redirect, url_for, request, session, flash
-from flask_wtf import CSRFProtect
 from flask_sqlalchemy import SQLAlchemy
-import plotly.express as px
 import pandas as pd
+import d02_visualization.radarchart as rc
 import json
 import sys
 sys.path.append(".")
@@ -15,17 +14,18 @@ from d01_data_processing.spotify_user import SpotifyUser
 from d03_database_interaction.db_operations import insert_new_user_to_database, remove_user_from_database, select_from_table
 import d04_app.forms as forms
 import d04_app.startup as startup
+from d00_utils.load_confs import load_credentials, load_paths
+from d00_utils.data_loader_sql import DataLoaderSQL
+from d01_data_processing.compute_features import *
 
 import cProfile
 pr = cProfile.Profile()
 pr.disable()
-csrf = CSRFProtect()
 params = load_parameters()
 
 app = Flask(__name__)
 app.secret_key = params['secret_key']
 app.config.from_object('d04_app.config')
-csrf.init_app(app)
 db = SQLAlchemy(app, session_options={'autocommit': False})
 
 
@@ -227,24 +227,24 @@ def artistpage():
     # This page displays top artist and top track information for a user who
     # is logged in. It also allows the user to return to the home page.
     current_username = session.get('current_username', None)
-    df = pd.DataFrame(dict(
-        r=[1, 5, 2, 2, 3],
-        theta=['processing cost','mechanical properties','chemical stability','thermal stability', 'device integration']))
-    fig = px.line_polar(df, r='r', theta='theta', line_close=True)
-    fig.update_traces(fill='toself')
-    fig1 = fig
+    # df = pd.DataFrame(dict(
+    #     r=[1, 5, 2, 2, 3],
+    #     theta=['processing cost','mechanical properties','chemical stability','thermal stability', 'device integration']))
+    # fig = px.line_polar(df, r='r', theta='theta', line_close=True)
+    # fig.update_traces(fill='toself')
+    # fig1 = fig
 
     results = np.array(select_from_table("""
     SELECT a.artist_image_url, a.artist_name
-    FROM Topartists t, Listeners l, Artists a
-    WHERE a.artist_id = t.artist_id 
-        and l.listener_id = t.listener_id 
-        and t.time_span = 'long_term'
-        and l.username = '%s'""" % current_username,
+	FROM Topartists t, Listeners l, Artists a
+	WHERE a.artist_id = t.artist_id 
+	and l.listener_id = t.listener_id 
+	and t.time_span = 'long_term' 
+	and l.username = '%s'""" % current_username,
                             db_engine=db.engine))
-    query2 = np.array(
-        select_from_table("""
-    SELECT distinct t.track_name, a.artist_name
+    r1 = len(results)
+    query2 = np.array(select_from_table("""
+    SELECT distinct t.track_name, al.album_image_url
     FROM TopTracks tt, Tracks t, Listeners l, Artists a, CreatedBy c, AlbumContainsTrack act, Albums al
     WHERE act.album_id = al.album_id 
         and act.track_id = t.track_id 
@@ -253,24 +253,59 @@ def artistpage():
         and c.track_id = t.track_id
         and l.listener_id = tt.listener_id 
         and tt.time_span = 'long_term'
-        and l.username = '%s'""" % current_username,
-                            db_engine=db.engine))
-    query3 = np.array(
-    select_from_table("""
-    SELECT l.listener_image_url, l.display_name
-    FROM Listeners l
-    WHERE l.username = '%s'""" % current_username,
-                      db_engine=db.engine))
+        and l.username = '%s'""" % current_username,db_engine=db.engine))
+    q2 = len(query2)
 
-    return render_template('listener_artists.html',
-                            listener_name=current_username,
-                            data=results,
-                            query2=query2,
-                            query3=query3,
-                            fig1=fig1)
+    query3 = np.array(select_from_table("""
+    SELECT l.listener_image_url, l.display_name, l.listener_id
+	FROM Listeners l
+	WHERE l.username = '%s'""" % current_username,db_engine=db.engine))
 
+    top_track_info = select_from_table("""
+          select toptrack_info.listener_id, 
+               track_pop, acousticness, 
+               danceability, energy, valence, 
+               loudness, tempo, 
+               instrumentalness, speechiness, 
+               mode, time_signature, liveness
+          from tracks as t1
+          natural join 
+            (select t2.track_id, t2.listener_id
+             from toptracks as t2
+             where time_span='long_term'
+            )
+          as toptrack_info
+         """,db_engine=db.engine)
+
+    top_artist_info = select_from_table("""
+           select * 
+           from artisthasgenre 
+           natural join 
+              (select topartist_info.listener_id, a1.artist_id, a1.artist_pop, a1.num_followers 
+               from artists as a1
+               natural join 
+                  (select topart.listener_id, topart.artist_id
+                   from topartists as topart 
+                   where time_span='long_term')
+               as topartist_info) 
+           as artist_info
+           """,db_engine=db.engine)
+
+    listenerID = query3[0][2]
+    af = compute_features_all(top_track_info=top_track_info, top_artist_info=top_artist_info)
+    
+    fig1,fig2= rc.makeRadarChart(af, listenerID)
+
+    return render_template('listener_artists.html', listener_name=current_username,
+                                data=results, 
+                                query2=query2, 
+                                query3=query3,
+                                fig1=fig1, 
+                                fig2=fig2,
+                                r1=r1,
+                                q2=q2)
 
 if __name__ == '__main__':
     # app.run(host='vcm@vcm-12647.vm.duke.edu', port=443, debug=params['debug_mode_on'])
-    #app.run(host='0.0.0.0', port=params['port'], debug=params['debug_mode_on'])
-    app.run()
+    app.run(host='0.0.0.0', port=params['port'], debug=params['debug_mode_on'])
+    # app.run()

@@ -202,9 +202,10 @@ def compute_features_all(top_track_info:pd.DataFrame,
     '''
     # typecast columns to numeric 
     cols = list(top_track_info.columns)
+    print(cols)
     cols.remove('listener_id')
     top_track_info[cols] = top_track_info[cols].apply(pd.to_numeric, errors='coerce')
-
+    print()
     # get listener ids
     a = set(top_track_info['listener_id'])
     b = set(top_artist_info['listener_id'])

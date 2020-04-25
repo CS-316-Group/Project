@@ -12,49 +12,56 @@
       <section id="section07" class="demo">
         <a href="#index"><span></span><span></span><span></span></a>
       </section>
-      <!-- <div class="chevron"></div>
-      <div class="chevron"></div>
-      <div class="chevron"></div> -->
     </div>
   </div>
+
+  <a href="/loginOrLogout"><button class="btn-loginout">{{login_text}}</button></a>
+
   <div class=services>
-    <h2>OUR SERVICES</h2>
+    <h2>HOW IT WORKS</h2>
   </div> 
-  
-  <div class="columna">
-    <h3>Metrics and visualization</h3>
-    <p>Some text..</p>
-  </div>
 
-  <div class="columna">
-    <h3>Similarity to other users</h3>
-    <p>Some text..</p>
-  </div>
+  <main>
+    <ol class="gradient-list">
+      <li>Sign Up.</li>
+      <li>Go to Your Data page.</li>
+      <li>Discover your Spotify music data.</li>
+    </ol>
+  </main>
 
-  <div class="columna">
-    <h3>Recommendations</h3>
-    <p>Some text..</p>
-  </div>
-
-  <div class="index" id="index"> 
-    <div class="column">
-      <a href="/"><button class="btn">Home</button></a>
-    </div>
-    
-    <div class="column">
-      <a href="/loginOrLogout"><button class="btn">{{login_text}}</button></a>
+    <div class="flex-container">
+      <div id="box1">1</div>
+      <div id="box2">2</div>
+      <div id="box3">3</div>  
     </div>
 
+  <div class="index" id="index">
     <div class="column">
       <a href="/yourdata"><button class="btn">Your Data</button></a>
     </div>
     <div class="column">
       <a href="/welcome"><button class="btn">Meet the Team</button></a>
     </div>
-    
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    $("a.reset").click(function(e){
+  e.preventDefault();
+
+  $("div.top").removeClass("dot1");
+  $("div.mid").removeClass("dot2");
+  $("div.btm").removeClass("dot3");
+  $("li.title-animate").removeClass("title-animate");
+
+  setTimeout(function(){
+    $("div.top").addClass("dot1");
+    $("div.mid").addClass("dot2");
+    $("div.btm").addClass("dot3");
+    $("ul.titles li").addClass("title-animate");
+  }, 500);
+});
+  </script>
 <script>
 $(document).ready(function(){
   // Add smooth scrolling to all links
