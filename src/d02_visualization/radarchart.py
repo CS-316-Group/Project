@@ -1,10 +1,7 @@
 import pandas as pd
-import plotly.express as px
 import numpy as np
 import json
 import plotly
-import matplotlib.pyplot as plt
-from plotly import tools
 import plotly.graph_objs as go
 
 def makeRadarChart(af,listenerID):
