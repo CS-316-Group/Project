@@ -175,9 +175,48 @@ img.slide-pic2{
   -ms-transform: translate(-50%, -50%);
   text-align: center;
 }
-.text{
-  color: green;
+#myAudio{
+  position: relative;
+  background-color: red;
+  top: -4;
+  left: -5;
+}
+.croptop{
+  width: 42px;
+  height: 42px;
+  overflow:hidden;
+  margin:0 auto;
+  justify-content: center;
+  border-radius: 50%;
+  position: relative;
+  top: -40;
+}
+.middle .tooltiptext {
+  visibility: hidden;
+  width: 100px;
+  background-color: #fff;
+  color: rgb(61, 61, 61);
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 4px;
+  font-size: medium;
+ 
+  /* Position the tooltip text - see examples below! */
   position: absolute;
-  top: -70;
-  left: -60;
+  top: -15;
+  z-index: 1;
+  left: 100%; /* To the left of the tooltip */
+}
+.middle:hover .tooltiptext {
+  visibility: visible;
+}
+.middle .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  right: 100%; /* To the left of the tooltip */
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent rgb(253, 223, 223) transparent transparent;
 }

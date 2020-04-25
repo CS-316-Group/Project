@@ -247,7 +247,7 @@ def artistpage():
                             db_engine=db.engine))
     r1 = len(results)
     query2 = np.array(select_from_table("""
-    SELECT distinct t.track_name, al.album_image_url
+    SELECT distinct t.track_name, al.album_image_url, t.preview_url
     FROM TopTracks tt, Tracks t, Listeners l, Artists a, CreatedBy c, AlbumContainsTrack act, Albums al
     WHERE act.album_id = al.album_id 
         and act.track_id = t.track_id 

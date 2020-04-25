@@ -75,10 +75,14 @@
     <div class="slides">
       {% for arr in query2 %}
       <div id="slide"> 
-        <audio id="myAudio" src={{arr[3]}}></audio>
         <img class="slide-pic2" src={{arr[1]}} style="width:200px; height:200px;">
         <div class="middle">
-          <div class="text" onclick="playPause()">play/pause</div>
+          <span class="tooltiptext">Click to preview</span>
+          <div class="croptop">
+            <audio controls id="myAudio">
+              <source src={{arr[2]}}>
+            </audio>
+          </div>
         </div>
         <div class="slide-label" style = "position:relative; top:240px;">{{ loop.index }}. {{arr[0]}}</div>
       </div>
@@ -111,13 +115,4 @@
     </div>
   </div>
 {% endblock %}
-<script>
-  var myAudio = document.getElementById('#myAudio');
-  function playPause() {
-  if (myAudio.paused) 
-    myAudio.play(); 
-  else 
-    myAudio.pause(); 
-  } 
-</script>
 </body>
