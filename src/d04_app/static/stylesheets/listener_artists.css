@@ -58,14 +58,25 @@ table.toptracks {
     box-sizing: border-box;
   }
   
-  .bottom, .bottom2 {
+  .bottom, .bottom2{
     width: 100%;
-    text-align: left;
+    height: 700px;
+    text-align: center;
     overflow: hidden;
+
+    width: 50%;
+    float: left;
+    padding: 20px;
+    border: 2px solid red;
+  }
+  .float-container{
+    border: 3px transparent;
+    padding: 2px;
+    text-align: center;
   }
   .cropper{
     width:550px;
-    height:600px;
+    height:700px;
     overflow:hidden;
     margin:0 auto;
   }

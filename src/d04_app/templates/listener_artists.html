@@ -86,28 +86,30 @@
   </div>
 
   <h1>Fancy Charts</h1>
-  <div class="bottom" style="width:auto; height:400px;">
-    Insert Radar Chart 1 here. 
-    <div class="cropper">
-      <div class="chart" id="radargraph" style="width:auto; height:400px;">
-        <script>
-            var graphs = {{fig1 | safe}};
-            Plotly.plot('radargraph',graphs,{});
-        </script>
+    <div class="float-container"></div>
+    <div class="bottom" style="width:auto; height:600px;">
+      <h2 class="title">Genres</h2>
+      <div class="cropper">
+        <div class="chart" id="radargraph" style="width:auto; height:400px;">
+          <script>
+              var graphs = {{fig1 | safe}};
+              Plotly.plot('radargraph',graphs,{});
+          </script>
+        </div>
+      </div>
+    </div>
+    <div class="bottom2" style="width:auto; height:600px;">
+      <h2 class="title">Song Qualities</h2> 
+      <div class="cropper">
+        <div class="chart" id="radargraph2" style="width:auto; height:400px;">
+          <script>
+              var graphs2 = {{fig2 | safe}};
+              Plotly.plot('radargraph2',graphs2,{});
+          </script>
+        </div>
       </div>
     </div>
   </div>
-  <div class="bottom2" style="width:auto; height:400px;">
-    Insert Radar Chart 2 here. 
-    <div class="cropper">
-      <div class="chart" id="radargraph2" style="width:auto; height:400px;">
-        <script>
-            var graphs2 = {{fig2 | safe}};
-            Plotly.plot('radargraph2',graphs2,{});
-        </script>
-      </div>
-    </div>
-  </div>  
 {% endblock %}
 <script>
   var myAudio = document.getElementById('#myAudio');
