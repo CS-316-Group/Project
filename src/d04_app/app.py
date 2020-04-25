@@ -1,31 +1,25 @@
-import numpy as np
+import sys
+sys.path.append(".")
+
+import json
 from datetime import datetime, timedelta
+import numpy as np
+import pandas as pd
 from passlib.hash import pbkdf2_sha256
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 from flask_sqlalchemy import SQLAlchemy
-import pandas as pd
-import d02_visualization.radarchart as rc
-import plotly.express as px
-import plotly
-import plotly.graph_objs as go
-import json
-import sys
-sys.path.append(".")
-from d00_utils.load_confs import load_parameters
+
+from d00_utils.load_confs import load_parameters, load_credentials, load_paths
+from d00_utils.data_loader_sql import DataLoaderSQL
+from d01_data_processing.compute_features import *
 from d01_data_processing.data_cleaning import clean_all_data
 from d01_data_processing.spotify_user import SpotifyUser    
+import d02_visualization.radarchart as rc
 from d03_database_interaction.db_operations import insert_new_user_to_database, remove_user_from_database, select_from_table
 import d04_app.forms as forms
 import d04_app.startup as startup
-from d00_utils.load_confs import load_credentials, load_paths
-from d00_utils.data_loader_sql import DataLoaderSQL
-from d01_data_processing.compute_features import *
 
-import cProfile
-pr = cProfile.Profile()
-pr.disable()
 params = load_parameters()
-
 app = Flask(__name__)
 app.secret_key = params['secret_key']
 app.config.from_object('d04_app.config')
@@ -227,15 +221,11 @@ def yourdata():
 
 @app.route('/artistpage', methods=['GET', 'POST'])
 def artistpage():
-    # This page displays top artist and top track information for a user who
-    # is logged in. It also allows the user to return to the home page.
+    '''
+    This page displays top artist and top track information for a user who
+    is logged in. It also allows the user to return to the home page.
+    '''
     current_username = session.get('current_username', None)
-    # df = pd.DataFrame(dict(
-    #     r=[1, 5, 2, 2, 3],
-    #     theta=['processing cost','mechanical properties','chemical stability','thermal stability', 'device integration']))
-    # fig = px.line_polar(df, r='r', theta='theta', line_close=True)
-    # fig.update_traces(fill='toself')
-    # fig1 = fig
 
     results = np.array(select_from_table("""
     SELECT a.artist_image_url, a.artist_name
@@ -307,9 +297,11 @@ def artistpage():
                                 r1=r1,
                                 q2=q2)
 
+
 if __name__ == '__main__':
-    # app.run(host='vcm@vcm-12647.vm.duke.edu', port=443, debug=params['debug_mode_on'])
     if params['local']:
         port = params['host_url'][-4:]
         app.run(host='0.0.0.0', port=port, debug=params['debug_mode_on'])
-    # app.run()
+    else: 
+        app.run()
+        # app.run(host='vcm@vcm-12647.vm.duke.edu', port=443, debug=params['debug_mode_on'])

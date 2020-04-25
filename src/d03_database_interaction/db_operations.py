@@ -6,7 +6,6 @@ import psycopg2
 from d00_utils.upsert_pandas_df import clean_df_db_dups
 
 #specify the primary key columns of database 
-# TODO: put this in params 
 primary_key_cols = {"artists": ['artist_id'],
                     "listeners": ['listener_id'],
                     "tracks": ['track_id'], 
@@ -23,7 +22,7 @@ primary_key_cols = {"artists": ['artist_id'],
 def insert_new_user_to_database(new_user_data:dict, db_engine):
     """
     Inserts a new user's spotify info to the database
-    Todo: Ensure that we are not inserting duplicate data to the databse
+    Ensures that we are not inserting duplicate data to the databse
     (will cause a failure)
     """
     df_table_mapping = [('user_info', 'listeners'),
