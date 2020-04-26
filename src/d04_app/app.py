@@ -15,6 +15,7 @@ from d01_data_processing.compute_features import *
 from d01_data_processing.data_cleaning import clean_all_data
 from d01_data_processing.spotify_user import SpotifyUser    
 import d02_visualization.radarchart as rc
+import d02_visualization.tsne as tsne
 from d03_database_interaction.db_operations import insert_new_user_to_database, remove_user_from_database, select_from_table
 import d04_app.forms as forms
 import d04_app.startup as startup
@@ -288,12 +289,14 @@ def artistpage():
     af = compute_features_all(top_track_info=top_track_info, top_artist_info=top_artist_info)
 
     fig1,fig2 = rc.makeRadarChart(af, listenerID)
+    fig3 = tsne.makeComparisonGraph(af)
     return render_template('listener_artists.html', listener_name=current_username,
                                 data=results, 
                                 query2=query2, 
                                 query3=query3,
                                 fig1=fig1, 
                                 fig2=fig2,
+                                fig3=fig3,
                                 r1=r1,
                                 q2=q2)
 
