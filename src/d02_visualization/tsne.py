@@ -8,7 +8,7 @@ import plotly.graph_objs as go
 
 
 def makeComparisonGraph(af):
-    af_numeric = af.copy
+    af_numeric = af.copy()
     del af_numeric['listener_id']
 
     af_numeric_embedded = TSNE(n_components=2).fit_transform(af_numeric)
@@ -38,5 +38,14 @@ def makeComparisonGraph(af):
 
     data3 = [fig]
     graphJSON3 = json.dumps(data3, cls=plotly.utils.PlotlyJSONEncoder)
+
+    print("tsne_x")
+    print(tsne_x)
+    print("tsne_y")
+    print(tsne_y)
+    print("fig")
+    print(fig)
+    print("data3")
+    print(data3)
 
     return graphJSON3
