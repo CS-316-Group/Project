@@ -8,7 +8,7 @@ import plotly.graph_objs as go
 
 
 def makeComparisonGraph(af):
-    af_numeric = af.copy
+    af_numeric = af.copy()
     del af_numeric['listener_id']
 
     af_numeric_embedded = TSNE(n_components=2).fit_transform(af_numeric)
@@ -23,14 +23,14 @@ def makeComparisonGraph(af):
     af_numeric['tsne_y'] = tsne_y
     names = af['listener_id']
 
-    fig = go.Figure()
+    #fig = go.Figure()
 
-    fig.add_trace(go.Scatter(
+    fig = go.Scatter(
         x=tsne_x,
         y=tsne_y,
         mode="markers",
         hovertext=names
-    ))
+    )
 
     fig.update_layout(title_text="Spotify Share Music Taste Universe")
     fig.update_xaxes(showticklabels=False)
