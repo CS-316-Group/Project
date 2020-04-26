@@ -1,0 +1,222 @@
+body{
+    background: linear-gradient(rgb(255, 207, 253), rgb(255, 159, 255), rgb(169, 112, 235));
+    overflow-y: scroll;
+}
+table  {
+    border-collapse: collapse;
+    width: 50%;
+    background: rgb(250, 194, 252);
+}
+h1.welcome{
+  text-align: center;
+  font-size: 30px;
+  color: rgb(34, 33, 33);
+  text-shadow: 2px 2px 6px  rgba(0, 0, 0, 0.2);
+  font-family: Fixed, monospace;
+}
+.toptop .userpic{
+  object-fit: cover;
+  position: relative;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  border-radius: 50%;
+}
+h2.heading{
+  text-align: center;
+  color: rgb(34, 33, 33);
+  letter-spacing: 1.5px;
+  font-family: Fixed, monospace;
+  text-shadow: 2px 2px 6px  rgba(0, 0, 0, 0.2);
+  font-size: large;
+}
+h1.h11{
+    text-align: right;
+    color: black;
+}
+
+.tr {
+    display: inline-block;
+}
+
+td{
+    font-family: "Lucida Console", Courier, monospace;
+}
+
+tr:hover {
+    background-color:#f5f5f5;
+}
+
+table.toptracks {
+    border: 1px solid red;
+    text-align: right;
+}
+
+
+* {
+    box-sizing: border-box;
+  }
+  
+  .bottom, .bottom2, .bottom3{
+    width: 100%;
+    height: 700px;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+    left: 35;
+    width: 50%;
+    float: left;
+    padding: 20px;
+    border: 2px solid linear-gradient(rgb(255, 159, 255), rgb(169, 112, 235));
+  }
+  .float-container{
+    padding: 2px;
+    text-align: center;
+  }
+  .cropper{
+    width:550px;
+    height:700px;
+    overflow:hidden;
+    margin:0 auto;
+  }
+  .chart{
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+    position:relative;
+  }
+
+  .slides {
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  .slides::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  .slides::-webkit-scrollbar-thumb {
+    /* background: rgb(34, 33, 33); */
+    background: rgb(255, 232, 255);
+    border-radius: 10px;
+    border-width: 2px;
+    border-color: black;
+  }
+  .slides::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .slides > div {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    width: 220px;
+    height: 310px;
+    margin-right: 50px;
+    border-radius: 10px;
+    background: rgb(255, 243, 251);
+    transform-origin: center center;
+    transform: scale(1);
+    transition: transform 0.5s;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    font-size: 30px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+
+#slide .slide-label{
+    color:rgb(34, 33, 33);
+    font-size: large;
+    font: small-caps;
+    font-family: Avantgarde, TeX Gyre Adventor, URW Gothic L, sans-serif;
+}
+img.slide-pic{
+  object-fit: cover;
+  position: absolute;
+  top: 10;
+  left: 10;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+img.slide-pic:hover{
+  border: 3px solid #f0f0f0;
+  border-radius: 50%;
+  transition: .65s ease;
+}
+img.slide-pic2{
+  object-fit: cover;
+  position: absolute;
+  top: 10;
+  left: 10;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+#slide:hover .slide-pic2{
+    opacity: 0.3;
+}
+#slide:hover .middle{
+  opacity: 1;
+}
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+#myAudio{
+  position: relative;
+  background-color: red;
+  top: -4;
+  left: -5;
+}
+.croptop{
+  width: 42px;
+  height: 42px;
+  overflow:hidden;
+  margin:0 auto;
+  justify-content: center;
+  border-radius: 50%;
+  position: relative;
+  top: -40;
+}
+.middle .tooltiptext {
+  visibility: hidden;
+  width: 100px;
+  background-color: #fff;
+  color: rgb(61, 61, 61);
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 4px;
+  font-size: medium;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  top: -15;
+  z-index: 1;
+  left: 100%; /* To the left of the tooltip */
+}
+.middle:hover .tooltiptext {
+  visibility: visible;
+}
+.middle .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  right: 100%; /* To the left of the tooltip */
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent rgb(253, 223, 223) transparent transparent;
+}
