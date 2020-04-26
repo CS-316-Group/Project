@@ -8,8 +8,6 @@ import plotly.graph_objs as go
 
 
 def makeComparisonGraph(af,q4):
-    print(q4.head())
-    print(af.dtypes)
     merged = pd.merge(q4, af, on="listener_id")
 
     af_numeric = merged.copy()
