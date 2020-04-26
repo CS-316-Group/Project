@@ -39,4 +39,4 @@ def makeComparisonGraph(af):
     data3 = [fig]
     graphJSON3 = json.dumps(data3, cls=plotly.utils.PlotlyJSONEncoder)
 
-    return graphJSON3
+    return fig
