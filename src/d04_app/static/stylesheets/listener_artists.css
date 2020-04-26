@@ -70,6 +70,11 @@ table.toptracks {
     padding: 20px;
     border: 2px solid linear-gradient(rgb(255, 159, 255), rgb(169, 112, 235));
   }
+  .bottom3{
+    position: relative;
+    left: 335;
+    top: -85;
+  }
   .float-container{
     padding: 2px;
     text-align: center;
