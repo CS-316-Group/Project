@@ -258,6 +258,7 @@ def artistpage():
     SELECT l.listener_id, l.username
 	FROM Listeners l""",db_engine=db.engine))
 
+    
     q4 = pd.DataFrame(query4, columns=['listener_id', 'username'])
 
     top_track_info = select_from_table("""

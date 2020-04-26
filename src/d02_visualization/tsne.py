@@ -9,7 +9,8 @@ import plotly.graph_objs as go
 
 def makeComparisonGraph(af,q4):
     merged = pd.merge(q4, af, on="listener_id")
-
+    merged = merged.dropna()
+    
     af_numeric = merged.copy()
     del af_numeric['listener_id']
     del af_numeric['username']
