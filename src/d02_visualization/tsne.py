@@ -19,33 +19,20 @@ def makeComparisonGraph(af):
         tsne_x[i] = af_numeric_embedded[i][0]
         tsne_y[i] = af_numeric_embedded[i][1]
 
-    af_numeric['tsne_x'] = tsne_x
-    af_numeric['tsne_y'] = tsne_y
     names = af['listener_id']
 
-    fig = go.Figure()
-
-    fig.add_trace(go.Scatter(
+    fig = go.Scatter(
         x=tsne_x,
         y=tsne_y,
         mode="markers",
         hovertext=names
-    ))
+    )
 
-    fig.update_layout(title_text="Spotify Share Music Taste Universe")
-    fig.update_xaxes(showticklabels=False)
-    fig.update_yaxes(showticklabels=False)
+    #fig.update_layout(title_text="Spotify Share Music Taste Universe")
+    #fig.update_xaxes(showticklabels=False)
+    #fig.update_yaxes(showticklabels=False)
 
     data3 = [fig]
     graphJSON3 = json.dumps(data3, cls=plotly.utils.PlotlyJSONEncoder)
 
-    print("tsne_x")
-    print(tsne_x)
-    print("tsne_y")
-    print(tsne_y)
-    print("fig")
-    print(fig)
-    print("data3")
-    print(data3)
-
-    return fig
+    return graphJSON3
