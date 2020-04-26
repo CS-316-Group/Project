@@ -8,7 +8,7 @@ import pandas as pd
 from passlib.hash import pbkdf2_sha256
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 from flask_sqlalchemy import SQLAlchemy
-
+import d02_visualization.tsne as tsne
 from d00_utils.load_confs import load_parameters, load_credentials, load_paths
 from d00_utils.data_loader_sql import DataLoaderSQL
 from d01_data_processing.compute_features import *
@@ -254,6 +254,12 @@ def artistpage():
 	FROM Listeners l
 	WHERE l.username = '%s'""" % current_username,db_engine=db.engine))
 
+    query4 = np.array(select_from_table("""
+    SELECT l.listener_id, l.username
+	FROM Listeners l""",db_engine=db.engine))
+
+    q4 = pd.DataFrame(query4, columns=['listener_id', 'username'])
+
     top_track_info = select_from_table("""
           select toptrack_info.listener_id, 
                track_pop, acousticness, 
@@ -288,12 +294,15 @@ def artistpage():
     af = compute_features_all(top_track_info=top_track_info, top_artist_info=top_artist_info)
 
     fig1,fig2 = rc.makeRadarChart(af, listenerID)
+    fig3 = tsne.makeComparisonGraph(af, q4)
+
     return render_template('listener_artists.html', listener_name=current_username,
                                 data=results, 
                                 query2=query2, 
                                 query3=query3,
                                 fig1=fig1, 
                                 fig2=fig2,
+                                fig3=fig3,
                                 r1=r1,
                                 q2=q2)
 
