@@ -113,8 +113,16 @@
         </div>
       </div>
     </div>
-    <div>
-      {{fig3}}
+    <div class="bottom3" style="width:auto; height:600px;">
+      <h2 class="title">Song Qualities</h2> 
+      <div class="cropper">
+        <div class="chart" id="comparisonchart" style="width:auto; height:400px;">
+          <script>
+              var graphs3 = {{fig3 | safe}};
+              Plotly.plot('comparisonchart',graphs3,{});
+          </script>
+        </div>
+      </div>
     </div>
   </div>
 {% endblock %}
