@@ -113,6 +113,17 @@
         </div>
       </div>
     </div>
+    <div class="bottom3" style="width:auto; height:600px;">
+      <h2 class="title">Comparison to Other Spotify Share Users</h2> 
+      <div class="cropper">
+        <div class="chart" id="comparisonchart" style="width:auto; height:400px;">
+          <script>
+              var graphs3 = {{fig3 | safe}};
+              Plotly.plot('graphs3',graphs3,{});
+          </script>
+        </div>
+      </div>
+    </div>
   </div>
 {% endblock %}
 </body>
