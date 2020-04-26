@@ -48,4 +48,4 @@ def makeComparisonGraph(af):
     print("data3")
     print(data3)
 
-    return graphJSON3
+    return fig
